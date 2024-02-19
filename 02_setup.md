@@ -34,6 +34,6 @@ fn main() {
 }
 ```
 
-So if we run `$ cargo run` from the terminal (from the root directory of our project), we should see `Hello, world!` printed to the terminal. You will also see in the output that it has compiled the program and run the executable file located in `target/debug/bitcoin-transaction-decoder`.
+So if we run `$ cargo run` from the terminal (from the root directory of our project), we should see `Hello, world!` printed to the terminal. We will also see in the output that it has compiled the program and run the executable file located in `target/debug/bitcoin-transaction-decoder`.
 
 We're all set up! So let's get started writing some Rust code!
