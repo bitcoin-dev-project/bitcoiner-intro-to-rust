@@ -1,7 +1,7 @@
 # The Bitcoiner's Introduction to Rust
 
 ### Goal
-Learn Rust and review Bitcoin fundamentals while building a command-line program.
+Learn Rust and review Bitcoin fundamentals by building a command-line program.
 
 ### Project
 We are going to build a relatively small command line program that decodes a raw transaction. Don't worry if you don't exactly know what that means, we'll review all the basic Bitcoin concepts and walk you through it step by step. If you are familiar with `bitcoin-cli`, this is the equivalent of `bitcoin-cli decoderawtransaction [raw transaction hex]`.
