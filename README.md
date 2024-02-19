@@ -17,3 +17,8 @@ I'll admit that Rust has a steep learning curve, but I promise it's not as diffi
 
 ### What You Will Learn
 By the end of this project, you will have understood the fundamental concepts of Rust such as types, data structures, references, lifetimes, stack vs the heap, traits, error handling and more.
+
+### Table of Contents
+* [1.0: Background](01_background.md)
+* [2.0: Setup](02_setup.md)
+* [3.0: Our First Function](03_our_first_function.md)
