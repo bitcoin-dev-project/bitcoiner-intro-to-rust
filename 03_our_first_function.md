@@ -109,4 +109,6 @@ You battled with the compiler and won. For now, bask in your victory. You are we
 
 Let's move on to the next lesson. We'll go into more detail about hexadecimal format as well as converting to and working with bytes. 
 
----> [Next: Hex and Bytes](04_hex_and_bytes.md)
+<hr/>
+
+### [Next Lesson: Hex and Bytes](04_hex_and_bytes.md)
