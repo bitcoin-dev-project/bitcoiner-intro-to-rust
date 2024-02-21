@@ -1,4 +1,5 @@
 # The Bitcoiner's Introduction to Rust
+*Learn Rust the ~~Hard~~ Bitcoin Way*
 
 ### Goal
 Learn Rust and review Bitcoin fundamentals by building a command-line program.
