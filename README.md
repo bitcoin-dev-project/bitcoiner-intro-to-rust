@@ -22,3 +22,4 @@ By the end of this project, you will have understood the fundamental concepts of
 * [1.0: Background](01_background.md)
 * [2.0: Setup](02_setup.md)
 * [3.0: Our First Function](03_our_first_function.md)
+* [4.0: Hex and Bytes](04_hex_and_bytes.md)

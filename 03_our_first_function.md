@@ -107,4 +107,6 @@ Look at that! You've written some Rust code and are starting to get the hang of 
 
 You battled with the compiler and won. For now, bask in your victory. You are well on your way to becoming a master of both Bitcoin and Rust. Do not fear the compiler. Fear is the mind-killer. Just remember to stay calm and read the errors carefully.
 
-Let's move on to the next lesson. We'll go into more detail about hexadecimal format, converting to and working with bytes and even using some external libraries to help us out. 
+Let's move on to the next lesson. We'll go into more detail about hexadecimal format as well as converting to and working with bytes. 
+
+---> [Next: Hex and Bytes](04_hex_and_bytes.md)
