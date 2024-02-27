@@ -1,11 +1,11 @@
 # Pointers
 
-When we call `[]` on a vector to reference some set of elements, we are actually returning a slice and not a vector. A slice is a region of a vector or array. It is the actual collection of that data in memory. However, in Rust we typically don't store that data from the heap directly into a variable. Instead we always *refer* to that data with the use of a pointer. In the case of a slice, we must prepend the data with the `&` sign which converts it into a *fat pointer*. A fat pointer is a two-word value comprising a pointer to the slice's first element and the number of elements in the slice. 
+When we call `[]` on a vector to reference some set of elements, we are actually returning a slice and not a vector. A slice is a region of a vector or array. It is the actual collection of that data in memory. However, in Rust we typically don't store that data from the heap directly into a variable. Instead we always *refer* to that data with the use of a pointer. In the case of a slice, we must prepend the data with the `&` sign which converts it into a *fat pointer* reference. A fat pointer is a two-word value comprising a pointer to the slice's first element and the number of elements in the slice. 
 
 <img src="https://www.lurklurk.org/effective-rust/images/vecslice.svg"/>
 <p>source: <a href="https://doc.rust-lang.org/book/ch15-00-smart-pointers.html">https://doc.rust-lang.org/book/ch15-00-smart-pointers.html</a></p>
 
-Notice how the vector is also a pointer type to data stored on the heap. In Rust, the vector is actually a *smart pointer* instead of a *fat pointer*. A smart pointer contains additional metadata and capabilities. It also *owns* the data instead of just borrowing a reference to it. Don't worry if you're not quite sure what that means. We're going to go explore the concepts of borrowing and references in more detail later on in the course.
+Notice how the vector is also a pointer type to data stored on the heap. In Rust, the vector is actually a *smart pointer* instead of a *fat pointer*. A smart pointer contains additional metadata and capabilities. It also *owns* the data instead of just borrowing a reference to it. Don't worry if you're not quite sure what that means. We'll explore concepts of borrowing and references in more detail later on in the course.
 
 So, instead of storing the slice directly in the `version_bytes` variable, we must store a reference to the slice. We can do this by adding the `&` in front as the compiler suggested. Here's our full program now. We've also added a `println!` in there to see what the version bytes looks like.
 
@@ -38,9 +38,10 @@ Version: 1
 Great! Let's keep moving and calculate the version number from the byte collection. 
 
 ### Quiz
-*How is a String implemented in Rust?*
+*How is a String implemented in Rust? Hint: see additional reading below*
 
-## Additional Reading
+### Additional Reading
+* https://doc.rust-lang.org/book/ch04-03-slices.html
 * https://doc.rust-lang.org/book/ch15-00-smart-pointers.html
 
 ### [Next Lesson: Arrays and Type Conversions](07_arrays_and_conversions.md)

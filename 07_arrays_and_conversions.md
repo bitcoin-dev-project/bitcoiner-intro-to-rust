@@ -1,6 +1,6 @@
 # Arrays and Conversions
 
-There's a simple method we can use on the `u32` data type called `from_le_bytes` that we can use to convert a collection of bytes into an integer. https://doc.rust-lang.org/std/primitive.u32.html#method.from_le_bytes
+There's a simple method we can use on the `u32` data type called `from_le_bytes`. This will convert a collection of bytes that are ordered in little endian into an integer. https://doc.rust-lang.org/std/primitive.u32.html#method.from_le_bytes
 
 Let's use that and see what happens:
 
@@ -34,7 +34,7 @@ Now remember, this method returns a `Result` type because the conversion could f
 <[u8; 4]>::try_from(&transaction_bytes[0..4]).unwrap()
 ```
 
-If a type implements the `TryFrom` it also comes with a `try_into` method that can be used in the other direction. For example, we can also do something like this by being explicit about our variable's data type:
+If a type implements the `TryFrom` it also provides a `try_into` method that can be used in the other direction. For example, we can also do something like this by being explicit about our variable's data type:
 
 ```
 let version_bytes: [u8; 4] = &transaction_bytes[0..4].try_into().unwrap();
@@ -52,7 +52,7 @@ fn extract_version(transaction_hex: &str) -> u32 {
 }
 ```
 
-If we run this, we'll get an error expecting the conversion type to be `&[u8; 4]` instead of `[u8; 4]`. This is because of the `&` in front which is incorrectly interpeted as being a reference to everything that follows. What we need to do is ensure that it only refers to the slice. We'll add some parentheses:
+If we run this, we'll get an error expecting the conversion type to be `&[u8; 4]` instead of `[u8; 4]`. This is because of the `&` in front of `transaction_bytes` which is incorrectly interpeted as a reference to everything that follows. What we need to do is ensure that it only refers to the slice. We'll add some parentheses:
 
 ```
 fn extract_version(transaction_hex: &str) -> u32 {
@@ -66,3 +66,12 @@ fn extract_version(transaction_hex: &str) -> u32 {
 Let's run it now. 
 
 And voila! It prints out the correct version number! Congratulations!
+
+### Quiz
+*What are some other ways of handling the Result type? What if we want an `if/else` statement where we do one thing if the result is an `Ok` type and another if the result is of an `Err` type?*
+
+### Additional Reading
+* Stack and the Heap: https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html#the-stack-and-the-heap
+* Pointers and References: https://effective-rust.com/references.html
+
+### Next Lesson: Reading Bytes

@@ -1,4 +1,4 @@
-# Byte Vectors and the Result Type
+# Vectors and the Result Type
 
 Let's apply what we've learned and update the `extract_version` function:
 
@@ -29,7 +29,7 @@ edition = "2021"
 hex = "0.4"
 ```
 
-Now, we want to go back to our `main.rs` file and bring the `hex` library into scope. We can do so by adding a line at the top:
+Now, we want to go back to our `main.rs` file and bring the `hex` library into scope so that we can use the module methods. We can do so by adding a line at the top of our file:
 `use hex;`
 
 If we look through the documentation at https://docs.rs/hex/latest/hex/, we see that we can convert the hex to bytes by calling the `decode` method from the `hex` module like so:
