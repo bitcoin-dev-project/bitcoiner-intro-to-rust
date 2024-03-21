@@ -27,3 +27,5 @@ By the end of this project, you will have understood the fundamental concepts of
 * [5.0: Vectors and the Result Type](05_vectors_and_results.md)
 * [6.0: Pointers](06_pointers.md)
 * [7.0: Arrays and Type Conversions](07_arrays_and_conversions.md)
+* [8.0: Traits and Reading Bytes][08_traits_and_reading_bytes.md]
+
