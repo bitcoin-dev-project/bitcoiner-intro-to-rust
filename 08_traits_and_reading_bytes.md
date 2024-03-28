@@ -19,7 +19,7 @@ Let's see an example:
 ```
 fn main() {
     let bytes_slice: &[u8] = [1, 0, 0, 0, 2].as_slice();
-    
+
     // Read contents of bytes_slice into a buffer.
     // Read only the exact number of bytes needed to fill the buffer.
     let mut buffer = [0; 4];
@@ -32,15 +32,17 @@ fn main() {
 }
 ```
 
-This won't run if you try to compile it. You'll get a compile error that the `read` method is not found for `&[u8]`. This is because the trait implementations only become available when the trait is brought into scope with a `use` import. So you just need to add a `use std::io::Read;` line at the top. Let's add that and see what happens.
+This won't run if you try to compile it. You'll get a compile error that the `read` method is not found for `&[u8]`. This is because the trait implementations only become available when the trait is brought into scope with a `use` import. So you just need to add a `use std::io::Read;` line at the top. Let's add that and run this again.
 
-This will print out the following:
+This should print out the following:
 ```
 Version: 1
 Bytes Slice: [2]
 ```
 
-We converted the 4 bytes from the buffer into an unsigned 32-bit integer. And notice how the bytes slice has been modified after being read into the buffer.
+We converted the 4 bytes from the buffer into an unsigned 32-bit integer. And notice how the bytes slice has been modified after being read into the buffer. 
+
+You may notice that the way this works is that you have to first create an array (which serves as the buffer) with a known size. Calling `read` will then extract the number of bytes equal to the size of the array and shift the pointer to the underlying data forward by that same amount.
 
 Let's now modify our program to print out the version number leveraging the `Read` trait. We can convert the `transaction_bytes` `Vec` to a `slice` type using the `as_slice` method. Here is the modified `extract_version` function.
 
@@ -75,3 +77,5 @@ fn main() {
 *2. How else can you print out the vector for debugging purposes?*
 
 *3. Try and implement the correct trait for Vec so that it can be printed for standard display purposes.*
+
+### [Next Lesson: References and Borrowing Part 1](09_references_and_borrowing_01.md)
