@@ -29,7 +29,7 @@ edition = "2021"
 hex = "0.4"
 ```
 
-Now, we want to go back to our `main.rs` file and bring the `hex` library into scope so that we can use the module methods. We can do so by adding a line at the top of our file:
+Now, we want to go back to our `main.rs` file and bring the `hex` library into scope so that we can use the module's methods. We can do so by adding a line at the top of our file:
 `use hex;`
 
 If we look through the documentation at https://docs.rs/hex/latest/hex/, we see that we can convert the hex to bytes by calling the `decode` method from the `hex` module like so:
@@ -63,9 +63,11 @@ What happens when we run `$ cargo run`? Well, we get an error. Take some time to
 error[E0608]: cannot index into a value of type `Result<Vec<u8>, FromHexError>`
 ```
 
-Let's revisit what `hex::decode` returns. Remember, we want to work with a Vector of bytes so a `vec<u8>` is the data type we're looking for. However, if we look at the return type of the `decode` function we see that the data structure we want is wrapped *inside* of a `Result` type. The `Result` type is a common `enum` that you will see in Rust code. Enums are a way to describe a mutually exclusive set of options for a particular variable. If you think about it, it's possible that the `hex::decode` function fails to return a proper collection of bytes. For example, what if one of the characters is not a hex character? So we get two possibilities from a `Result`, an `Ok` response or an `Err` response.
+Let's examine what `hex::decode` returns. Here is the doc for the `decode` method: https://docs.rs/hex/latest/hex/fn.decode.html. Remember, we want to work with a Vector of bytes so a `vec<u8>` is the data type we're looking for. However, if we look at the return type of the `decode` function we see that the data structure we want is wrapped *inside* of a `Result` type. 
 
-So how should we work with this? There are a few different ways to work with it. We'll explore different ways of handling a `Result` later on in this course, but for now, we'll use the `unwrap` method. Every `Result` enum has an `unwrap` method that you can call. This will return the underlying data type if the result is an `Ok` type or it will `panic` and the program will crash if the result is an `Err` type. Crashing your program is probably not the best way to handle an error, unless you're confident that an `Err` result *should* not be possible. But we'll look into different ways of handling later on. 
+The `Result` type is a common `enum` that you will see in Rust code. Enums are a way to describe a mutually exclusive set of options for a particular variable. If you think about it, it's possible that the `hex::decode` function fails to return a proper collection of bytes. For example, what if one of the characters is not a hex character? So we get two possibilities from a `Result`, an `Ok` response or an `Err` response.
+
+So how should we work with this? There are a few different ways to work with it. We'll explore different ways of handling a `Result` later on in this course, but for now, we'll use the `unwrap` method. Every `Result` enum has an `unwrap` method that you can call. This will return the underlying data type if the result is an `Ok` type or it will `panic` and the program will crash if the result is an `Err` type. Crashing your program is probably not the best way to handle an error, unless you're confident that an `Err` result *should* not be possible. But we'll look into different ways of handling later on. Here is the doc for the `unwrap` method: https://doc.rust-lang.org/std/result/enum.Result.html#method.unwrap
 
 For now, let's update this so that we are actually working with the underlying vector of bytes and not the wrapped `Result` type:
 ```
@@ -77,10 +79,12 @@ fn extract_version(transaction_hex: &str) -> u32 {
 }
 ```
 
-How does the program run now? We're going to get another compilation error and it's going to be a confusing one:
+How does the program run now? Let's see by running `cargo run`. 
+
+We're going to get another compilation error and it's going to be a confusing one:
 `error[E0277]: the size for values of type [u8] cannot be known at compilation time`
 
-This will make more sense as we develop a better understanding of the difference between arrays, slices and vectors in Rust as well as the difference between the stack and the heap. We'll get a better handle on these concepts as we continue on in the course, but let's get an overview of these concepts in the next lesson.
+This will make more sense as we develop a better understanding of the difference between arrays, slices and vectors in Rust as well as the difference between the stack and the heap. We'll get a better handle on these concepts as we continue on in the course, but let's get a brief overview of these concepts in the next lesson.
 
 ### Quiz
 *Notice the last line of this function. What will the compiler complain is wrong with this function? And why?*
@@ -97,4 +101,4 @@ fn extract_version(transaction_hex: &str) -> u32 {
 * Enums: https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html
 * Recoverable Errors with Result: https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html
 
-### [Next Lesson: Pointers](06_pointers.md)
+### [Next Lesson: Pointers](06_pointers_and_slices.md)

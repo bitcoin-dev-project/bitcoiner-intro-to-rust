@@ -53,11 +53,13 @@ error[E0425]: cannot find value `version` in this scope
   |     ^^^^^^^
 ```
 
-The compiler is looking for the `version` declaration somewhere. But what we really mean is to declare a new variable. Any time we are declaring a new variable to use, we must use the `let` keyword. This is not needed if we are referring to variable that has already been declared.
+The compiler is looking for the `version` declaration somewhere. But what we really mean is to declare a new variable. Any time we are declaring a new variable to use, we must use the `let` keyword. This is not needed if we are referring to variable that has already been declared. It should look something like this:
+
+`let version = extract_version("0100000001c997a5e56e104102fa209c6a852dd90660a20b2d9c352423edce25857fcd3704000000004847304402204e45e16932b8af514961a1d3a1a25fdf3f4f7732e9d624c6c61548ab5fb8cd410220181522ec8eca07de4860a4acdd12909d831cc56cbbac4622082221a8768d1d0901ffffffff0200ca9a3b00000000434104ae1a62fe09c5f51b13905f07f06b99a2f7159b2225f374cd378d71302fa28414e7aab37397f554a7df5f142c21c1b7303b8a0626f1baded5c72a704f7e6cd84cac00286bee0000000043410411db93e1dcdb8a016b49840f8c53bc1eb68a382e97b1482ecad7b148a6909a5cb2e0eaddfb84ccf9744464f82e160bfa9b8b64f9d4c03f999b8643f656b412a3ac00000000");`
 
 Ok, `let`'s do that, rerun `$ cargo run` and see what happens.
 
-The last error we get is related to mismatched types. 
+That seems to work and we now get a different error. This last error we get is related to mismatched types. 
 ```
 error[E0308]: mismatched types
  --> src/main.rs:2:12
@@ -105,7 +107,7 @@ Version: 1
 
 Look at that! You've written some Rust code and are starting to get the hang of the basics. That wasn't so bad was it? 
 
-You battled with the compiler and won. For now, bask in your victory. You are well on your way to becoming a master of both Bitcoin and Rust. Do not fear the compiler. Fear is the mind-killer. Just remember to stay calm and read the errors carefully.
+You battled with the compiler and won. For now, bask in your victory. You are well on your way to becoming a master of both Bitcoin and Rust. Do not fear the compiler. Fear is the mind-killer. Just remember to stay calm and read the errors carefully. You will figure it all out eventually.
 
 Let's move on to the next lesson. We'll go into more detail about hexadecimal format as well as converting to and working with bytes. 
 

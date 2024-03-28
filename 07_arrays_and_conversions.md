@@ -19,7 +19,7 @@ expected `[u8; 4]`, found `&[u8]`
 
 If we look at the `from_le_bytes` method in the documentation and look at the function signature, we'll see that the parameter expected is of the type `[u8; 4]`. However, we're passing in a slice `&[u8]`. What is the difference between these two?
 
-Well, in Rust, the data type `[T; N]` where `T` is any type and `N` is the number of elements, is called an "array". Now we have to be careful because this is not the same as an array in other languages, such as Javascript and it's not the same as a list in Python. An array is a fixed size collection that is stored on the stack as opposed to the heap. An array's size is constant, cannot be changed and must be known and defined at compile time. 
+Well, in Rust, the data type `[T; N]` where `T` is any type and `N` is the number of elements, is called an "array". Now we have to be careful because this is not the same as an array in other languages, such as Javascript and it's not the same as a list in Python. An array is a fixed size collection that is stored on the stack as opposed to the heap. This means the data is available directly at runtime and no memory lookup is required to retrieve the data. An array's size is constant, cannot be changed and must be known and defined at compile time. 
 
 So the method `from_le_bytes` only works with arrays, which makes sense. It wants to be assured that it is only working with 4 bytes at compile time because that is exactly what is needed to create a `u32` integer on the stack. So how do we convert a slice to an array? One way is to initialize an array of 4 elements and then modify it by iterating over our slice and reading each value. But there's an easier way. Most standard data types implement the `TryFrom` trait, which means they have methods which allow you to convert between types. https://doc.rust-lang.org/std/convert/trait.TryFrom.html
 
@@ -71,7 +71,6 @@ And voila! It prints out the correct version number! Congratulations!
 *What are some other ways of handling the Result type? What if we want an `if/else` statement where we do one thing if the result is an `Ok` type and another if the result is of an `Err` type?*
 
 ### Additional Reading
-* Stack and the Heap: https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html#the-stack-and-the-heap
 * Pointers and References: https://effective-rust.com/references.html
 
 ### [Next Lesson: Traits and Reading Bytes](08_traits_and_reading_bytes.md)

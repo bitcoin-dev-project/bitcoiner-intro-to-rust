@@ -74,7 +74,7 @@ Great work so far! It may not seem like much code, but you've learned a ton of R
 
 ### Quiz
 1. *Rust enforces a simple, yet important rule when it comes to passing references and that is <u>**single writer OR multiple readers**</u>. In other words, you can have many different immutable, shared references to an object OR you can have just *one* mutable reference at any given time. You can't have both a shared reference and a mutable reference at the same time. Why do you think that might be? What is an example of a problem that could occur if there is a mutable reference and shared reference to the same object?* 
-2. *What do you think would happen if we attempted to modify the vector while we have a slice that points to it? Experiment and see what happens. Can you explain why the compiler is returning an error and the meaning of that error?*
+2. *What do you think would happen if we attempted to modify the vector while we have a slice that borrows a reference to it? Experiment and see what happens. Can you explain why the compiler is returning an error and the meaning of that error?*
 
 ### Additional Reading
 * https://exercism.org/tracks/rust/concepts/mutability

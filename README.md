@@ -25,7 +25,7 @@ By the end of this project, you will have understood the fundamental concepts of
 * [3.0: Our First Function](03_our_first_function.md)
 * [4.0: Hex and Bytes](04_hex_and_bytes.md)
 * [5.0: Vectors and the Result Type](05_vectors_and_results.md)
-* [6.0: Pointers](06_pointers.md)
+* [6.0: Pointers and Slices](06_pointers_and_slices.md)
 * [7.0: Arrays and Type Conversions](07_arrays_and_conversions.md)
 * [8.0: Traits and Reading Bytes](08_traits_and_reading_bytes.md)
 * [9.0: References and Borrowing Part 1](09_references_and_borrowing_01.md)
