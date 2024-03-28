@@ -26,7 +26,6 @@ Before I show you the modified function, what do you think is the correct argume
 *********************************************************************************************
 *********************************************************************************************
 *********************************************************************************************
-****************************** TAKE A MOMENT TO ANSWER THE QUESTION *****************************
 *********************************************************************************************
 *********************************************************************************************
 *********************************************************************************************
@@ -118,6 +117,6 @@ fn main() {
 }
 ```
 
-When we print the `bytes_slice`, we see the [1,0,0,0] is still there. But this should have been read and the pointer should have moved so that it is no longer part of the slice. So what's happening here exactly? Let's dive into it in the next lesson. As we'll see, the slice in the `extract_version` is not the same object as the slice in the `main` function. It's a copy. So when we modify it in the `extract_version` function, we are not modifying the one in the `main` version.
+When we print the `bytes_slice`, we see the [1,0,0,0] is still there. But this should have been read and the pointer should have moved so that it is no longer returned by the slice. So what's happening here exactly? We'll dive into it in the next lesson. As we'll see, the slice in the `extract_version` is not the same object as the slice in the `main` function. 
 
 ### [Next Lesson: References and Borrowing Part 2](09_references_and_borrowing_02.md)
