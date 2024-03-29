@@ -74,7 +74,27 @@ Great work so far! It may not seem like much code, but you've learned a ton of R
 
 ### Quiz
 1. *Rust enforces a simple, yet important rule when it comes to passing references and that is <u>**single writer OR multiple readers**</u>. In other words, you can have many different immutable, shared references to an object OR you can have just *one* mutable reference at any given time. You can't have both a shared reference and a mutable reference at the same time. Why do you think that might be? What is an example of a problem that could occur if there is a mutable reference and shared reference to the same object?* 
-2. *What do you think would happen if we attempted to modify the vector while we have a slice that borrows a reference to it? Experiment and see what happens. Can you explain why the compiler is returning an error and the meaning of that error?*
+2. *What do you think would happen if we attempted to modify the vector while we have a slice that borrows a reference to it? Experiment by calling `.clear()` on the vector (after declaring it mutable). See example below. Run it and see what happens. Can you explain why the compiler is returning an error and the meaning of that error?*
+```
+fn main() {
+    let transaction_hex = "0100000002af0bf9c887049d8a143cff21d9e10d921ab39a3645c0531ba192291b7793c6f8100000008b483045022100904a2e0e8f597fc1cc271b6294b097a6edc952e30c453e3530f92492749769a8022018464c225b03c28791af06bc7fed129dcaaeff9ec8135ada1fb11762ce081ea9014104da289192b0845d5b89ce82665d88ac89d757cfc5fd997b1de8ae47f7780ce6a32207583b7458d1d2f3fd6b3a3b842aea9eb789e2bea57b03d40e684d8e1e0569ffffffff0d088b85950cf484bbcd1114c8fd8ad2850dcf2784c0bbcff9af2b3377211de5010000008b4830450220369df7d42795239eabf9d41aee75e3ff20521754522bd067890f8eedf6044c6d0221009acfbd88d51d842db87ab990a48bed12b1f816e95502d0198ed080de456a988d014104e0ec988a679936cea80a88e6063d62dc85182e548a535faecd6e569fb565633de5b4e83d5a11fbad8b01908ce71e0374b006d84694b06f10bdc153ca58a53f87ffffffff02f6891b71010000001976a914764b8c407b9b05cf35e9346f70985945507fa83a88acc0dd9107000000001976a9141d1310fe87b53fec8dbc8911f0ebc112570e34b288ac00000000";
+    let mut transaction_bytes = hex::decode(transaction_hex).unwrap(); // declare the vector as mutable
+    let bytes_slice = transaction_bytes.as_slice();
+    transaction_bytes.clear(); // clear the vector elements while there is another reference to its elements
+    
+    let version = extract_version(bytes_slice);
+
+    println!("Main: Bytes Slice Memory Address: {:p}", bytes_slice);
+    println!("Main: Bytes Slice: {:?}", bytes_slice);
+
+    println!("Version: {}", version);
+}
+```
+3. *You will find that certain methods for manipulating the elements of a vector such as sorting are available only on the slice type and not the vector. However, if you call `.sort` on a vector, it will still work. Why is that? Hint: when method calls are made in Rust, it not only accesses the method on the data type, but anything the data type dereferences to as indicated by the DeRef trait implementation. So what does a vector dereference to? Can you find the relevant trait implementation?* <br/>
+https://doc.rust-lang.org/std/vec/struct.Vec.html <br/>
+https://doc.rust-lang.org/std/primitive.slice.html#method.sort <br/>
+
 
 ### Additional Reading
 * https://exercism.org/tracks/rust/concepts/mutability
+
