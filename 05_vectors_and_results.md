@@ -1,9 +1,9 @@
 # Vectors and the Result Type
 
-Let's apply what we've learned and update the `extract_version` function:
+Let's apply what we've learned and update the `read_version` function:
 
 ```
-fn extract_version(transactionhex: &str) -> u32 {
+fn read_version(transactionhex: &str) -> u32 {
     return 1;
 }
 ```
@@ -36,7 +36,7 @@ If we look through the documentation at https://docs.rs/hex/latest/hex/, we see 
 ```
 use hex;
 
-fn extract_version(transaction_hex: &str) -> u32 {
+fn read_version(transaction_hex: &str) -> u32 {
     // convert hex to bytes
     let transaction_bytes = hex::decode(transaction_hex);
     1 // no return needed as the last expression without a semi-colon is automatically returned
@@ -50,7 +50,7 @@ Let's run this now and see what happens. Run `$ cargo run` from the terminal.
 So far, so good. That should compile fine. Let's now get the first 4 bytes from the returned collection. The returned data is a `vec` - short for Vector - which is something like a `list` in Python or an array in javascript. Of course, it's more nuanced in Rust. We'll dive deeper into some different data collection types in the next lesson. But with a `vec` we can grab the first 4 items doing something like `vec[0..4]` where `0..4` represents a range from 0 to 4, not including 4. So let's add that line.
 
 ```
-fn extract_version(transaction_hex: &str) -> u32 {
+fn read_version(transaction_hex: &str) -> u32 {
     // convert hex to bytes
     let transaction_bytes = hex::decode(transaction_hex);
     let version_bytes = transaction_bytes[0..4];
@@ -71,7 +71,7 @@ So how should we work with this? There are a few different ways to work with it.
 
 For now, let's update this so that we are actually working with the underlying vector of bytes and not the wrapped `Result` type:
 ```
-fn extract_version(transaction_hex: &str) -> u32 {
+fn read_version(transaction_hex: &str) -> u32 {
     // convert hex to bytes
     let transaction_bytes = hex::decode(transaction_hex).unwrap();
     let version_bytes = transaction_bytes[0..4];
@@ -89,7 +89,7 @@ This will make more sense as we develop a better understanding of the difference
 ### Quiz
 *Notice the last line of this function. What will the compiler complain is wrong with this function? And why?*
 ```
-fn extract_version(transaction_hex: &str) -> u32 {
+fn read_version(transaction_hex: &str) -> u32 {
     // convert hex to bytes
     let transaction_bytes = hex::decode(transaction_hex);
     1;

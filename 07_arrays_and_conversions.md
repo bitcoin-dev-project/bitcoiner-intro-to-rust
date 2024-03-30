@@ -5,7 +5,7 @@ There's a simple method we can use on the `u32` data type called `from_le_bytes`
 Let's use that and see what happens:
 
 ```
-fn extract_version(transaction_hex: &str) -> u32 {
+fn read_version(transaction_hex: &str) -> u32 {
     // convert hex to bytes
     let transaction_bytes = hex::decode(transaction_hex).unwrap();
     u32::from_le_bytes(&transaction_bytes[0..4])
@@ -44,7 +44,7 @@ This way of doing conversions tends to be more common and is slightly more reada
 
 Let's update our function now:
 ```
-fn extract_version(transaction_hex: &str) -> u32 {
+fn read_version(transaction_hex: &str) -> u32 {
     // convert hex to bytes
     let transaction_bytes = hex::decode(transaction_hex).unwrap();
     let version_bytes: [u8; 4] = &transaction_bytes[0..4].try_into().unwrap();
@@ -55,7 +55,7 @@ fn extract_version(transaction_hex: &str) -> u32 {
 If we run this, we'll get an error expecting the conversion type to be `&[u8; 4]` instead of `[u8; 4]`. This is because of the `&` in front of `transaction_bytes` which is incorrectly interpeted as a reference to everything that follows. What we need to do is ensure that it only refers to the slice. We'll add some parentheses:
 
 ```
-fn extract_version(transaction_hex: &str) -> u32 {
+fn read_version(transaction_hex: &str) -> u32 {
     // convert hex to bytes
     let transaction_bytes = hex::decode(transaction_hex).unwrap();
     let version_bytes: [u8; 4] = (&transaction_bytes[0..4]).try_into().unwrap();

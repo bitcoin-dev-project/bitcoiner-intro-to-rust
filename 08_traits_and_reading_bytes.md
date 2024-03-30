@@ -44,10 +44,10 @@ We converted the 4 bytes from the buffer into an unsigned 32-bit integer. And no
 
 You may notice that the way this works is that you have to first create an array (which serves as the buffer) with a known size. Calling `read` will then extract the number of bytes equal to the size of the array and shift the pointer to the underlying data forward by that same amount.
 
-Let's now modify our program to print out the version number leveraging the `Read` trait. We can convert the `transaction_bytes` `Vec` to a `slice` type using the `as_slice` method. Here is the modified `extract_version` function.
+Let's now modify our program to print out the version number leveraging the `Read` trait. We can convert the `transaction_bytes` `Vec` to a `slice` type using the `as_slice` method. Here is the modified `read_version` function.
 
 ```
-fn extract_version(transaction_hex: &str) -> u32 {
+fn read_version(transaction_hex: &str) -> u32 {
     let transaction_bytes = hex::decode(transaction_hex).unwrap();
     let mut bytes_slice: &[u8] = transaction_bytes.as_slice();
 

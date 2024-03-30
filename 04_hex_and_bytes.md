@@ -1,6 +1,6 @@
 # Hex and Bytes
 
-Alright, we have some working code and are printing a version number, but this is hardcoded. We want to actually extract the version from the given raw transaction and properly implement the `extract_version` function. But before we do so, we need to review a few key concepts.
+Alright, we have some working code and are printing a version number, but this is hardcoded. We want to actually extract the version from the given raw transaction and properly implement the `read_version` function. But before we do so, we need to review a few key concepts.
 
 ### Hexadecimal Format
 We mentioned earlier that transactions are represented as a string of hexadecimal characters. But what does "hexadecimal" mean exactly? Well, it's a number system, but instead of being base 10, with digits 0 through 9, it is base 16 with digits 0-9 and characters a-f. So the integer 10 in a hexadecimal format is 0a (can also be written as 0xa). Mathematically, we can see that `0a` converts to 10 using base math: `0 * 16^1 + 10 * 16^0 = 10`. If we wanted to express the integer 71, we know the math would be `4 * 16^1 + 7 * 16^0`. So 71 is represented as `47` in hexadecimal format.
