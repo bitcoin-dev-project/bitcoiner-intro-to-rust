@@ -14,6 +14,8 @@ Notice in the diagram above how the vector is also a pointer type to data stored
 1. Both vectors and slice references (often just called "slices" for short) **point** to the data in memory. This makes it lightweight to pass around and move these data types in the program. When they are moved, there is no need to move or copy the data on the heap as well. 
 2. A vector indicates ownership of the memory and a slice indicates a borrowing of memory. One way to think about this is that when the vector goes out of scope and is no longer used or is "dropped", it has to deallocate all the data in memory as well. So when the smart pointer is removed, all the underlying data on the heap must be removed as well. The slice reference however can be "dropped" and no change will occur to the data in heap memory, since it is just borrowing the memory and doesn't own it.
 
+Hopefully that made sense. Don't worry if it feels a bit too complicated at the moment. We'll get more familiar with these concepts as we progress in the course and get more practice. It will eventually make sense. I promise. 
+
 So let's return to the error we're getting.
 `error[E0277]: the size for values of type [u8] cannot be known at compilation time`
 
