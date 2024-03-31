@@ -20,7 +20,6 @@ So let's return to the error we're getting.
 `error[E0277]: the size for values of type [u8] cannot be known at compilation time`
 
 In Rust, we cannot store dynamically sized data directly into a variable as that would be allocated on the stack. Instead, dynamically-sized data must be allocated on the heap. Calling `[]` on a vec will return a region of dynamically-sized data, so we must always store a pointer reference to that data. We can do this by adding the `&` in front as the compiler suggested. See below for our modified program. We've also added a `println!` in there to see what the version bytes looks like.
-*Note: for `println!` we can insert additional characters in the brackets to modify the how the output is displayed. `{:?}` will give us the debug output. As long as the variable type implements the `Debug` trait, we can see the debugging printout for that variable.*
 
 ```
 use hex;
@@ -38,6 +37,7 @@ fn main() {
     println!("Version: {}", version);
 }
 ```
+*Note: for `println!` we can insert additional characters in the brackets to modify the how the output is displayed. `{:?}` will give us the debug output. As long as the variable type implements the `Debug` trait, we can see the debugging printout for that variable.*
 
 We can now see a printout of the bytes in addition to the version:
 

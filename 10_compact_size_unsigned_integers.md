@@ -51,9 +51,9 @@ A few things to point out here:
 1. The number of bytes read match the integer type. For example, 2 bytes give us a `u16` type. 4 bytes give us a `u32` type. 
 2. We **cast** each type into a `u64`. We can convert between primitive types in Rust using the `as` keyword. https://doc.rust-lang.org/std/keyword.as.html
 3. Notice how there are are no semicolons for each ending line, such as `u32::from_le_bytes(buffer) as u64`. This is the equivalent of returning that value from the function. We could also write it as `return u32::from_le_bytes(buffer) as u64;` but implicit return without semicolon is more idiomatic.
-4. We will call `panic!` and crash our program if the compact size number does not match the specification. This is exactly what happens when `unwrap` is called on a failed result. This is obviously not an ideal way to handle this error case. Ideally, instead of crashing the program, we would print out a nice error to the user. This is something we'll discuss more in the error handling section later in the course.
+4. We will call `panic!` and crash our program if the compact size number does not match the specification. This is exactly what happens when `unwrap` is called on a failed result. This is obviously not an ideal way to handle the error case. Instead of crashing the program, we would ideally print out a nice error to the user. This is something we'll discuss more in the error handling section later in the course.
 
-We're going to make one more change. While standard if/else statements work fine, Rust provides pattern matching via the `match` keyword and this is a good opportunity to use it as it is commonly used in Rust codebases. https://doc.rust-lang.org/rust-by-example/flow_control/match.html
+We're going to make one more change. While standard if/else statements work fine, Rust provides pattern matching via the `match` keyword and this is a good opportunity to use it as it is commonly used in Rust codebases. https://doc.rust-lang.org/book/ch06-02-match.html
 
 ```
 fn read_compact_size(transaction_bytes: &mut &[u8]) -> u64 {
