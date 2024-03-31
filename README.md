@@ -30,3 +30,4 @@ By the end of this project, you will have understood the fundamental concepts of
 * [8.0: Traits and Reading Bytes](08_traits_and_reading_bytes.md)
 * [9.0: References and Borrowing Part 1](09_references_and_borrowing_01.md)
 * [9.1: References and Borrowing Part 2](09_references_and_borrowing_02.md)
+* [10.0: CompactSize Unsigned Integers](10_compact_size_unsigned_integers.md)
