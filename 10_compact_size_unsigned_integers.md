@@ -114,3 +114,5 @@ Pretty neat! We're making good progress. But even though our code compiles, how 
 
 ### Quiz
 1. *How do nodes know whether the transaction is a legacy or a segwit transaction as they read it? How do they know whether to view the next field after the version as an input length encoded as compactSize or as the marker and flag for a Segwit transaction?*
+
+### [Next Lesson: Unit Testing](11_unit_testing.md)

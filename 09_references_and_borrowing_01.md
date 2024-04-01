@@ -61,7 +61,7 @@ fn read_version(mut transaction_bytes: &[u8]) -> u32 {
 }
 ```
 
-Ok that successfully compiles! Great. But is this what we actually want? Let's see what happens if we continue to call the `read` method in `main` function. It should pick up where it left off, reading the next byte to get the input count. Remember, the input count is what comes next after the version for a v1 transaction.
+Ok that successfully compiles! Great. But is this what we actually want? Let's see what happens if we continue to call the `read` method in `main` function. It should pick up where it left off, reading the next byte to get the input count. Remember, the input count is what comes next after the version for a pre-segwit transaction.
 *Note: technically, the next byte is the compact size, which will tell us how many more bytes to read to get the input count. However, if the size is small enough then it simply represents the input count.*
 
 If we eyeball the transaction hex, we should be able to see what the correct input count is. Let's take a look at this more closely:
@@ -105,6 +105,6 @@ fn main() {
 }
 ```
 
-When we print the `bytes_slice`, we see the [1,0,0,0] is still there. But this should have been read and the pointer should have moved so that it is no longer returned by the slice. So what's happening here exactly? We'll dive into it in the next lesson. As we'll see, the slice in the `read_version` is not the same object as the slice in the `main` function. 
+When we print the `bytes_slice`, we see the `[1,0,0,0]` is still there. But this should have been read and the pointer should have moved so that it is no longer returned by the slice. So what's happening here exactly? We'll dive into it in the next lesson. As we'll see, the slice in the `read_version` is not the same object as the slice in the `main` function. 
 
 ### [Next Lesson: References and Borrowing Part 2](09_references_and_borrowing_02.md)
