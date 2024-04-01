@@ -20,11 +20,7 @@ Notice how we first decode the hex string to get a `Vec` of bytes. We then conve
 
 Before I show you the modified function, what do you think is the correct argument type for the slice? Take a moment and then check back here.
 
-*********************************************************************************************
-*********************************************************************************************
-*********************************************************************************************
-*********************************************************************************************
-*********************************************************************************************
+----------------------------------------------------------------------------------------------------
 
 If you guessed it should be something like `&[u8]` you guessed correctly! This is the type signature for a slice of u8 integers. We'll see in a moment that this is not exactly the type we're looking for, but this is good enough for the moment. Let's take a look at what the modified `read_version` function looks like. 
 
