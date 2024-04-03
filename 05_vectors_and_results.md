@@ -104,7 +104,5 @@ fn read_version(transaction_hex: &str) -> u32 {
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
 <div style="text-align: right">
-    <h3>
-        <a href="06_pointers_and_slices.md">>>> Next Lesson: Pointers and The Slice Type</a>
-    </h3>
+    <a href="06_pointers_and_slices.md">>>> Next Lesson: Pointers and The Slice Type</a>
 </div>

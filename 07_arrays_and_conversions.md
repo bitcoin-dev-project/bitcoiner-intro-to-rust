@@ -76,7 +76,5 @@ And voila! It prints out the correct version number! Congratulations!
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
 <div style="text-align: right">
-    <h3>
-        <a href="08_traits_and_reading_bytes.md">>>> Next Lesson: Traits and Reading Bytes</a>
-    </h3>
+    <a href="08_traits_and_reading_bytes.md">>>> Next Lesson: Traits and Reading Bytes</a>
 </div>

@@ -32,7 +32,5 @@ We can also convert each byte to its binary representation and then do some math
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
 <div style="text-align: right">
-    <h3>
-        <a href="05_vectors_and_results.md">>>> Next Lesson: Vectors and Results</a>
-    </h3>
+    <a href="05_vectors_and_results.md">>>> Next Lesson: Vectors and Results</a>
 </div>

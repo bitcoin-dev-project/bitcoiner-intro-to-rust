@@ -100,7 +100,5 @@ https://doc.rust-lang.org/std/primitive.slice.html#method.sort <br/>
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
 <div style="text-align: right">
-    <h3>
-        <a href="10_compact_size_unsigned_integers.md">>>> Next Lesson: CompactSize Unsigned Integers</a>
-    </h3>
+    <a href="10_compact_size_unsigned_integers.md">>>> Next Lesson: CompactSize Unsigned Integers</a>
 </div>

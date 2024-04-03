@@ -117,7 +117,5 @@ Let's move on to the next lesson. We'll go into more detail about hexadecimal fo
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
 <div style="text-align: right">
-    <h3>
-        <a href="04_hex_and_bytes.md">>>> Next Lesson: Hex and Bytes</a>
-    </h3>
+    <a href="04_hex_and_bytes.md">>>> Next Lesson: Hex and Bytes</a>
 </div>
