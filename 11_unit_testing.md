@@ -216,6 +216,6 @@ Great! We've learned about unit testing. We'll keep this in mind as we write mor
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
-<div style="text-align: right">
-    <a href="12_reading_inputs_and_type_coercion.md">>>> Next Lesson: Reading Inputs and Type Coercion</a>
+<div>
+    <p align="right"><a href="12_reading_inputs_and_type_coercion.md">>>> Next Lesson: Reading Inputs and Type Coercion</a></p>
 </div>
