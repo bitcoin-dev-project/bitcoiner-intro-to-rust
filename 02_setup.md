@@ -38,10 +38,8 @@ So if we run `$ cargo run` from the terminal (from the root directory of our pro
 
 We're all set up! So let's get started writing some Rust code!
 
-<hr/>
-
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
-<div style="text-align: right">
-    <a href="03_our_first_function.md">>>> Next Lesson: Our First Function</a>
+<div>
+    <p align="right"><a href="03_our_first_function.md">>>> Next Lesson: Our First Function</a></p>
 </div>

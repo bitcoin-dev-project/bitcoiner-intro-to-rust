@@ -117,6 +117,6 @@ Pretty neat! We're making good progress. But even though our code compiles, how 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
-<div style="text-align: right">
-    <a href="11_unit_testing.md">>>> Next Lesson: Unit Testing</a>
+<div>
+    <p align="right"><a href="11_unit_testing.md">>>> Next Lesson: Unit Testing</a></p>
 </div>

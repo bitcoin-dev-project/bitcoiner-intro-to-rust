@@ -74,6 +74,6 @@ Source: https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch06_transaction
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
-<div style="text-align: right">
-    <a href="02_setup.md">>>> Next Lesson: Setup</a>
+<div>
+    <p align="right"><a href="02_setup.md">>>> Next Lesson: Setup</a></p>
 </div>

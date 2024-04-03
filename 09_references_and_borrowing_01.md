@@ -109,6 +109,6 @@ When we print the `bytes_slice`, we see the `[1,0,0,0]` is still there. But this
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
-<div style="text-align: right">
-    <a href="09_references_and_borrowing_02.md">>>> Next Lesson: References and Borrowing Part 2</a>
+<div>
+    <p align="right"><a href="09_references_and_borrowing_02.md">>>> Next Lesson: References and Borrowing Part 2</a></p>
 </div>

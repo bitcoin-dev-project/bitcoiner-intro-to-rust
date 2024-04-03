@@ -59,6 +59,6 @@ Great! Let's keep moving and calculate the version number from the byte collecti
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
-<div style="text-align: right">
-    <a href="07_arrays_and_conversions.md">>>> Next Lesson: Arrays and Type Conversions</a>
+<div>
+    <p align="right"><a href="07_arrays_and_conversions.md">>>> Next Lesson: Arrays and Type Conversions</a></p>
 </div>
