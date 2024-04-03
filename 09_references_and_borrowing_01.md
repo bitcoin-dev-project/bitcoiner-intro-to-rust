@@ -29,7 +29,7 @@ fn read_version(transaction_bytes: &[u8]) -> u32 {
     // Read contents of bytes_slice into a buffer.
     // Read only the exact number of bytes needed to fill the buffer.
     let mut buffer = [0; 4];
-    transaction_bytes.read_exact(&mut buffer).unwrap();
+    transaction_bytes.read(&mut buffer).unwrap();
 
     u32::from_le_bytes(buffer)
 }
@@ -39,7 +39,7 @@ Let's see what happens if we try to compile this program.
 
 We should get an error that looks like the following:
 ```
-8 |     transaction_bytes.read_exact(&mut buffer).unwrap();
+8 |     transaction_bytes.read(&mut buffer).unwrap();
   |     ^^^^^^^^^^^^^^^^^ cannot borrow as mutable
   |
 help: consider changing this to be mutable
@@ -55,7 +55,7 @@ fn read_version(mut transaction_bytes: &[u8]) -> u32 {
     // Read contents of bytes_slice into a buffer.
     // Read only the exact number of bytes needed to fill the buffer.
     let mut buffer = [0; 4];
-    transaction_bytes.read_exact(&mut buffer).unwrap();
+    transaction_bytes.read(&mut buffer).unwrap();
 
     u32::from_le_bytes(buffer)
 }
@@ -82,7 +82,7 @@ fn main() {
     println!("Version: {}", version);
 
     let mut input_count = [0; 1];
-    bytes_slice.read_exact(&mut input_count).unwrap();
+    bytes_slice.read(&mut input_count).unwrap();
     assert_eq!(input_count, [2_u8]);
 }
 ```
@@ -100,7 +100,7 @@ fn main() {
     println!("bytes_slice: {:?}", bytes_slice); // first 4 bytes [1, 0, 0, 0] should no longer be returned after calling `read_version`.
 
     let mut input_count = [0; 1];
-    bytes_slice.read_exact(&mut input_count).unwrap();
+    bytes_slice.read(&mut input_count).unwrap();
     assert_eq!(input_count, [2_u8]);
 }
 ```

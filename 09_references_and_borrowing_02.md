@@ -9,7 +9,7 @@ fn read_version(mut transaction_bytes: &[u8]) -> u32 {
     // Read contents of bytes_slice into a buffer.
     // Read only the exact number of bytes needed to fill the buffer.
     let mut buffer = [0; 4];
-    transaction_bytes.read_exact(&mut buffer).unwrap();
+    transaction_bytes.read(&mut buffer).unwrap();
 
     println!("Read Version: Transaction Bytes Memory Address: {:p}", transaction_bytes);
     println!("Read Version: Transaction Bytes: {:?}", transaction_bytes);
@@ -39,7 +39,7 @@ fn read_version(transaction_bytes: &mut &[u8]) -> u32 { // the argument type to 
     // Read contents of bytes_slice into a buffer.
     // Read only the exact number of bytes needed to fill the buffer.
     let mut buffer = [0; 4];
-    transaction_bytes.read_exact(&mut buffer).unwrap();
+    transaction_bytes.read(&mut buffer).unwrap();
 
     println!("Read Version: Transaction Bytes Memory Address: {:p}", *transaction_bytes); // make sure to dereference the transaction_bytes to see the memory address of the object it is referring to.
     println!("Read Version: Transaction Bytes: {:?}", transaction_bytes);
