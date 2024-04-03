@@ -92,7 +92,7 @@ error: test failed, to rerun pass `--bin transaction_decoder_11`
 
 Take a moment to get familiar with the terminal output. The area you want to pay attention to is where it compares the `left` and `right` values of the assertion statement. The two should be equal but are not. It also displays the values, `1` and `2`. We know the correct length the function should return is `1` so let's update our test to reflect that.
 
-```
+```rust
 #[cfg(test)]
 mod unit_tests {
     use super::read_compact_size;
