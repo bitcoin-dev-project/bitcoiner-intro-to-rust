@@ -37,7 +37,7 @@ fn main() {
     println!("Version: {}", version);
 }
 ```
-*Note: for `println!` we can insert additional characters in the brackets to modify the how the output is displayed. `{:?}` will give us the debug output. As long as the variable type implements the `Debug` trait, we can see the debugging printout for that variable.*
+*Note: for `println!` we can insert additional characters in the brackets to modify the how the output is displayed. `{:?}` will give us the debug output. As long as the variable's type implements the `Debug` trait, we can see the debugging printout for that variable. Not sure what a trait is? Don't worry we'll talk about them a bit more in chapter 8. For now, what this means is that only certain types offer a debug output. Fortunately, the slice reference type is one of them.*
 
 We can now see a printout of the bytes in addition to the version:
 
