@@ -28,4 +28,11 @@ We can also convert each byte to its binary representation and then do some math
 ### Other Helpful Resources
 * Check out this great site, https://learnmeabitcoin.com, for tutorials that discuss these topics. Hexadecimal overview: https://learnmeabitcoin.com/technical/hexadecimal. Little endian overview: https://learnmeabitcoin.com/technical/little-endian
 
-### [Next Lesson: Byte Vectors and the Result Type](05_vectors_and_results.md)
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+<div style="text-align: right">
+    <h3>
+        <a href="05_vectors_and_results.md">>>> Next Lesson: Vectors and Results</a>
+    </h3>
+</div>

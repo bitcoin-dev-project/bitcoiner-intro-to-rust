@@ -78,4 +78,10 @@ fn main() {
 
 *3. Try and implement the correct trait for Vec so that it can be printed for standard display purposes.*
 
-### [Next Lesson: References and Borrowing Part 1](09_references_and_borrowing_01.md)
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+<div style="text-align: right">
+    <h3>
+        <a href="09_references_and_borrowing_01.md">>>> Next Lesson: References and Borrowing Part 1</a>
+    </h3>
+</div>

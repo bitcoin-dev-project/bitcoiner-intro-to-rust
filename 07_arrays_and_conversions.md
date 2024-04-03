@@ -73,4 +73,10 @@ And voila! It prints out the correct version number! Congratulations!
 ### Additional Reading
 * Pointers and References: https://effective-rust.com/references.html
 
-### [Next Lesson: Traits and Reading Bytes](08_traits_and_reading_bytes.md)
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+<div style="text-align: right">
+    <h3>
+        <a href="08_traits_and_reading_bytes.md">>>> Next Lesson: Traits and Reading Bytes</a>
+    </h3>
+</div>

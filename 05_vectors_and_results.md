@@ -101,4 +101,10 @@ fn read_version(transaction_hex: &str) -> u32 {
 * Enums: https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html
 * Recoverable Errors with Result: https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html
 
-### [Next Lesson: Pointers](06_pointers_and_slices.md)
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+<div style="text-align: right">
+    <h3>
+        <a href="06_pointers_and_slices.md">>>> Next Lesson: Pointers and The Slice Type</a>
+    </h3>
+</div>

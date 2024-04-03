@@ -1,4 +1,4 @@
-# Pointers and Slices
+# Pointers and The Slice Type
 
 When we call `[]` on a vector to reference some set of elements, we are actually returning a slice and not another vector. A slice is just a region of contiguous data in memory. However, in Rust, we don't typically store that region of data directly into a variable. Instead we always *refer* to that region of data with the use of a pointer. In the case of a slice, we use what's called a **fat pointer**, which is a two-word value comprising a pointer to the slice's first element and the number of elements in the slice. Take a look at the diagram below.
 
@@ -57,4 +57,10 @@ Great! Let's keep moving and calculate the version number from the byte collecti
 * Slices: https://doc.rust-lang.org/book/ch04-03-slices.html
 * Smart Pointers: https://doc.rust-lang.org/book/ch15-00-smart-pointers.html
 
-### [Next Lesson: Arrays and Type Conversions](07_arrays_and_conversions.md)
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+<div style="text-align: right">
+    <h3>
+        <a href="07_arrays_and_conversions.md">>>> Next Lesson: Arrays and Type Conversions</a>
+    </h3>
+</div>

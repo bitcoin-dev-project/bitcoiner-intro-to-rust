@@ -97,4 +97,10 @@ https://doc.rust-lang.org/std/primitive.slice.html#method.sort <br/>
 ### Additional Reading
 * https://exercism.org/tracks/rust/concepts/mutability
 
-### [Next Lesson: CompactSize Unsigned Integers](10_compact_size_unsigned_integers.md)
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+<div style="text-align: right">
+    <h3>
+        <a href="10_compact_size_unsigned_integers.md">>>> Next Lesson: CompactSize Unsigned Integers</a>
+    </h3>
+</div>

@@ -72,6 +72,10 @@ Source: https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch06_transaction
 
 * If you have not set up Bitcoin Core and are not familiar with `bitcoin-cli`, I highly recommend taking some time to play around with Bitcoin from the command line. A great educational resource can be found here: https://github.com/BlockchainCommons/Learning-Bitcoin-from-the-Command-Line?tab=readme-ov-file.
 
-<hr/>
+----------------------------------------------------------------------------------------------------------------------------------------------------
 
-### [Next Lesson: Setup](02_setup.md)
+<div style="text-align: right">
+    <h3>
+        <a href="02_setup.md">>>> Next Lesson: Setup</a>
+    </h3>
+</div>

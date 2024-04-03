@@ -107,4 +107,10 @@ fn main() {
 
 When we print the `bytes_slice`, we see the `[1,0,0,0]` is still there. But this should have been read and the pointer should have moved so that it is no longer returned by the slice. So what's happening here exactly? We'll dive into it in the next lesson. As we'll see, the slice in the `read_version` is not the same object as the slice in the `main` function. 
 
-### [Next Lesson: References and Borrowing Part 2](09_references_and_borrowing_02.md)
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+<div style="text-align: right">
+    <h3>
+        <a href="09_references_and_borrowing_02.md">>>> Next Lesson: References and Borrowing Part 2</a>
+    </h3>
+</div>

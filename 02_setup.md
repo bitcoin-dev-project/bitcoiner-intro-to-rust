@@ -40,4 +40,10 @@ We're all set up! So let's get started writing some Rust code!
 
 <hr/>
 
-### [Next Lesson: Our First Function](03_our_first_function.md)
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+<div style="text-align: right">
+    <h3>
+        <a href="03_our_first_function.md">>>> Next Lesson: Our First Function</a>
+    </h3>
+</div>
