@@ -4,7 +4,7 @@ There's a simple method we can use on the `u32` data type called `from_le_bytes`
 
 Let's use that and see what happens:
 
-```
+```rust
 fn read_version(transaction_hex: &str) -> u32 {
     // convert hex to bytes
     let transaction_bytes = hex::decode(transaction_hex).unwrap();
@@ -13,7 +13,7 @@ fn read_version(transaction_hex: &str) -> u32 {
 ```
 
 Uh oh. This won't work unfortunately. We're getting a compiler error:
-```
+```shell
 expected `[u8; 4]`, found `&[u8]`
 ```
 
@@ -24,26 +24,26 @@ Well, in Rust, the data type `[T; N]` where `T` is any type and `N` is the numbe
 So the method `from_le_bytes` only works with arrays, which makes sense. It wants to be assured that it is only working with 4 bytes at compile time because that is exactly what is needed to create a `u32` integer on the stack. So how do we convert a slice to an array? One way is to initialize an array of 4 elements and then modify it by iterating over our slice and reading each value. But there's an easier way. Most standard data types implement the `TryFrom` trait, which means they have methods which allow you to convert between types. https://doc.rust-lang.org/std/convert/trait.TryFrom.html
 
 So we can do something like the following:
-```
+```rust
 <[u8; 4]>::try_from(&transaction_bytes[0..4])
 ```
 
 Now remember, this method returns a `Result` type because the conversion could fail. So we need to handle that. We can do so by calling `unwrap` again.
 
-```
+```rust
 <[u8; 4]>::try_from(&transaction_bytes[0..4]).unwrap()
 ```
 
 If a type implements the `TryFrom` it also provides a `try_into` method that can be used in the other direction. For example, we can also do something like this by being explicit about our variable's data type:
 
-```
+```rust
 let version_bytes: [u8; 4] = &transaction_bytes[0..4].try_into().unwrap();
 ```
 
 This way of doing conversions tends to be more common and is slightly more readable so we'll go with that. 
 
 Let's update our function now:
-```
+```rust
 fn read_version(transaction_hex: &str) -> u32 {
     // convert hex to bytes
     let transaction_bytes = hex::decode(transaction_hex).unwrap();
@@ -54,7 +54,7 @@ fn read_version(transaction_hex: &str) -> u32 {
 
 If we run this, we'll get an error expecting the conversion type to be `&[u8; 4]` instead of `[u8; 4]`. This is because of the `&` in front of `transaction_bytes` which is incorrectly interpeted as a reference to everything that follows. What we need to do is ensure that it only refers to the slice. We'll add some parentheses:
 
-```
+```rust
 fn read_version(transaction_hex: &str) -> u32 {
     // convert hex to bytes
     let transaction_bytes = hex::decode(transaction_hex).unwrap();

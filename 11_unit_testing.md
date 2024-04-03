@@ -2,7 +2,7 @@
 
 The typical way to add unit tests to our program is to first add the `#[cfg(test)]` annotation and then place our test code under a separate module, as identified by the `mod` keyword. Here's an example:
 
-```
+```rust
 #[cfg(test)]
 mod tests {
     #[test]
@@ -16,7 +16,7 @@ mod tests {
 The  annotation on the tests module tells Rust to compile and run the test code only when you run `cargo test`, not when you run `cargo build`. For more information about testing, you can read more here: https://doc.rust-lang.org/book/ch11-03-test-organization.html
 
 So let's start setting up our tests:
-```
+```rust
 #[cfg(test)]
 mod unit_tests {
     use super::read_compact_size;
@@ -34,7 +34,7 @@ We identify each test function with the `#[test]` annotation. We can have other 
 
 Now, if you run `cargo test` from the command line instead of `cargo run`, your tests will run and return results to the terminal. You might see something like the following:
 
-```
+```shell
     Finished test [unoptimized + debuginfo] target(s) in 0.01s
      Running unittests src/main.rs (target/debug/deps/transaction_decoder_11-283cd8d491efdffc)
 
@@ -46,7 +46,7 @@ test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 
 Pretty cool. Let's start adding some logic for testing our `read_compact_size` function. Let's start simple.
 
-```
+```rust
 #[cfg(test)]
 mod unit_tests {
     use super::read_compact_size;
@@ -64,7 +64,7 @@ If you look at the `assert_eq!` statement, I intentionally set the expected leng
 
 If you run `cargo test`, you should see the test failures:
 
-```
+```shell
    Compiling transaction_decoder_11 v0.1.0 (/Users/shaanbatra/Projects/bitcoiner-intro-to-rust/code/transaction_decoder_11)
     Finished test [unoptimized + debuginfo] target(s) in 0.43s
      Running unittests src/main.rs (target/debug/deps/transaction_decoder_11-283cd8d491efdffc)
@@ -110,7 +110,7 @@ Now if you run `cargo test` again, you will see that all tests pass with the out
 
 So far so good. Let's add another testing scenario.
 
-```
+```rust
 #[cfg(test)]
 mod unit_tests {
     use super::read_compact_size;
@@ -134,7 +134,7 @@ You also might have noticed that we declared the same variables, `bytes` and `le
 
 Let's add a few more scenarios testing the other arms of the match statement:
 
-```
+```rust
 #[cfg(test)]
 mod unit_tests {
     use super::read_compact_size;
@@ -170,7 +170,7 @@ If we look at the first few bytes, we can see the version followed by `fd`.
 
 `fd` indicates that the input length comes from the next two bytes. So the bytes, `0x20` and `0x4e` should equal 20,000. Let's confirm this in our test.
 
-```
+```rust
 fn test_reading_compact_size() {
         let mut bytes = [1_u8].as_slice();
         let length = read_compact_size(&mut bytes);
@@ -202,7 +202,7 @@ fn test_reading_compact_size() {
 
 That checks out! Neat. Let's add another test to account for the scenario in which the program `panic!`s. Since a `panic!` will cause the program to crash, we need a way of catching that when it happens and then checking the result. One way we can do this is with `std::panic::catch_unwind` which will take the code we want to run as a closure and return an `Err` `Result` if a `panic!` is reached. If you're not familiar with closures, you can read more about them here: https://doc.rust-lang.org/book/ch13-01-closures.html
 
-```
+```rust
 let result = std::panic::catch_unwind(|| {
     let mut bytes = [0_u8].as_slice();
     read_compact_size(&mut bytes);
@@ -213,3 +213,11 @@ assert!(result.is_err());
 This is the additional scenario we'll test. If you look at the code, this is the only scenario in which the code will panic. We won't be able to pass in a number greater than 255 because we've ensured that the input type is a `u8` and the maximum number for a `u8` is 255. So the only value that will actually cause the program to crash is 0.
 
 Great! We've learned about unit testing. We'll keep this in mind as we write more functions with complex logic. Let's keep it moving and keep reading the transaction. 
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+<div style="text-align: right">
+    <h3>
+        <a href="12_reading_inputs.md">>>> Next Lesson: Reading Inputs</a>
+    </h3>
+</div>

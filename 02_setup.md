@@ -5,14 +5,14 @@ Let's get started with our project. After you have installed Rust and Cargo, you
 `$ cargo new bitcoin-transaction-decoder`
 
 This will create a new application under the folder `bitcoin-transaction-decoder` and will create two files in there:
-```
+```rust
 Cargo.toml
 src
 ```
 
 The `Cargo.toml` file is one of the two metadata files that Cargo uses to manage things like the name, version and package dependencies. It should look something like this:
 
-```
+```rust
 [package]
 name = "bitcoin-transaction-decoder"
 version = "0.1.0"
@@ -28,7 +28,7 @@ There is a `package` section which shows some package configuration options and 
 The next folder we'll look at is `src`, which contains the `main.rs` file. This is our entry point into our Rust program. We will call our program from the terminal using `$ cargo run` which will compile our program and run the resulting executable file. A good brief overview of the `cargo build` and `cargo run` commands can be found here: https://doc.rust-lang.org/book/ch01-03-hello-cargo.html.
 
 Our `src/main.rs` file should look like this:
-```
+```rust
 fn main() {
     println!("Hello, world!");
 }

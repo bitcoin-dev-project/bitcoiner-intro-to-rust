@@ -4,7 +4,7 @@ Let's not worry at the moment about how our project is structured. We'll come ba
 
 Assuming you come from another language such as Python or Ruby or Javascript, you might want to write something like this and see what happens:
 
-```
+```rust
 fn read_version(transactionhex) {
     return 1;
 }
@@ -18,13 +18,13 @@ fn main() {
 Let's see what happens if we run the command `$ cargo run`. Again remember to run this command from the root directory. The cargo command needs to look for the `Cargo.toml` to be able to compile and execute the program. 
 
 As you will see, the program will fail to compile and we'll get a number of different errors here. The first is that it complains about the `transactionhex` function argument and offers some suggestions for fixing it. 
-```
+```shell
 1 | fn read_version(transactionhex) {
   |                                  ^ expected one of `:`, `@`, or `|`
 ```
 
 It's expecting some more information about the argument. One of the suggestions that's relevant to us is this one:
-```
+```shell
 help: if this is a parameter name, give it a type
   |
 1 | fn read_version(transactionhex: TypeName) {
@@ -36,7 +36,7 @@ Remember, Rust is a *statically typed* language. You have to explicitly provide 
 The argument is obviously a text data type of some sort. In other languages we might call this a `string`, but in Rust the `String` data type means something more nuanced. We won't go into that here just yet. Let's just say that when you enter some text inside quotes, Rust interprets that as the type `&str`.
 
 So let's specify the function argument by doing the following: 
-```
+```rust
 fn read_version(transactionhex: &str) {
     return 1;
 }
@@ -45,7 +45,7 @@ fn read_version(transactionhex: &str) {
 And let's see what happens when we call `$ cargo run` again.
 
 Looks like that's no longer an issue. The next error now is pretty easy to handle.
-```
+```shell
 error[E0425]: cannot find value `version` in this scope
  --> src/main.rs:6:5
   |
@@ -60,7 +60,7 @@ The compiler is looking for the `version` declaration somewhere. But what we rea
 Ok, `let`'s do that, rerun `$ cargo run` and see what happens.
 
 That seems to work and we now get a different error. This last error we get is related to mismatched types. 
-```
+```shell
 error[E0308]: mismatched types
  --> src/main.rs:2:12
   |
@@ -73,7 +73,7 @@ error[E0308]: mismatched types
 In keeping with the theme of providing explicit types for everything, you have to do this for function return types as well. The compiler needs to know what the function is expected to return so that it can enforce that. 
 
 With the function we've written, we didn't tell the compiler exactly what type the function should return. When this is not provided, Rust interprets that you mean it will return the empty tuple type, `()`. In other words, this function is the equivalent of the following:
-```
+```rust
 fn read_version(transactionhex: &str) -> () {
     return 1;
 }
@@ -86,7 +86,7 @@ For now, let's assume that we're returning an integer, which is an unsigned 32 b
 Rust provides the `u32` data type as a primitive type, meaning it's available out-of-the-box and we don't need to use any external libraries. So let's use that and see what happens when we run `$ cargo run` again. 
 
 Ok! Looks like the program is compiling successfully now and still printing `Hello, world!`! That's great. Let's make one final change. We'll modify the `println!` function to print the version. 
-```
+```rust
 fn main() {
     let version = read_version("0100000001c997a5e56e104102fa209c6a852dd90660a20b2d9c352423edce25857fcd3704000000004847304402204e45e16932b8af514961a1d3a1a25fdf3f4f7732e9d624c6c61548ab5fb8cd410220181522ec8eca07de4860a4acdd12909d831cc56cbbac4622082221a8768d1d0901ffffffff0200ca9a3b00000000434104ae1a62fe09c5f51b13905f07f06b99a2f7159b2225f374cd378d71302fa28414e7aab37397f554a7df5f142c21c1b7303b8a0626f1baded5c72a704f7e6cd84cac00286bee0000000043410411db93e1dcdb8a016b49840f8c53bc1eb68a382e97b1482ecad7b148a6909a5cb2e0eaddfb84ccf9744464f82e160bfa9b8b64f9d4c03f999b8643f656b412a3ac00000000");
     
@@ -101,7 +101,7 @@ fn main() {
 This will print `Hello, world!`. You can read up more on the differences between macros and functions here: https://doc.rust-lang.org/book/ch19-06-macros.html#the-difference-between-macros-and-functions
 
 Ok, so if we run `$ cargo run` one last time, we can now see that our program prints out the version! 
-```
+```shell
 Version: 1
 ```
 

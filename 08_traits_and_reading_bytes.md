@@ -2,7 +2,7 @@
 
 One way you might consider reading the rest of the data from the transaction is to use various ranges. For example, consider the following code:
 
-```
+```rust
 let transaction_bytes = hex::decode(transaction_hex).unwrap();
 
 let version = u32::from_le_bytes(&transaction_bytes[0..4]);
@@ -16,7 +16,7 @@ One way to read a byte stream is to leverage Rust's standard library's `Read` tr
 The slice data type in Rust implements the `Read` trait. What benefit does this give us? Well, as we will see, we can read some bytes from the slice by calling the `read` method and store that into a variable. When we call `read` again, it will start from where it left off. In other words, it keeps track of where we are in the stream and modifies the pointer as it reads. This means we don't need to keep track of any indexes.
 
 Let's see an example:
-```
+```rust
 fn main() {
     let bytes_slice: &[u8] = [1, 0, 0, 0, 2].as_slice();
 
@@ -35,7 +35,7 @@ fn main() {
 This won't run if you try to compile it. You'll get a compile error that the `read` method is not found for `&[u8]`. This is because the trait implementations only become available when the trait is brought into scope with a `use` import. So you just need to add a `use std::io::Read;` line at the top. Let's add that and run this again.
 
 This should print out the following:
-```
+```shell
 Version: 1
 Bytes Slice: [2]
 ```
@@ -46,7 +46,7 @@ You may notice that the way this works is that you have to first create an array
 
 Let's now modify our program to print out the version number leveraging the `Read` trait. We can convert the `transaction_bytes` `Vec` to a `slice` type using the `as_slice` method. Here is the modified `read_version` function.
 
-```
+```rust
 fn read_version(transaction_hex: &str) -> u32 {
     let transaction_bytes = hex::decode(transaction_hex).unwrap();
     let mut bytes_slice: &[u8] = transaction_bytes.as_slice();
@@ -64,7 +64,7 @@ And voila, this will print `Version: 1` as expected. But this doesn't seem ideal
 
 ### Quiz
 *Consider the following block of code in which we create a Vec and then attempt to print it out:*
-```
+```rust
 fn main() {
     let vec = vec![0, 0, 0, 0, 0];
     println!("Vec: {}", vec);

@@ -4,7 +4,7 @@ As we mentioned at the end of the last lesson, the slice in the `read_version` f
 
 Let's add some print statements to see exactly what is happening here. We're going to use a new format specifier, `{:p}` which instead of printing the debug output as we normally do, will print the address in memory for the given slice. This will let us know whether the slice in the `read_version` function is the same as the one in the `main` function. If it is, it should have the same address location in memory. 
 
-```
+```rust
 fn read_version(mut transaction_bytes: &[u8]) -> u32 {
     // Read contents of bytes_slice into a buffer.
     // Read only the exact number of bytes needed to fill the buffer.
@@ -34,7 +34,7 @@ First, let's compare the two different memory addresses. If you look closely, yo
 
 So what we really want here is a mutable <u>**reference**</u> to the slice. We want to pass around a reference so that the same object in memory is being updated. There are two types of references we can pass. An immutable reference or a mutable one. We can indicate what type by prefacing the type with `&` or `&mut`. Let's update our methods to do that.
 
-```
+```rust
 fn read_version(transaction_bytes: &mut &[u8]) -> u32 { // the argument type to be accepted must be a mutable reference to a slice of u8 integers
     // Read contents of bytes_slice into a buffer.
     // Read only the exact number of bytes needed to fill the buffer.
@@ -75,7 +75,7 @@ Great work so far! It may not seem like much code, but you've learned a ton of R
 ### Quiz
 1. *Rust enforces a simple, yet important rule when it comes to passing references and that is <u>**single writer OR multiple readers**</u>. In other words, you can have many different immutable, shared references to an object OR you can have just *one* mutable reference at any given time. You can't have both a shared reference and a mutable reference at the same time. Why do you think that might be? What is an example of a problem that could occur if there is a mutable reference and shared reference to the same object?* 
 2. *What do you think would happen if we attempted to modify the vector while we have a slice that borrows a reference to it? Experiment by calling `.clear()` on the vector (after declaring it mutable). See example below. Run it and see what happens. Can you explain why the compiler is returning an error and the meaning of that error?*
-```
+```rust
 fn main() {
     let transaction_hex = "0100000002af0bf9c887049d8a143cff21d9e10d921ab39a3645c0531ba192291b7793c6f8100000008b483045022100904a2e0e8f597fc1cc271b6294b097a6edc952e30c453e3530f92492749769a8022018464c225b03c28791af06bc7fed129dcaaeff9ec8135ada1fb11762ce081ea9014104da289192b0845d5b89ce82665d88ac89d757cfc5fd997b1de8ae47f7780ce6a32207583b7458d1d2f3fd6b3a3b842aea9eb789e2bea57b03d40e684d8e1e0569ffffffff0d088b85950cf484bbcd1114c8fd8ad2850dcf2784c0bbcff9af2b3377211de5010000008b4830450220369df7d42795239eabf9d41aee75e3ff20521754522bd067890f8eedf6044c6d0221009acfbd88d51d842db87ab990a48bed12b1f816e95502d0198ed080de456a988d014104e0ec988a679936cea80a88e6063d62dc85182e548a535faecd6e569fb565633de5b4e83d5a11fbad8b01908ce71e0374b006d84694b06f10bdc153ca58a53f87ffffffff02f6891b71010000001976a914764b8c407b9b05cf35e9346f70985945507fa83a88acc0dd9107000000001976a9141d1310fe87b53fec8dbc8911f0ebc112570e34b288ac00000000";
     let mut transaction_bytes = hex::decode(transaction_hex).unwrap(); // declare the vector as mutable

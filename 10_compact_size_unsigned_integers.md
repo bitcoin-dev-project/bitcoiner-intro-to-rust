@@ -14,7 +14,7 @@ For the argument type, we have to remember that we're still passing around the s
 
 Now, what should the return type be? Well, the input length can be an 8-bit, 16-bit, 32-bit or a 64-bit unsigned integer? So if we need to specify just one type for the length, let's choose the highest one as it will contain any other possibility.
 
-```
+```rust
 fn read_compact_size(transaction_bytes: &mut &[u8]) -> u64 {
     // unimplemented!()
 }
@@ -22,7 +22,7 @@ fn read_compact_size(transaction_bytes: &mut &[u8]) -> u64 {
 
 From here, it is fairly straightforward if/else logic. As the chart above shows in the Format column, we can tell how many bytes to read based on the byte value. If it is less than 253, then the byte is the length. If it is equal to 254, then we need to read the next two bytes. If it is equal to 255, then we need to read the next three bytes and so on. So let's implement this using a standard if/else statement block which you're probably familiar with.
 
-```
+```rust
 fn read_compact_size(transaction_bytes: &mut &[u8]) -> u64 {
     let mut compact_size = [0; 1];
     transaction_bytes.read(&mut compact_size).unwrap();
@@ -55,7 +55,7 @@ A few things to point out here:
 
 We're going to make one more change. While standard if/else statements work fine, Rust provides pattern matching via the `match` keyword and this is a good opportunity to use it as it is commonly used in Rust codebases. https://doc.rust-lang.org/book/ch06-02-match.html
 
-```
+```rust
 fn read_compact_size(transaction_bytes: &mut &[u8]) -> u64 {
     let mut compact_size = [0; 1];
     transaction_bytes.read(&mut compact_size).unwrap();
@@ -90,7 +90,7 @@ What do you think? The `match` looks nicer doesn't it? Take a moment to get fami
 
 Now all we have to do is update our `main` function to call this and return the number of inputs. 
 
-```
+```rust
 fn main() {
     let transaction_hex = "0100000002af0bf9c887049d8a143cff21d9e10d921ab39a3645c0531ba192291b7793c6f8100000008b483045022100904a2e0e8f597fc1cc271b6294b097a6edc952e30c453e3530f92492749769a8022018464c225b03c28791af06bc7fed129dcaaeff9ec8135ada1fb11762ce081ea9014104da289192b0845d5b89ce82665d88ac89d757cfc5fd997b1de8ae47f7780ce6a32207583b7458d1d2f3fd6b3a3b842aea9eb789e2bea57b03d40e684d8e1e0569ffffffff0d088b85950cf484bbcd1114c8fd8ad2850dcf2784c0bbcff9af2b3377211de5010000008b4830450220369df7d42795239eabf9d41aee75e3ff20521754522bd067890f8eedf6044c6d0221009acfbd88d51d842db87ab990a48bed12b1f816e95502d0198ed080de456a988d014104e0ec988a679936cea80a88e6063d62dc85182e548a535faecd6e569fb565633de5b4e83d5a11fbad8b01908ce71e0374b006d84694b06f10bdc153ca58a53f87ffffffff02f6891b71010000001976a914764b8c407b9b05cf35e9346f70985945507fa83a88acc0dd9107000000001976a9141d1310fe87b53fec8dbc8911f0ebc112570e34b288ac00000000";
     let transaction_bytes = hex::decode(transaction_hex).unwrap();
@@ -105,7 +105,7 @@ fn main() {
 
 And if we run this, it should print the following to the terminal:
 
-```
+```shell
 Version: 1
 Input Length: 2
 ```

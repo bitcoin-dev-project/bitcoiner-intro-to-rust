@@ -2,7 +2,7 @@
 
 Let's apply what we've learned and update the `read_version` function:
 
-```
+```rust
 fn read_version(transactionhex: &str) -> u32 {
     return 1;
 }
@@ -17,7 +17,7 @@ Now that we have a basic understanding of hexadecimal format and bytes, we're go
 So the first thing we want to do is convert our hexadecimal string into a collection of bytes.
 
 Let's add a dependency to our `Cargo.toml` file. Note the `hex` crate set to verison `0.4` at the bottom:
-```
+```rust
 [package]
 name = "bitcoin-transaction-decoder"
 version = "0.1.0"
@@ -33,7 +33,7 @@ Now, we want to go back to our `main.rs` file and bring the `hex` library into s
 `use hex;`
 
 If we look through the documentation at https://docs.rs/hex/latest/hex/, we see that we can convert the hex to bytes by calling the `decode` method from the `hex` module like so:
-```
+```rust
 use hex;
 
 fn read_version(transaction_hex: &str) -> u32 {
@@ -49,7 +49,7 @@ Let's run this now and see what happens. Run `$ cargo run` from the terminal.
 
 So far, so good. That should compile fine. Let's now get the first 4 bytes from the returned collection. The returned data is a `vec` - short for Vector - which is something like a `list` in Python or an array in javascript. Of course, it's more nuanced in Rust. We'll dive deeper into some different data collection types in the next lesson. But with a `vec` we can grab the first 4 items doing something like `vec[0..4]` where `0..4` represents a range from 0 to 4, not including 4. So let's add that line.
 
-```
+```rust
 fn read_version(transaction_hex: &str) -> u32 {
     // convert hex to bytes
     let transaction_bytes = hex::decode(transaction_hex);
@@ -59,7 +59,7 @@ fn read_version(transaction_hex: &str) -> u32 {
 ```
 
 What happens when we run `$ cargo run`? Well, we get an error. Take some time to read through it. You should see something like the following:
-```
+```shell
 error[E0608]: cannot index into a value of type `Result<Vec<u8>, FromHexError>`
 ```
 
@@ -70,7 +70,7 @@ The `Result` type is a common `enum` that you will see in Rust code. Enums are a
 So how should we work with this? There are a few different ways to work with it. We'll explore different ways of handling a `Result` later on in this course, but for now, we'll use the `unwrap` method. Every `Result` enum has an `unwrap` method that you can call. This will return the underlying data type if the result is an `Ok` type or it will `panic` and the program will crash if the result is an `Err` type. Crashing your program is probably not the best way to handle an error, unless you're confident that an `Err` result *should* not be possible. But we'll look into different ways of handling later on. Here is the doc for the `unwrap` method: https://doc.rust-lang.org/std/result/enum.Result.html#method.unwrap
 
 For now, let's update this so that we are actually working with the underlying vector of bytes and not the wrapped `Result` type:
-```
+```rust
 fn read_version(transaction_hex: &str) -> u32 {
     // convert hex to bytes
     let transaction_bytes = hex::decode(transaction_hex).unwrap();
@@ -88,7 +88,7 @@ This will make more sense as we develop a better understanding of the difference
 
 ### Quiz
 *Notice the last line of this function. What will the compiler complain is wrong with this function? And why?*
-```
+```rust
 fn read_version(transaction_hex: &str) -> u32 {
     // convert hex to bytes
     let transaction_bytes = hex::decode(transaction_hex);

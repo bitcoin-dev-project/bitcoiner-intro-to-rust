@@ -21,7 +21,7 @@ So let's return to the error we're getting.
 
 In Rust, we cannot store dynamically sized data directly into a variable as that would be allocated on the stack. Instead, dynamically-sized data must be allocated on the heap. Calling `[]` on a vec will return a region of dynamically-sized data, so we must always store a pointer reference to that data. We can do this by adding the `&` in front as the compiler suggested. See below for our modified program. We've also added a `println!` in there to see what the version bytes looks like.
 
-```
+```rust
 use hex;
 
 fn read_version(transaction_hex: &str) -> u32 {
@@ -41,7 +41,7 @@ fn main() {
 
 We can now see a printout of the bytes in addition to the version:
 
-```
+```shell
 version bytes: [1, 0, 0, 0]
 Version: 1
 ```
