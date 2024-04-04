@@ -33,3 +33,4 @@ By the end of this project, you will have understood the fundamental concepts of
 * [10.0: CompactSize Unsigned Integers](10_compact_size_unsigned_integers.md)
 * [11.0 Unit Testing](11_unit_testing.md)
 * [12.0 Reading Inputs and Type Coercion](12_reading_inputs_and_type_coercion.md)
+* [13.0 Structs](13_structs.md)

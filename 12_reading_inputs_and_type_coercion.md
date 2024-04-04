@@ -119,3 +119,9 @@ Lastly, we need to read the sequence, which are the last 4 bytes. For a descript
 ```
 
 Alright, now that we have each of the components of an input, what should we do with it? It makes sense to collect all this data together into one unified structure rather than just separate variables. The right type for this is Rust's `Struct` type, which we'll explore in the next lesson. Onwards!
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+<div>
+    <p align="right"><a href="13_structs.md">>>> Next Lesson: Structs</a></p>
+</div>
