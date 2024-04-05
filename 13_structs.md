@@ -156,3 +156,8 @@ And voila! That works now and is much cleaner isn't it?
 
 Now that we understand a bit more about structs and trait implementations, let's work on displaying this information in a more readable way. Rather than print out the debugging output, we'll instead **serialize** the data according to a standard JSON format and display that. 
 
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+<div>
+    <p align="right"><a href="14_json_serialization.md">>>> Next Lesson: JSON Serialization</a></p>
+</div>
