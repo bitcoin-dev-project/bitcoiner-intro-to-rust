@@ -266,3 +266,9 @@ Transaction: {
 ```
 
 Pretty neat! Let's keep moving and finish decoding the transaction in the next lesson. After that, we'll set up our program to handle user inputs and deal with handling errors. Onwards!
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+<div>
+    <p align="right"><a href="15_reading_outputs_and_tuple_structs.md">>>> Next Lesson: Reading Outputs and Tuple Structs</a></p>
+</div>

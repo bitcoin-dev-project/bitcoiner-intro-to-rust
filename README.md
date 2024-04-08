@@ -35,3 +35,4 @@ By the end of this project, you will have understood the fundamental concepts of
 * [12.0 Reading Inputs and Type Coercion](12_reading_inputs_and_type_coercion.md)
 * [13.0 Structs](13_structs.md)
 * [14.0 JSON Serialization](14_json_serialization.md)
+* [15.0 Reading Outputs and Tuple Structs](15_reading_outputs_and_tuple_structs.md)
