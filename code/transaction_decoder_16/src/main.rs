@@ -19,19 +19,13 @@ struct Input {
 #[derive(Debug)]
 pub struct Amount(u64);
 
-impl Amount {
+trait BitcoinValue {
+    fn to_btc(&self) -> f64;
+}
+
+impl BitcoinValue for Amount {
     fn to_btc(&self) -> f64 {
         self.0 as f64 / 100_000_000.0
-    }
-}
-
-pub trait SerdeAmount {
-    fn ser_btc<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error>;
-}
-
-impl SerdeAmount for Amount {
-    fn ser_btc<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
-        s.serialize_f64(self.to_btc())
     }
 }
 
@@ -42,8 +36,9 @@ struct Output {
     script_pubkey: String,
 }
 
-fn as_btc<T: SerdeAmount, S: Serializer>(t: &T, s: S) -> Result<S::Ok, S::Error> {
-    t.ser_btc(s)
+fn as_btc<T: BitcoinValue, S: Serializer>(t: &T, s: S) -> Result<S::Ok, S::Error> {
+    let btc = t.to_btc();
+    s.serialize_f64(btc)
 }
 
 fn read_u32(transaction_bytes: &mut &[u8]) -> u32 {

@@ -84,7 +84,7 @@ In our `as_btc` serializer method, we can't simply call `to_btc` on the generic 
 1. We need to bound the trait so that only certain types can be passed into this method. 
 2. The `to_btc` method is not a trait method. It's simply a method on a struct. So we need to create a trait method as that is the only way to call a method on a generic type parameter. 
 
-One way we can do this, which is similar to how `Rust-Bitcoin` library does it, is create a new trait and implement that trait's method for `Amount`. We'll call the trait `SerdeAmount`, similar to `Rust-Bitcoin`. https://github.com/rust-bitcoin/rust-bitcoin/blob/163bf64fcc36ed12e3e07301fb2d18d30742a0eb/units/src/amount.rs#L1639
+One way to do this is to create a new `BitcoinValue` trait which will have a `to_btc` method and have the `Amount` struct *implement* that trait.s
 
 Take a look at the changes below:
 
@@ -94,19 +94,13 @@ Take a look at the changes below:
 #[derive(Debug)]
 pub struct Amount(u64);
 
-impl Amount {
-    fn to_btc(self) -> f64 {
+trait BitcoinValue {
+    fn to_btc(&self) -> f64;
+}
+
+impl BitcoinValue for Amount {
+    fn to_btc(&self) -> f64 {
         self.0 as f64 / 100_000_000.0
-    }
-}
-
-pub trait SerdeAmount {
-    fn ser_btc<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error>;
-}
-
-impl SerdeAmount for Amount {
-    fn ser_btc<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
-        s.serialize_f64(self.to_btc())
     }
 }
 
@@ -117,19 +111,20 @@ struct Output {
     script_pubkey: String,
 }
 
-fn as_btc<T: SerdeAmount, S: Serializer>(t: &T, s: S) -> Result<S::Ok, S::Error> {
-    t.ser_btc(s)
+fn as_btc<T: BitcoinValue, S: Serializer>(t: &T, s: S) -> Result<S::Ok, S::Error> {
+    let btc = t.to_btc();
+    s.serialize_f64(btc)
 }
 
 ...
 ```
 
 Let's go through the changes:
-1. We created a new trait `SerdeAmount` which provides the template method `ser_btc`. This template method assumes a `Serializer` will be passed in and then return the appropriate `Result` type. Notice how we pass in a shared reference to `self` for both of these methods. We'll go into more detail why we're doing this in the next section.
-2. We then implement that trait for the `Amount` struct. Note that we still call the correct struct method with `self.to_btc()` and then pass it in to the `serialize_f64` method.
-3. We added a trait bound for `T` in the `as_btc` custom serialization method which must implement the `SerdeAmount` trait. And in the function body we simply call the trait method `ser_btc` and pass in the serializer. 
+1. We created a new trait `BitcoinValue` which declares the method signature `to_btc`. We set the argument type to be a shared reference to `self`.
+2. We then implement that trait for the `Amount` struct
+3. We added the `BitcoinValue` trait bound for `T` in the `as_btc` custom serialization method. And in the function body we simply call the trait method `to_btc` on `t` and then serialize it. 
 
-This may seem like a lot and look fairly unfamiliar. Take some time to go through it and get familiar with generic functions, type parameters and trait bounds. 
+This may seem like a lot and look fairly unfamiliar. Take some time to go through it and get familiar with generic functions, type parameters and trait bounds.
 
 You may also feel as if this is overkill. It might feel like a lot extra, unnecessary code. But remember, the advantage here is that we separate the `Amount` type for internal purposes and calculations from how its serialized and displayed to the user. 
 
@@ -165,6 +160,3 @@ Transaction: {
 ```
 
 Excellent! But our code is starting to look a little unruly, let's see if we can organize it a bit into different files and modules. 
-
-### Quiz
-*In the `Rust-Bitcoin` library, the `SerdeAmount` trait includes the bounds `Copy` and `Sized`. What is the purpose of each of those traits and are why they included here? https://github.com/rust-bitcoin/rust-bitcoin/blob/163bf64fcc36ed12e3e07301fb2d18d30742a0eb/units/src/amount.rs#L1639*
