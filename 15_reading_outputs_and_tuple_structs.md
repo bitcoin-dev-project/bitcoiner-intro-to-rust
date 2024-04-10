@@ -222,5 +222,5 @@ But there's a problem here. We're storing the amount in `Output` as an `f64` typ
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
 <div>
-    <p align="right"><a href="16_custom_serialization.md">>>> Next Lesson: Custom Serialization</a></p>
+    <p align="right"><a href="16_custom_serialization_and_generic_functions.md">>>> Next Lesson: Custom Serialization and Generic Functions</a></p>
 </div>
