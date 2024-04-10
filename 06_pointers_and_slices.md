@@ -7,6 +7,7 @@ When we call `[]` on a vector to reference some set of elements, we are actually
 
 ### Stack and Heap
 If you don't work in systems programming, you probably don't spend much time thinking about the stack and the heap, so let's provide a quick overview / refresher here. The stack represents the local variables in our program execution. Those variables in turn can refer to or point to data on the heap which is a less structured part of memory available to our program. When we need to store large amounts of data, we typically *allocate* that data on the heap. The heap has no memory restrictions, whereas the stack is limited. The heap also allows data to be accessed from anywhere in the program, which is useful for data shared across different functions or modules. However, allocating to the heap comes with a cost. It takes more time for the program to find the space in memory to allocate the data and do some bookkeeping to return a pointer and prepare for the next allocation. When the data needs to be accessed or updated, there is additional overhead to find the the data in memory and to also reallocate memory as needed. 
+
 In Rust, if a data type is *dynamically sized*, meaning it can expand or shrink and its size is not known at compile time, it must be allocated on the heap. If the data is a known, fixed-size and doesn't change, it is allocated on the stack. Since the pointers themselves are known and fixed in size they are allocated on our program's stack. The underlying data they point to is allocated on the heap.
 For a good explanation on the difference between the stack and the heap, check here: https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html#the-stack-and-the-heap
 
@@ -19,7 +20,9 @@ Hopefully that made sense. Don't worry if it feels a bit too complicated at the 
 So let's return to the error we're getting.
 `error[E0277]: the size for values of type [u8] cannot be known at compilation time`
 
-In Rust, we cannot store dynamically sized data directly into a variable as that would be allocated on the stack. Instead, dynamically-sized data must be allocated on the heap. Calling `[]` on a vec will return a region of dynamically-sized data, so we must always store a pointer reference to that data. We can do this by adding the `&` in front as the compiler suggested. See below for our modified program. We've also added a `println!` in there to see what the version bytes looks like.
+In Rust, we cannot store dynamically sized data directly into a variable as that would be allocated on the stack. Instead, dynamically-sized data must be allocated on the heap. Calling `[]` on a vec will return a region of dynamically-sized data, so we must always store a pointer reference to that data. We can do this by adding the `&` in front as the compiler suggested. The `&transaction_bytes[0..4]` is now a pointer and not the actual slice data on the heap.
+
+See below for our modified program. We've also added a `println!` in there to see what the version bytes looks like.
 
 ```rust
 use hex;
