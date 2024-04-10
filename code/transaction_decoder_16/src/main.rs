@@ -20,7 +20,7 @@ struct Input {
 pub struct Amount(u64);
 
 impl Amount {
-    fn to_btc(self) -> f64 {
+    fn to_btc(&self) -> f64 {
         self.0 as f64 / 100_000_000.0
     }
 }

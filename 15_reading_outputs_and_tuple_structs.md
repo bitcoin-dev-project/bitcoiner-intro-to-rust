@@ -166,7 +166,7 @@ So let's implement a basic version of Rust-Bitcoin's `Amount` struct here:
 struct Amount(u64);
 
 impl Amount {
-    pub fn to_btc(self) -> f64 {
+    pub fn to_btc(&self) -> f64 {
         self.0 as f64 / 100_000_000.0
     }
 }
@@ -180,6 +180,7 @@ struct Output {
 
 Two things to note here:
 1. Notice how the `to_btc` method has a `self` argument. The `self` is the specific *instance* of this struct. It will be passed in by default when the instance calls the `to_btc` method. This allows us to access the `u64` value of that instance with `self.0`.
+2. We're setting the `self` argument as a *shared reference* with the `&` sign. We're doing this because we don't need ownership of the instance nor do we need to mutate the actual instance. All we need to do is read its contents and output an `f64` result.
 2. We made sure to change the `amount` type in `Output` to `f64` from `u64`.
 
 Let's now update our `read_u64` method. Since this is only being used for the amount, we'll rename it to `read_amount` and return the `Amount` type:

@@ -133,24 +133,38 @@ This may seem like a lot and look fairly unfamiliar. Take some time to go throug
 
 You may also feel as if this is overkill. It might feel like a lot extra, unnecessary code. But remember, the advantage here is that we separate the `Amount` type for internal purposes and calculations from how its serialized and displayed to the user. 
 
-Alright if we run this now, we'll run into yet another compiler error: 
+Alright if we run this now, we'll get the output we want! 
 ```shell
-error[E0507]: cannot move out of `*self` which is behind a shared reference
-  --> src/main.rs:34:25
-   |
-34 |         s.serialize_f64(self.to_btc())
-   |                         ^^^^ -------- `*self` moved due to this method call
-   |                         |
-   |                         move occurs because `*self` has type `Amount`, which does not implement the `Copy` trait
-   |
-note: `Amount::to_btc` takes ownership of the receiver `self`, which moves `*self`
-  --> src/main.rs:23:15
-   |
-23 |     fn to_btc(self) -> f64 {
-   |               ^^^^
+Transaction: {
+  "version": 1,
+  "inputs": [
+    {
+      "txid": "f8c693771b2992a11b53c045369ab31a920de1d921ff3c148a9d0487c8f90baf",
+      "output_index": 16,
+      "script": "483045022100904a2e0e8f597fc1cc271b6294b097a6edc952e30c453e3530f92492749769a8022018464c225b03c28791af06bc7fed129dcaaeff9ec8135ada1fb11762ce081ea9014104da289192b0845d5b89ce82665d88ac89d757cfc5fd997b1de8ae47f7780ce6a32207583b7458d1d2f3fd6b3a3b842aea9eb789e2bea57b03d40e684d8e1e0569",
+      "sequence": 4294967295
+    },
+    {
+      "txid": "e51d2177332baff9cfbbc08427cf0d85d28afdc81411cdbb84f40c95858b080d",
+      "output_index": 1,
+      "script": "4830450220369df7d42795239eabf9d41aee75e3ff20521754522bd067890f8eedf6044c6d0221009acfbd88d51d842db87ab990a48bed12b1f816e95502d0198ed080de456a988d014104e0ec988a679936cea80a88e6063d62dc85182e548a535faecd6e569fb565633de5b4e83d5a11fbad8b01908ce71e0374b006d84694b06f10bdc153ca58a53f87",
+      "sequence": 4294967295
+    }
+  ],
+  "outputs": [
+    {
+      "amount": 61.92597494,
+      "script_pubkey": "76a914764b8c407b9b05cf35e9346f70985945507fa83a88ac"
+    },
+    {
+      "amount": 1.27,
+      "script_pubkey": "76a9141d1310fe87b53fec8dbc8911f0ebc112570e34b288ac"
+    }
+  ]
+}
 ```
 
-This is an interesting one and has to do with the topic of copying and moving. We'll explore this more in the next section. 
+Excellent! But our code is starting to look a little unruly, let's see if we can organize it a bit into different files and modules. 
 
 ### Quiz
 *In the `Rust-Bitcoin` library, the `SerdeAmount` trait includes the bounds `Copy` and `Sized`. What is the purpose of each of those traits and are why they included here? https://github.com/rust-bitcoin/rust-bitcoin/blob/163bf64fcc36ed12e3e07301fb2d18d30742a0eb/units/src/amount.rs#L1639*
