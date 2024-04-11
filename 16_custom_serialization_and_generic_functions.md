@@ -160,3 +160,9 @@ Transaction: {
 ```
 
 Excellent! But our code is starting to look a little unruly, let's see if we can organize it a bit into different files and modules. 
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+<div>
+    <p align="right"><a href="17_file_organization_and_modules.md">>>> Next Lesson: File Organization and Modules</a></p>
+</div>
