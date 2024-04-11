@@ -37,3 +37,4 @@ By the end of this project, you will have understood the fundamental concepts of
 * [14.0 JSON Serialization](14_json_serialization.md)
 * [15.0 Reading Outputs and Tuple Structs](15_reading_outputs_and_tuple_structs.md)
 * [16.0 Custom Serialization and Generic Functions](16_custom_serialization_and_generic_functions.md)
+* [17.0 File Organization and Modules](17_file_organization_and_modules.md)
