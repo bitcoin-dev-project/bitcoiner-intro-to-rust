@@ -1,6 +1,6 @@
 # Setup
 
-Let's get started with our project. After you have installed Rust and Cargo, you can set up a new rust project using `cargo new` followed by the name of the project. Let's call this `bitcoin-transaction-decoder`. 
+Let's get started with our project. After you have installed Rust and Cargo, you can set up a new rust project using `cargo new` followed by the name of the project. Let's call this `bitcoin-transaction-decoder`.
 
 ```console
 $ cargo new bitcoin-transaction-decoder
@@ -19,7 +19,7 @@ $ tree
 
 The `Cargo.toml` file is one of the two metadata files that Cargo uses to manage things like the name, version and package dependencies. It should look something like this:
 
-```rust
+```toml
 [package]
 name = "bitcoin-transaction-decoder"
 version = "0.1.0"
