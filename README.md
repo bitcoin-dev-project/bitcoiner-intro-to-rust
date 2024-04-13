@@ -38,3 +38,5 @@ By the end of this project, you will have understood the fundamental concepts of
 * [15.0 Reading Outputs and Tuple Structs](15_reading_outputs_and_tuple_structs.md)
 * [16.0 Custom Serialization and Generic Functions](16_custom_serialization_and_generic_functions.md)
 * [17.0 File Organization and Modules](17_file_organization_and_modules.md)
+* [18.0 Finalizing Decoding a Legacy Transaction](18_final_decoding_legacy_transaction.md)
+

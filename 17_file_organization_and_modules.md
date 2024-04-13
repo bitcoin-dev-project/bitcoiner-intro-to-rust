@@ -90,6 +90,12 @@ fn read_amount(transaction_bytes: &mut &[u8]) -> Amount {
 }
 ```
 
-What do you think? Reads better doesn't it? 
+What do you think? Reads better doesn't it? Over time, as the `transaction.rs` file grows and gets more complex, it might make sense to split that into more files and modules. For example, in the Rust-Bitcoin library, there's a file and module dedicated solely to the `Amount` struct field. 
 
-Let's work on finishing up reading our pre-segwit transaction and then start looking into better error handling. 
+Let's work on finishing up reading our pre-segwit transaction and then start looking into better error handling.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+<div>
+    <p align="right"><a href="18_final_decoding_legacy_transaction.md">>>> Next Lesson: Final Decoding</a></p>
+</div>
