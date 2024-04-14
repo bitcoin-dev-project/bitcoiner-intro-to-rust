@@ -40,4 +40,5 @@ By the end of this project, you will have understood the fundamental concepts of
 * [17.0 File Organization and Modules](17_file_organization_and_modules.md)
 * [18.0 Finalizing Decoding a Legacy Transaction](18_final_decoding_legacy_transaction.md)
 * [19.0 Error Handling](19_error_handling.md)
+* [20.0 Command Line Arguments](20_command_line_arguments.md)
 

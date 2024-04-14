@@ -143,3 +143,9 @@ Hex decoding error: Odd number of digits
 Pretty neat! Alright, let's finish up our error handling by returning a `Result` for any function that might `panic!`. All we have to do is modify our function signatures and replace any `unwrap` calls with a `?`. Then, anywhere those functions are called, we need to handle them with the `?` operator as well. This way, all errors will essentially *bubble* up to the user and won't cause our program to crash. 
 
 Why don't you go ahead and make those changes? Check out the `code` folder of this course to compare your changes to mine. Make sure to update the unit tests as well! *Hint: You don't need to use `Box<dyn Error>` for every function. Some of them will return only one type of error and that can be determined at compile time.*
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+<div>
+    <p align="right"><a href="20_command_line_arguments.md">>>> Next Lesson: Command Line Arguments</a></p>
+</div>
