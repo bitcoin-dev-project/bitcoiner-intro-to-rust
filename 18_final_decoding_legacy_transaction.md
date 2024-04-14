@@ -254,4 +254,10 @@ Now that we know the transaction ID of our raw transaction hex, let's look it up
 Our `main.rs` looks much simpler now and there's a greater separation of concerns making our codebase easier to follow and maintain! Let's start talking about error handling next.
 
 ### Extra Practice
-* Take a stab at simplifying our `main.rs` file even more. Try separating out the compact size logic into a separate file and as a separate struct. Maybe the `hash_transaction` method can actually be a type-associated function on the `Transaction` struct.
+* Take a stab at simplifying our `main.rs` file even more. Try separating out the compact size logic into a separate file and as a separate type (*hint: look into the `Enum` type*). Maybe the `hash_transaction` method can actually be a type-associated function on the `Transaction` struct.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+<div>
+    <p align="right"><a href="19_error_handling.md">>>> Next Lesson: Error Handling</a></p>
+</div>
