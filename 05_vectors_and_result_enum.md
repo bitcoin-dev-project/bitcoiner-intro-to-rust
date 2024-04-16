@@ -44,7 +44,7 @@ We'll keep returning `1` at the bottom of the function for now so the compiler d
 
 Let's run this now and see what happens. Run `$ cargo run` from the terminal.
 
-So far, so good. That should compile fine. Let's now get the first 4 bytes from the returned collection. The returned data is a `vec` - short for Vector - which is something like a `list` in Python or an array in javascript. Of course, it's more nuanced in Rust. We'll dive deeper into some major differences in the next lessons. But with a `vec` we can grab the first 4 items doing something like `vec[0..4]` where `0..4` represents a range from 0 to 4, not including 4. This might be a pattern you're already familiar with.
+So far, so good. That should compile fine. Let's now get the first 4 bytes from the returned collection. The returned data is a `vec` - short for Vector - which is something like a `list` in Python or an array in javascript. Of course, it's more nuanced in Rust. We'll dive deeper into some of the differences in the next few lessons. But with a `vec` we can grab the first 4 items doing something like `vec[0..4]` where `0..4` represents a range from 0 to 4, not including 4. This might be a pattern you're already familiar with.
 
 So let's add that line.
 
