@@ -63,14 +63,14 @@ $ cargo run -- 0100000001c997a5e56e104102fa209c6a852dd90660a20b2d9c352423edce258
 
 ### Refresher
 
-As a quick refresher, transactions are one of the primary components of Bitcoin. They are a data collection that represent the transfer of money and provide proof to full nodes that a transfer is valid and that the node database and network should be updated to reflect the new ownership. Transaction data is relayed to nodes as a collection of bytes. Nodes and miners, using Bitcoin software, know how to deconstruct and analyze that byte data according to the consensus protocol specification. Chapter 6 of Mastering Bitcoin goes into detail breaking down a transaction. I highly recommend reading this chapter before starting to work on this program. It also offers very useful byte map diagrams, which we'll reference as a visual aid. For example,
+As a quick refresher, transactions are one of the primary components of Bitcoin. They are a data collection that represent the transfer of money and provide proof to full nodes that a transfer is valid and that the node database and network should be updated to reflect the new ownership. Transaction data is relayed to nodes as a collection of bytes. Nodes and miners, using Bitcoin software, know how to deconstruct and analyze that byte data according to the consensus protocol specification. Chapter 6 of Mastering Bitcoin goes into detail breaking down a transaction. I highly recommend reading this chapter before starting to work on this program. It also offers a useful byte map diagram to visualize the different components:
 
-![Alt text](https://raw.githubusercontent.com/bitcoinbook/bitcoinbook/develop/images/mbc3_0601.png)
-Source: https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch06_transactions.adoc#alice_tx_byte_map
+<img src="https://raw.githubusercontent.com/bitcoinbook/bitcoinbook/develop/images/mbc3_0601.png" width=500>
 
 ### Other Helpful Resources
 
-* If you have not set up Bitcoin Core and are not familiar with `bitcoin-cli`, I highly recommend taking some time to play around with Bitcoin from the command line. A great educational resource can be found here: https://github.com/BlockchainCommons/Learning-Bitcoin-from-the-Command-Line?tab=readme-ov-file.
+* If you have not set up Bitcoin Core and are not familiar with `bitcoin-cli`, I highly recommend taking some time to play around with Bitcoin from the command line. A great educational resource can be found [here](https://github.com/BlockchainCommons/Learning-Bitcoin-from-the-Command-Line?tab=readme-ov-file).
+* [learnmeabitcoin.com](https://learnmeabitcoin.com/) also has some great educational content and tutorials explaining complex aspects of the Bitcoin protocol in a very accessible way
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 

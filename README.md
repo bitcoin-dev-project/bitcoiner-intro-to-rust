@@ -24,7 +24,7 @@ By the end of this project, you will have understood the fundamental concepts of
 * [2.0: Setup](02_setup.md)
 * [3.0: Our First Function](03_our_first_function.md)
 * [4.0: Hex and Bytes](04_hex_and_bytes.md)
-* [5.0: Vectors and the Result Type](05_vectors_and_results.md)
+* [5.0: Vectors and the Result Enum](05_vectors_and_result_enum.md)
 * [6.0: Pointers and Slices](06_pointers_and_slices.md)
 * [7.0: Arrays and Type Conversions](07_arrays_and_conversions.md)
 * [8.0: Traits and Reading Bytes](08_traits_and_reading_bytes.md)
