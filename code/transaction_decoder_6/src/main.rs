@@ -1,5 +1,8 @@
 fn read_version(transaction_hex: &str) -> u32 {
-    return 1;
+    let transaction_bytes = hex::decode(transaction_hex).unwrap();
+    let version_bytes = &transaction_bytes[0..4];
+    println!("version bytes: {:?}", version_bytes);
+    1
 }
 
 fn main() {

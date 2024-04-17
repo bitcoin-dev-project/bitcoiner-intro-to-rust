@@ -7,7 +7,7 @@ For the example throughout our course, we're going to look at a randomly selecte
 Assuming you come from another language such as Python or Ruby or Javascript, you might want to write something like this and see what happens:
 
 ```rust
-fn read_version(transactionhex) {
+fn read_version(transaction_hex) {
     return 1;
 }
 
@@ -19,7 +19,7 @@ fn main() {
 
 Let's see what happens if we run the command `$ cargo run`. Again remember to run this command from the root directory. The cargo command needs to look for the `Cargo.toml` to be able to compile and execute the program.
 
-As you will see, the program will fail to compile and we'll get a number of different errors here. The first is that it complains about the `transactionhex` function argument and offers some suggestions for fixing it.
+As you will see, the program will fail to compile and we'll get a number of different errors here. The first is that it complains about the `transaction_hex` function argument and offers some suggestions for fixing it.
 
 ```console
 1 | fn read_version(transactionhex) {

@@ -1,6 +1,6 @@
-fn read_version(transactionhex: &str) -> u32 {
+fn read_version(transaction_hex: &str) -> u32 {
     // convert hex to bytes
-    let transaction_bytes = hex::decode(transactionhex).unwrap();
+    let transaction_bytes = hex::decode(transaction_hex).unwrap();
     let version_bytes = transaction_bytes[0..4];
     1 // no return needed as the last expression without a semi-colon is automatically returned
 }
