@@ -49,7 +49,7 @@ Version: 1
 Great! Let's keep moving and calculate the version number from the byte collection. 
 
 ### Quiz
-*How is a String implemented in Rust? Hint: see additional reading below*
+*How is a String implemented in Rust? How is it different from a string slice &str?*
 
 ### Additional Reading
 * Stack and the Heap: https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html#the-stack-and-the-heap
