@@ -14,7 +14,7 @@ One way to read a byte stream is to leverage Rust's standard library's [`Read`](
 
 ## Traits
 
-We've mentioned traits a few times now, but haven't gone into detail about what they are and how they work. We'll get some more practice with them later on, but for now it's enough to understand that traits are a way to define shared behavior. You can think of them as a template for a particular behavior. For example, the `Read` trait provides a template for types that want to "read data". It lays out what to expect and what types of functions are available for types that implement this particular behavior.
+We've mentioned traits a few times now, but haven't gone into detail about what they are and how they work. We'll get some more practice with them later on, but for now it's enough to understand that traits are a way to define shared behavior. You can think of them as a template for a particular behavior. For example, the `Read` trait provides a template for types that want to "read data". It lays out what to expect and what types of functions are available.
 
 Let's take a closer look at [`Read` from the documentation](https://doc.rust-lang.org/std/io/trait.Read.html). It has a required method, `read`, which has the following function signature: `fn read(&mut self, buf: &mut [u8]) -> Result<usize>;`. 
 
@@ -28,7 +28,7 @@ pub trait Read {
 ...
 ```
 
-The functions themselves are not actually implemented with any logic. The types that implement this trait are expected to provide the function logic for each of these methods. So the trait is really just a template. 
+The functions themselves are not actually implemented with any logic. You'll notice there's no function body, just the signature. The types that implement this trait are expected to provide the function logic for each of these methods. So the trait is really just a template. 
 
 Now, if we look at the `slice` type from the documentation, we can see that it [*implements* `Read`](https://doc.rust-lang.org/std/primitive.slice.html#impl-Read-for-%26%5Bu8%5D) meaning it provides the function logic for the given trait template. Let's take a look at the [implementation](https://doc.rust-lang.org/src/std/io/impls.rs.html#235-250):
 
@@ -62,7 +62,7 @@ Don't worry if you don't understand how to read all of this just yet! Simply not
 
 The idea here is that different types, not just the `&[u8]` type can implement the `Read` trait and then be expected to have a similar behavior. The function logic itself for each type might differ, but they are expected to take in the same arguments, return the same type and generally do the same thing, which in this case is to read some data and modify `self` and the buffer. You might notice some patterns here that you are not yet familiar with, such as the `&mut` keyword and asterisk `*` before `self` at the bottom of the function. Don't worry, we'll go into more detail about what these mean in more detail in the next lesson.
 
-For now, let's experiment by following the second example from the [documentation](https://doc.rust-lang.org/std/io/trait.Read.html#examples). We'll comment out our original code and experiment with these new lines:
+For now, let's experiment by following the second example from the [documentation for Read](https://doc.rust-lang.org/std/io/trait.Read.html#examples). We'll comment out our original code and experiment with these new lines:
 ```rust
 fn main() {
     let bytes_slice: &[u8] = [1, 0, 0, 0, 2].as_slice();
@@ -105,7 +105,7 @@ Bytes Slice: [2]
 
 We converted the 4 bytes from the buffer into an unsigned 32-bit integer. And notice how the bytes slice has been modified after being read into the buffer. It no longer contains the first 4 elements, `[1, 0, 0, 0]`.
 
-You may notice that the way this works is that you have to first create an array (which serves as the buffer) with a known size. Calling `read` will then extract the number of bytes equal to the size of the array, store that into our buffer and then modify our fat pointer reference to the underlying data.
+You may notice that the way this works is that you have to first create an array with a known size. Calling `read` will then extract the number of bytes equal to the size of the array, store that into our buffer and then modify our fat pointer reference to the underlying data.
 
 Let's now update our program to print out the version number leveraging the `Read` trait. We can convert the `transaction_bytes` `Vec` to a `slice` type using the `as_slice` method. Here is the modified `read_version` function.
 
@@ -152,5 +152,5 @@ fn main() {
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
 <div style="text-align: right">
-    <p align="right"><a href="09_references_and_borrowing_01.md">>>> Next Lesson: References and Borrowing Part 1</a></p>
+    <p align="right"><a href="09_references_and_borrowing.md">>>> Next Lesson: References and Borrowing</a></p>
 </div>

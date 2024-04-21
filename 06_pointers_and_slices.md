@@ -8,7 +8,7 @@ When we call `[]` on a vector to reference some set of elements, we are actually
 ### Stack and Heap
 If you don't work in systems programming, you probably don't spend much time thinking about the stack and the heap, so let's provide a quick overview / refresher here. The stack represents the local variables in our program execution. Those variables in turn can refer to or *point to* data on the heap which is a less structured area of memory available to our program. When we need to store large amounts of data, we typically *allocate* that data on the heap. This is useful because the heap has no memory restrictions, whereas the stack is limited. The heap also allows data to be accessed from anywhere in the program, which is useful for data shared across different functions or modules. However, allocating to the heap comes with a cost. It takes more time for the program to find the space in memory to allocate the data and do some bookkeeping to return a pointer and prepare for the next allocation. When the data needs to be accessed or updated, there is additional overhead to find the the data in memory and to also reallocate memory as needed. 
 
-In Rust, if a data type is *dynamically sized*, meaning it can expand or shrink and its size is not known at compile time, it *must be* allocated on the heap. If the data is a known, fixed-size and doesn't change, it is allocated on the stack. Since the pointers themselves are known and fixed in size they are allocated on our program's stack. The underlying data they point to is allocated on the heap.
+In Rust, if a data type is *dynamically sized*, meaning it can expand or shrink and its size is not known at compile time, it *must be* allocated on the heap. If the data is a known, fixed-size and doesn't change, it can be allocated on the stack. This is for more memory safety purposes. Remember, the stack memory is limited so the compiler doesn't want there to be any surprises when the program actually runs which could lead to dangerous memory errors. Since the pointers themselves are known and fixed in size they can be safely allocated to our program's stack. The underlying data they point to is allocated on the heap.
 
 Notice in the diagram above how the vector is also a pointer type to data stored on the heap. In Rust, the vector is actually just a *smart pointer*, unlike the slice, which is instead of a *fat pointer*. A smart pointer contains additional metadata and capabilities. It also *owns* the data instead of just borrowing a reference to it. We'll explore the concepts of borrowing and references in more detail later on. For now, it's enough to understand the following key points:
 1. Both vectors and slice references (often just called "slices" for short) **point** to the data in memory. This makes it lightweight to pass around and move these data types in the program. When they are moved, there is no need to move or copy the data on the heap as well. 
@@ -57,7 +57,7 @@ Great! Let's keep moving and calculate the version number from the byte collecti
 * Slices: https://doc.rust-lang.org/book/ch04-03-slices.html
 * Smart Pointers: https://doc.rust-lang.org/book/ch15-00-smart-pointers.html
 
-----------------------------------------------------------------------------------------------------------------------------------------------------
+<hr/>
 
 <div>
     <p align="right"><a href="07_arrays_and_conversions.md">>>> Next Lesson: Arrays and Type Conversions</a></p>
