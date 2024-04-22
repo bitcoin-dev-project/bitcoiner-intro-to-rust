@@ -209,7 +209,8 @@ https://doc.rust-lang.org/std/vec/struct.Vec.html <br/>
 https://doc.rust-lang.org/std/primitive.slice.html#method.sort <br/>
 
 ### Additional Reading
-* https://exercism.org/tracks/rust/concepts/mutability
+* Mutability: https://exercism.org/tracks/rust/concepts/mutability
+* Ownership and References: https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html
 
 <hr/>
 
