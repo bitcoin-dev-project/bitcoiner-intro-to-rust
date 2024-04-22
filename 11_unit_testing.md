@@ -13,7 +13,7 @@ mod tests {
 }
 ```
 
-The  annotation on the tests module tells Rust to compile and run the test code only when you run `cargo test`, not when you run `cargo build`. For more information about testing, you can read more here: https://doc.rust-lang.org/book/ch11-03-test-organization.html
+The `#[cfg(test)]` annotation on the tests module tells Rust to compile and run the test code only when you run `cargo test`, not when you run `cargo build`.
 
 So let's start setting up our tests:
 ```rust
@@ -34,7 +34,7 @@ We identify each test function with the `#[test]` annotation. We can have other 
 
 Now, if you run `cargo test` from the command line instead of `cargo run`, your tests will run and return results to the terminal. You might see something like the following:
 
-```shell
+```console
     Finished test [unoptimized + debuginfo] target(s) in 0.01s
      Running unittests src/main.rs (target/debug/deps/transaction_decoder_11-283cd8d491efdffc)
 
@@ -44,7 +44,7 @@ test unit_tests::test_reading_compact_size ... ok
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 ```
 
-Pretty cool. Let's start adding some logic for testing our `read_compact_size` function. Let's start simple.
+Pretty cool. Let's start adding some logic for testing our `read_compact_size` function. We'll start simple.
 
 ```rust
 #[cfg(test)]
@@ -60,11 +60,11 @@ mod unit_tests {
 }
 ```
 
-If you look at the `assert_eq!` statement, I intentionally set the expected length to `2_u64` instead of the correct one, `1_u64`. This is to make sure our tests are running properly and will fail when run. We'll then make the correction and ensure the test passes.
+If you look at the `assert_eq!` statement, we intentionally set the expected length to `2_u64` instead of the correct one, `1_u64`. This is to make sure our tests are running properly and will fail when run. We'll then make the correction and ensure the test passes.
 
 If you run `cargo test`, you should see the test failures:
 
-```shell
+```console
    Compiling transaction_decoder_11 v0.1.0 (/Users/shaanbatra/Projects/bitcoiner-intro-to-rust/code/transaction_decoder_11)
     Finished test [unoptimized + debuginfo] target(s) in 0.43s
      Running unittests src/main.rs (target/debug/deps/transaction_decoder_11-283cd8d491efdffc)
@@ -130,7 +130,7 @@ mod unit_tests {
 
 We added another scenario for when the first byte is `0xfd` or the integer `253`. In this case, we want to read the next two bytes to determine the input length. So if we pass this slice in, we should get the correct length. What is the length represented by the bytes `0` and `1`? Well we can use base math to confirm. Remember, bytes are in little endian, so the `0` is in the 0th position and the `1` is in the first position. We can ignore the 0 and the other value is `1*256_u64.pow(1)` or just `256_u64`.
 
-You also might have noticed that we declared the same variables, `bytes` and `length`. This is called *shadowing* in Rust as the second declaration will "*overshadow*" the first. It's easier to write it this way, rather than come up with new variable names for different scenarios. https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html#shadowing
+You also might have noticed that we declared the same variables, `bytes` and `length`. This is called [*shadowing*](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html#shadowing) in Rust as the second declaration will "*overshadow*" the first. It's easier to write it this way sometimes, rather than come up with new variable names for each scenario. 
 
 Let's add a few more scenarios testing the other arms of the match statement:
 
@@ -160,7 +160,7 @@ mod unit_tests {
 }
 ```
 
-Let's add another scenario from a real world example. This was mentioned on Learn Me A Bitcoin (https://learnmeabitcoin.com/explorer/tx/52539a56b1eb890504b775171923430f0355eb836a57134ba598170a2f8980c1). It's a transaction with 20,000 inputs which was confirmed in 2015. 840,000 vbytes large and paid 0 fees! It was all 0 inputs and 0 output as well so no amount of Bitcoin was transferred. Interesting. 
+Let's add another scenario from a real world example. We're going to use an example that was mentioned in the [Learn Me A Bitcoin](https://learnmeabitcoin.com/explorer/tx/52539a56b1eb890504b775171923430f0355eb836a57134ba598170a2f8980c1) tutorial site. It's a [transaction](https://mempool.space/tx/52539a56b1eb890504b775171923430f0355eb836a57134ba598170a2f8980c1) with 20,000 inputs which was confirmed in 2015. 840,000 vbytes large and paid 0 fees! It was all 0 inputs and 0 output as well so no amount of Bitcoin was transferred. Interesting. 
 
 Here is the raw transaction hex: https://mempool.space/api/tx/52539a56b1eb890504b775171923430f0355eb836a57134ba598170a2f8980c1/hex
 
@@ -168,7 +168,7 @@ If we look at the first few bytes, we can see the version followed by `fd`.
 
 `01000000fd204e`
 
-`fd` indicates that the input length comes from the next two bytes. So the bytes, `0x20` and `0x4e` should equal 20,000. Let's confirm this in our test.
+`fd` indicates that the input length comes from the next two bytes. So the bytes, `0x20` and `0x4e` should evaluate to 20,000. Let's confirm this in our test.
 
 ```rust
 fn test_reading_compact_size() {
@@ -200,7 +200,9 @@ fn test_reading_compact_size() {
     }
 ```
 
-That checks out! Neat. Let's add another test to account for the scenario in which the program `panic!`s. Since a `panic!` will cause the program to crash, we need a way of catching that when it happens and then checking the result. One way we can do this is with `std::panic::catch_unwind` which will take the code we want to run as a closure and return an `Err` `Result` if a `panic!` is reached. If you're not familiar with closures, you can read more about them here: https://doc.rust-lang.org/book/ch13-01-closures.html
+That checks out! Neat. Let's add another test to account for the scenario in which the program `panic!`s. Since a `panic!` will cause the program to crash, we need a way of catching that when it happens and then checking the result. 
+
+One way we can do this is with `std::panic::catch_unwind` which will take the code we want to run as a `closure` and return an `Err` `Result` if a `panic!` is reached. We'll talk more about the `Result` enum later on. For now just know that there's a method, `is_err`, that will check if the `Result` is the `Err` type. And if you're not familiar with closures, you can read more about them [here](https://doc.rust-lang.org/book/ch13-01-closures.html). These are essentially anonymous functions that we can pass into another function as an argument. 
 
 ```rust
 let result = std::panic::catch_unwind(|| {
@@ -210,11 +212,17 @@ let result = std::panic::catch_unwind(|| {
 assert!(result.is_err());
 ```
 
-This is the additional scenario we'll test. If you look at the code, this is the only scenario in which the code will panic. We won't be able to pass in a number greater than 255 because we've ensured that the input type is a `u8` and the maximum number for a `u8` is 255. So the only value that will actually cause the program to crash is 0.
+This is the only scenario in which the code will panic. We won't be able to pass in a number greater than 255 because we've ensured that the input type is a `u8` and the maximum number for a `u8` is 255. So the only value that will actually cause the program to crash is 0.
 
-Great! We've learned about unit testing. We'll keep this in mind as we write more functions with complex logic. Let's keep it moving and keep reading the transaction. 
+Run this with `cargo test` and all the tests should pass!
 
-----------------------------------------------------------------------------------------------------------------------------------------------------
+Great! We've learned about unit testing. We'll keep this in mind as we write more functions with complex logic. Let's keep it moving and keep reading the transaction.
+
+### Additional Reading
+* Test Organization: https://doc.rust-lang.org/book/ch11-03-test-organization.html
+* Closures: https://doc.rust-lang.org/book/ch13-01-closures.html
+
+<hr/>
 
 <div>
     <p align="right"><a href="12_reading_inputs_and_type_coercion.md">>>> Next Lesson: Reading Inputs and Type Coercion</a></p>
