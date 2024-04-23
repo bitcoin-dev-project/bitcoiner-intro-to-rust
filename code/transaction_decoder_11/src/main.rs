@@ -1,4 +1,3 @@
-use hex;
 use std::io::Read;
 
 fn read_version(transaction_bytes: &mut &[u8]) -> u32 {

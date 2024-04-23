@@ -1,6 +1,6 @@
 # Reading Outputs and Tuple Structs
 
-Reading the outputs is fairly straightforward now that we have all the other pieces in place. Similar to inputs, there is a compactSize integer which indicates the number of outputs. An output is comprised of an amount, indicating how many satoshis to be transferred. This field is 8 bytes in length, which we'll represent as a `u64` type. This is followed by a compactSize integer indicating the length of the *output script*. The script, also known as the `scriptPubKey` contains the conditions that that will need to be  fulfilled in order to spend those satoshis. For example, if an output has a `P2PKH` script, then the spender will need to present a signature and a public key in order to unlock those funds. https://learnmeabitcoin.com/technical/script/p2pkh/
+Reading the outputs is fairly straightforward now that we have all the other pieces in place. Similar to inputs, there is a compactSize integer which indicates the number of outputs. An output is comprised of an amount, indicating the number of satoshis to be transferred. This field is 8 bytes in length, which we'll represent as a `u64` type. This is followed by a compactSize integer indicating the length of the *output script*. The script, also known as the `scriptPubKey` contains the conditions that that will need to be  fulfilled in order to spend those satoshis. For example, if an output has a [`P2PKH` script](https://learnmeabitcoin.com/technical/script/p2pkh/), then the spender will need to present a signature and a public key in order to unlock those funds. 
 
 So all we need is to do now is the following:
 1. Create a new `Output` struct
@@ -91,31 +91,31 @@ fn main() {
 
 Let's run this with `cargo run` and take a look at the printout.
 
-```shell
+```console
 Transaction: {
   "version": 1,
   "inputs": [
     {
-      "txid": "f8c693771b2992a11b53c045369ab31a920de1d921ff3c148a9d0487c8f90baf",
-      "output_index": 16,
-      "script": "483045022100904a2e0e8f597fc1cc271b6294b097a6edc952e30c453e3530f92492749769a8022018464c225b03c28791af06bc7fed129dcaaeff9ec8135ada1fb11762ce081ea9014104da289192b0845d5b89ce82665d88ac89d757cfc5fd997b1de8ae47f7780ce6a32207583b7458d1d2f3fd6b3a3b842aea9eb789e2bea57b03d40e684d8e1e0569",
-      "sequence": 4294967295
+      "txid": "8073cdf947ac97c23b77b055217da78d3ad71d30e1f6c095be8b30f7d6c1d542",
+      "output_index": 1,
+      "script": "4730440220771361aae55e84496b9e7b06e0a53dd122a1425f85840af7a52b20fa329816070220221dd92132e82ef9c133cb1a106b64893892a11acf2cfa1adb7698dcdc02f01b0121030077be25dc482e7f4abad60115416881fe4ef98af33c924cd8b20ca4e57e8bd5",
+      "sequence": 4294967294
     },
     {
-      "txid": "e51d2177332baff9cfbbc08427cf0d85d28afdc81411cdbb84f40c95858b080d",
-      "output_index": 1,
-      "script": "4830450220369df7d42795239eabf9d41aee75e3ff20521754522bd067890f8eedf6044c6d0221009acfbd88d51d842db87ab990a48bed12b1f816e95502d0198ed080de456a988d014104e0ec988a679936cea80a88e6063d62dc85182e548a535faecd6e569fb565633de5b4e83d5a11fbad8b01908ce71e0374b006d84694b06f10bdc153ca58a53f87",
-      "sequence": 4294967295
+      "txid": "9cb414caf4a633b3446c22d6174be670b3e0e746024cc0c1ef0e15f3c57cc875",
+      "output_index": 0,
+      "script": "483045022100e0d85fece671d367c8d442a96230954cdda4b9cf95e9edc763616d05d93e944302202330d520408d909575c5f6976cc405b3042673b601f4f2140b2e4d447e671c47012103c43afccd37aae7107f5a43f5b7b223d034e7583b77c8cd1084d86895a7341abf",
+      "sequence": 4294967294
     }
   ],
   "outputs": [
     {
-      "amount": 6192597494,
-      "script_pubkey": "76a914764b8c407b9b05cf35e9346f70985945507fa83a88ac"
+      "amount": 1028587,
+      "script_pubkey": "76a9144ef88a0b04e3ad6d1888da4be260d6735e0d308488ac"
     },
     {
-      "amount": 127000000,
-      "script_pubkey": "76a9141d1310fe87b53fec8dbc8911f0ebc112570e34b288ac"
+      "amount": 2002000,
+      "script_pubkey": "a91476c0c8f2fc403c5edaea365f6a284317b9cdf72587"
     }
   ]
 }
@@ -125,25 +125,32 @@ Not bad! We're starting to see most of the transaction details. The amounts are 
 
 We'll get a result we don't want. 
 
-```shell
+```console
 ...
 
   "outputs": [
     {
-      "amount": 61,
-      "script_pubkey": "76a914764b8c407b9b05cf35e9346f70985945507fa83a88ac"
+      "amount": 0,
+      "script_pubkey": "76a9144ef88a0b04e3ad6d1888da4be260d6735e0d308488ac"
     },
     {
-      "amount": 1,
-      "script_pubkey": "76a9141d1310fe87b53fec8dbc8911f0ebc112570e34b288ac"
+      "amount": 0,
+      "script_pubkey": "a91476c0c8f2fc403c5edaea365f6a284317b9cdf72587"
     }
+  ]
 
 ...
 ```
 
-The amounts are missing the decimal values because we're doing math on unsigned integers which are whole numbers. What we really want to do is first convert the integer types into floating types. We could do some basic math by first converting the `u64` to an `f64` and then dividing that by `100_000_000.0`. But let's take a look at some open source code and how a popular library, such as [Rust-Bitcoin](https://github.com/rust-bitcoin/rust-bitcoin) deals with the amount field. 
+The amounts are missing the decimal values because we're doing math on unsigned integers which are whole numbers. What we really want to do is first convert the integer types into floating types. We could do some basic math by first converting the `u64` to an `f64` and then dividing that by `100_000_000.0`. 
+
+However, let's use this as an opportunity to look at some open source code and see how a popular library, such as [Rust-Bitcoin](https://github.com/rust-bitcoin/rust-bitcoin) deals with the amount field. 
 
 From the source code, it appears they create an `Amount` tuple struct to represent the Satoshi / Bitcoin value. https://docs.rs/bitcoin/latest/src/bitcoin/amount.rs.html#498
+
+```rust
+pub struct Amount(u64);
+```
 
 A tuple struct is a struct type that wraps a tuple type. A tuple is a comma-separated list of different types in parentheses `()`. The values are accessed by calling `.0`, `.1`, etc. based on their position in the tuple. For example,
 ```rust
@@ -156,7 +163,7 @@ A tuple struct is a struct type that wraps a tuple type. A tuple is a comma-sepa
     let one = x.2;
 ```
 
-More here: https://doc.rust-lang.org/book/ch03-02-data-types.html#the-tuple-type
+More info can be found here: https://doc.rust-lang.org/book/ch03-02-data-types.html#the-tuple-type
 
 A **tuple struct** is simply a tuple wrapped in a struct. This allows us to write methods for that type. 
 
@@ -220,7 +227,7 @@ If we run `cargo run` now, we should get a nice printout with the amounts in bit
 
 But there's a problem here. We're storing the amount in `Output` as an `f64` type. Ideally, we would keep this as an `Amount` type for internal purposes, readability and type safety. What we really want is to keep it as the `Amount` type, but convert it to an `f64` denominated in Bitcoin for serialization and display purposes. This will require us to do some custom serialization which we'll talk about in the next lesson. Onwards!
 
-----------------------------------------------------------------------------------------------------------------------------------------------------
+<hr/>
 
 <div>
     <p align="right"><a href="16_custom_serialization_and_generic_functions.md">>>> Next Lesson: Custom Serialization and Generic Functions</a></p>
