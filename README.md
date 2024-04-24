@@ -17,7 +17,7 @@ Rust is becoming very popular for new Bitcoin projects. Some examples of popular
 It's not as difficult as you might think. It just takes some time to get familiar with a new way of doing things. At first, it might feel more restrictive and tedious to write Rust code, but this is because the language makes certain tradeoffs that yield many long-term benefits in terms of performance, safety, effectiveness and readability. The compiler forces you to reason more carefully about your program and what it's actually doing under the hood. My hope is that by the end of this project you come to appreciate Rust and feel more confident writing Rust programs. I transitioned from Ruby and Javascript to Rust and I can't see myself ever going back!
 
 ### What You Will Learn
-By the end of this project, you will have understood the fundamental concepts of Rust such as types, data structures, references, lifetimes, stack and the heap, traits, error handling and more. We will also review some basic aspects of the Bitcoin protocol, specifically the components of a transaction. In future courses, we will dive deeper into the Bitcoin protocol and write more complex programs, exploring the full extent of Bitcoin's capabilities. 
+By the end of this project, you will have understood the fundamental concepts of Rust such as types, data structures, references, stack and the heap, traits, error handling and more. We will also review some basic aspects of the Bitcoin protocol, specifically the components of a transaction. In future courses, we will dive deeper into the Bitcoin protocol and write more complex programs, exploring the full extent of Bitcoin's capabilities. 
 
 ### Table of Contents
 * [1.0: Background](01_background.md)
@@ -37,7 +37,6 @@ By the end of this project, you will have understood the fundamental concepts of
 * [15.0 Reading Outputs and Tuple Structs](15_reading_outputs_and_tuple_structs.md)
 * [16.0 Custom Serialization and Generic Functions](16_custom_serialization_and_generic_functions.md)
 * [17.0 File Organization and Modules](17_file_organization_and_modules.md)
-* [18.0 Finalizing Decoding a Legacy Transaction](18_final_decoding_legacy_transaction.md)
+* [18.0 Decoding a Legacy Transaction](18_decoding_legacy_transaction.md)
 * [19.0 Error Handling](19_error_handling.md)
 * [20.0 Command Line Arguments](20_command_line_arguments.md)
-

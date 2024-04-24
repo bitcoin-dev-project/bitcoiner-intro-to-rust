@@ -1,12 +1,14 @@
 # Custom Serialization and Generic Functions
 
-So what we want to do is keep the amount's type in the `Output` struct as `Amount` and not an `f64`. Instead of storing it as an f64, we can add a custom field serialization attribute to serialize it as an `f64` type denominated in Bitcoin. 
+So what we want to do is keep the amount's type in the `Output` struct as `Amount` and not an `f64`. Instead of storing it as an `f64`, we can add a custom field serialization attribute to serialize it as an `f64` type denominated in Bitcoin.
 
 Serde offers an attribute for custom serialization methods on a particular struct's fields. Here is the relevant documentation: https://serde.rs/field-attrs.html#serialize_with
 
 As the docs explain, we can implement a custom function that will be called to provide the serialization logic. However, that function must be *callable* as the following type: `fn<S>(&T, S) -> Result<S::Ok, S::Error> where S: Serializer`.
 
-Let's break this function signature down a bit. You may notice the unfamiliar `<S>` before the arguments and then a `where` clause after the return type. This is known as a **generic** function. The phrase `<S>` is what makes it generic and is called a **type parameter**. What this means is that throughout the body of the function, `S` stands for some type that implements the **Serializer** trait. The `where` clause is sometimes more readable if there are a lot of different traits that the type is required to implement. However, this could also be written as `fn<S: Serializer>(&T, S) -> Result<S::Ok, S::Error>`. Finally, you'll notice the `&T` as the first function argument, which just means that argument is a reference to any generic type `T`. 
+Let's break this function signature down a bit. 
+
+You may notice the unfamiliar `<S>` before the arguments and then a `where` clause after the return type. This is known as a **generic** function. The phrase `<S>` is what makes it generic and is called a **type parameter**. What this means is that throughout the body of the function, `S` stands for some type that *implements* the **Serializer** trait. The `where` clause is sometimes more readable if there are a lot of different traits that the type is required to implement. However, this could also be written as `fn<S: Serializer>(&T, S) -> Result<S::Ok, S::Error>`. Finally, you'll notice the `&T` as the first function argument, which just means that argument is a reference to any generic type `T`.
 
 So let's try making the following modifications:
 1. Add the `serde serialize_with` attribute to the `amount` field of the `Output` struct
@@ -84,10 +86,9 @@ In our `as_btc` serializer method, we can't simply call `to_btc` on the generic 
 1. We need to bound the trait so that only certain types can be passed into this method. 
 2. The `to_btc` method is not a trait method. It's simply a method on a struct. So we need to create a trait method as that is the only way to call a method on a generic type parameter. 
 
-One way to do this is to create a new `BitcoinValue` trait which will have a `to_btc` method and have the `Amount` struct *implement* that trait.s
+One way to do this is to create a new `BitcoinValue` trait which will have a `to_btc` method and have the `Amount` struct *implement* that trait.
 
 Take a look at the changes below:
-
 ```rust
 ...
 
@@ -119,50 +120,50 @@ fn as_btc<T: BitcoinValue, S: Serializer>(t: &T, s: S) -> Result<S::Ok, S::Error
 ...
 ```
 
-Let's go through the changes:
+Let's review the changes:
 1. We created a new trait `BitcoinValue` which declares the method signature `to_btc`. We set the argument type to be a shared reference to `self`.
 2. We then implement that trait for the `Amount` struct
-3. We added the `BitcoinValue` trait bound for `T` in the `as_btc` custom serialization method. And in the function body we simply call the trait method `to_btc` on `t` and then serialize it. 
+3. We added the `BitcoinValue` trait bound for `T` in the `as_btc` custom serialization method. And in the function body we simply call the trait method `to_btc` on `t` and then serialize it.
 
 This may seem like a lot and look fairly unfamiliar. Take some time to go through it and get familiar with generic functions, type parameters and trait bounds.
 
-You may also feel as if this is overkill. It might feel like a lot extra, unnecessary code. But remember, the advantage here is that we separate the `Amount` type for internal purposes and calculations from how its serialized and displayed to the user. 
+You may also feel as if this is overkill. It might seem like a lot extra, unnecessary code. But remember, the advantage here is that we separate the `Amount` type for internal purposes and calculations from how its serialized and displayed to the user. And we could potentially have other types in the future that implement the `BitcoinValue` trait.
 
-Alright if we run this now, we'll get the output we want! 
-```shell
+Alright if we run this now, we'll get the output we want!
+```console
 Transaction: {
   "version": 1,
   "inputs": [
     {
-      "txid": "f8c693771b2992a11b53c045369ab31a920de1d921ff3c148a9d0487c8f90baf",
-      "output_index": 16,
-      "script": "483045022100904a2e0e8f597fc1cc271b6294b097a6edc952e30c453e3530f92492749769a8022018464c225b03c28791af06bc7fed129dcaaeff9ec8135ada1fb11762ce081ea9014104da289192b0845d5b89ce82665d88ac89d757cfc5fd997b1de8ae47f7780ce6a32207583b7458d1d2f3fd6b3a3b842aea9eb789e2bea57b03d40e684d8e1e0569",
-      "sequence": 4294967295
+      "txid": "8073cdf947ac97c23b77b055217da78d3ad71d30e1f6c095be8b30f7d6c1d542",
+      "output_index": 1,
+      "script": "4730440220771361aae55e84496b9e7b06e0a53dd122a1425f85840af7a52b20fa329816070220221dd92132e82ef9c133cb1a106b64893892a11acf2cfa1adb7698dcdc02f01b0121030077be25dc482e7f4abad60115416881fe4ef98af33c924cd8b20ca4e57e8bd5",
+      "sequence": 4294967294
     },
     {
-      "txid": "e51d2177332baff9cfbbc08427cf0d85d28afdc81411cdbb84f40c95858b080d",
-      "output_index": 1,
-      "script": "4830450220369df7d42795239eabf9d41aee75e3ff20521754522bd067890f8eedf6044c6d0221009acfbd88d51d842db87ab990a48bed12b1f816e95502d0198ed080de456a988d014104e0ec988a679936cea80a88e6063d62dc85182e548a535faecd6e569fb565633de5b4e83d5a11fbad8b01908ce71e0374b006d84694b06f10bdc153ca58a53f87",
-      "sequence": 4294967295
+      "txid": "9cb414caf4a633b3446c22d6174be670b3e0e746024cc0c1ef0e15f3c57cc875",
+      "output_index": 0,
+      "script": "483045022100e0d85fece671d367c8d442a96230954cdda4b9cf95e9edc763616d05d93e944302202330d520408d909575c5f6976cc405b3042673b601f4f2140b2e4d447e671c47012103c43afccd37aae7107f5a43f5b7b223d034e7583b77c8cd1084d86895a7341abf",
+      "sequence": 4294967294
     }
   ],
   "outputs": [
     {
-      "amount": 61.92597494,
-      "script_pubkey": "76a914764b8c407b9b05cf35e9346f70985945507fa83a88ac"
+      "amount": 0.01028587,
+      "script_pubkey": "76a9144ef88a0b04e3ad6d1888da4be260d6735e0d308488ac"
     },
     {
-      "amount": 1.27,
-      "script_pubkey": "76a9141d1310fe87b53fec8dbc8911f0ebc112570e34b288ac"
+      "amount": 0.02002,
+      "script_pubkey": "a91476c0c8f2fc403c5edaea365f6a284317b9cdf72587"
     }
   ]
 }
 ```
 
-Excellent! But our code is starting to look a little unruly, let's see if we can organize it a bit into different files and modules. 
+Excellent! But our code is starting to look a little unruly, let's see if we can organize it a bit into different files and modules.
 
-----------------------------------------------------------------------------------------------------------------------------------------------------
+<hr/>
 
 <div>
-    <p align="right"><a href="17_file_organization_and_modules.md">>>> Next Lesson: File Organization and Modules</a></p>
+  <p align="right"><a href="17_file_organization_and_modules.md">>>> Next Lesson: File Organization and Modules</a></p>
 </div>

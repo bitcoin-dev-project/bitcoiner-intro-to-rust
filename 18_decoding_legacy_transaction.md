@@ -1,18 +1,18 @@
-# Finalizing Decoding A Legacy Transaction
+# Decoding A Legacy Transaction
 
-So we have two fields left for decoding a pre-segwit transaction:
+So we have two fields left for decoding a legacy transaction:
 1. Lock Time
 2. Transaction ID
 
-The lock time field is fairly straightforward. It's 4 bytes which we'll interpret as a `u32` integer. We won't go into too much detail about this field represents. There's a [good explanation](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch06_transactions.adoc#lock-time) in Mastering Bitcoin.
+The lock time field is fairly straightforward. It's 4 bytes which we'll interpret as a `u32` integer. We won't go into too much detail about what this field represents. There's a [good explanation](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch06_transactions.adoc#lock-time) in Mastering Bitcoin.
 
-The final field we'll want to decode and display to the user is the transaction ID. This one is interesting because it's not actually contained in the raw transaction, but is instead *calculated* based on the raw transaction fields. A great overview of how this works can be found on [Learn Me A Bitcoin](https://learnmeabitcoin.com/technical/transaction/input/txid/). The basic idea is that the ID is calculated by *hashing* all of the transaction data. More specifically:
+The final field we'll want to decode and display to the user is the transaction ID. This one is interesting because it's not actually contained in the raw transaction, but is instead *calculated* based on the raw transaction fields. A great overview of how this works can be found on [Learn Me A Bitcoin](https://learnmeabitcoin.com/technical/transaction/input/txid/). The basic idea is that the ID is calculated by *hashing* the transaction data. More specifically:
 1. For legacy transactions you hash all of the transaction data twice using the SHA256 algorithm.
 2. For segwit transactions you hash all of the transaction data twice excluding the marker, flag, witness fields.
 
 For more information on hashing and what it's all about, check out this explanation from [Learn Me A Bitcoin](https://learnmeabitcoin.com/technical/cryptography/hash-function/#hash256)
 
-We'll start by creating a new method `hash_raw_transaction` with the following function signature: `fn hash_raw_transaction(bytes: &[u8]) -> [u8; 32]`. We'll take a slice reference as an argument and then return an array of 32 bytes. The sha256 algorithm always returns a 32 byte hash so we know we can always know what the size will be at compile time.
+We'll start by creating a new method `hash_raw_transaction` with the following function signature: `fn hash_raw_transaction(bytes: &[u8]) -> [u8; 32]`. We'll take a slice reference as an argument and then return an array of 32 bytes. The `sha256` algorithm always returns a 32 byte hash so we can always know what the size will be at compile time.
 
 Next, we'll want to use an external library to help us execute the sha256 algorithm. We'll leverage this [popular crate](https://docs.rs/sha2/latest/sha2/).
 
@@ -67,7 +67,7 @@ Two things to note here:
 
 1. We have to hash the transaction twice. So we'll first hash the transaction and then hash the first result, `hash1`.
 
-2. The `Sha256` object implements the `Digest` trait which defines the `finalize` method. If we look at this method [in the docs](https://docs.rs/sha2/latest/sha2/trait.Digest.html#tymethod.finalize), we see that it returns a type `GenericArray<u8, Self::OutputSize>`. This comes from the `generic_array` Rust crate, which defines the [`GenericArray` struct](https://docs.rs/generic-array/latest/generic_array/struct.GenericArray.html). If we look closer at this struct, we can see that it implements the [`From`](https://docs.rs/generic-array/latest/generic_array/struct.GenericArray.html#impl-From%3CGenericArray%3CT,+%3CConst%3CN%3E+as+IntoArrayLength%3E::ArrayLength%3E%3E-for-%5BT;+N%5D) trait for converting to an array `[T; N]`. This gives us access to the trait method `into` which will convert the `GenericArray` into the expected array type from the function signature, which in this case is `[u8; 32]`. For more details on the `From` trait and how it works, [see here](https://doc.rust-lang.org/nightly/core/convert/trait.From.html).
+2. The `Sha256` object implements the `Digest` trait which defines the `finalize` method. If we look at this method [in the docs](https://docs.rs/sha2/latest/sha2/trait.Digest.html#tymethod.finalize), we see that it returns a type `GenericArray<u8, Self::OutputSize>`. This comes from the `generic_array` Rust crate, which defines the [`GenericArray` struct](https://docs.rs/generic-array/latest/generic_array/struct.GenericArray.html). If we look closer at this struct, we can see that it implements the [`From`](https://docs.rs/generic-array/latest/generic_array/struct.GenericArray.html#impl-From%3CGenericArray%3CT,+%3CConst%3CN%3E+as+IntoArrayLength%3E::ArrayLength%3E%3E-for-%5BT;+N%5D) trait for converting to an array `[T; N]`. This gives us access to the trait method `into` which will convert the `GenericArray` into the expected array type from the function signature, which in this case is `[u8; 32]`. For more details on the `From` trait and how it works, [see here](https://doc.rust-lang.org/std/convert/trait.From.html).
 
 Let's update our `main` fn now to read the lock time and calculate the transaction ID. 
 
@@ -87,7 +87,7 @@ Let's update our `main` fn now to read the lock time and calculate the transacti
 ...
 ```
 
-If we try running this now, you might get a compiler error that looks something like this:
+If we try running this now, we will get a compiler error that looks something like this:
 
 ```console
 error[E0599]: no function or associated item named `new` found for struct `CoreWrapper` in the current scope
@@ -109,7 +109,9 @@ Whoops! We have to remember to bring the `Digest` trait into scope so that we ca
 use sha2::{Digest, Sha256};
 ```
 
-If we run this now, the program will compile, but we will get some warnings about the unused variables `lock_time` and `transaction_id`. Let's use them by adding them to our `Transaction` struct. We can simply add the `lock_time` field as a `u32` field. However, let's think a bit more about the transaction ID field. Remember, when we serialize this field and display it to a user, it is always returned in Big Endian format. This was a decision Satoshi made early on that was probably not necessary, but is too hard to reverse at this point. What this means is that we'll have to reverse the bytes first before converting to hex format for display to the user. 
+If we run this now, the program will compile, but we will get some warnings about the unused variables `lock_time` and `transaction_id`. Let's use them by adding them to our `Transaction` struct. We can simply add the `lock_time` field as a `u32` field. 
+
+However, let's think a bit more about the transaction ID field. Remember, when we serialize this field and display it to a user, it is always returned in Big Endian format. This was a decision Satoshi made early on that was probably not necessary, but is too hard to reverse at this point. What this means is that we'll have to reverse the bytes first before converting to hex format for display to the user.
 
 So we'll do something similar to what we did with the `Amount` struct. We'll represent the transaction id as a separate `Txid` tuple struct. And implement a custom serialization for that struct. We'll end up with something like the following:
 
@@ -187,33 +189,33 @@ Ok! Let's run this now and see what happens. It should work! And print out the c
 
 ```console
 Transaction: {
+  "txid": "3c1804567a336c3944e30b3c2593970bfcbf5b15a40f4fc6b626a360ee0507f2",
   "version": 1,
   "inputs": [
     {
-      "txid": "f8c693771b2992a11b53c045369ab31a920de1d921ff3c148a9d0487c8f90baf",
-      "output_index": 16,
-      "script": "483045022100904a2e0e8f597fc1cc271b6294b097a6edc952e30c453e3530f92492749769a8022018464c225b03c28791af06bc7fed129dcaaeff9ec8135ada1fb11762ce081ea9014104da289192b0845d5b89ce82665d88ac89d757cfc5fd997b1de8ae47f7780ce6a32207583b7458d1d2f3fd6b3a3b842aea9eb789e2bea57b03d40e684d8e1e0569",
-      "sequence": 4294967295
+      "txid": "8073cdf947ac97c23b77b055217da78d3ad71d30e1f6c095be8b30f7d6c1d542",
+      "output_index": 1,
+      "script": "4730440220771361aae55e84496b9e7b06e0a53dd122a1425f85840af7a52b20fa329816070220221dd92132e82ef9c133cb1a106b64893892a11acf2cfa1adb7698dcdc02f01b0121030077be25dc482e7f4abad60115416881fe4ef98af33c924cd8b20ca4e57e8bd5",
+      "sequence": 4294967294
     },
     {
-      "txid": "e51d2177332baff9cfbbc08427cf0d85d28afdc81411cdbb84f40c95858b080d",
-      "output_index": 1,
-      "script": "4830450220369df7d42795239eabf9d41aee75e3ff20521754522bd067890f8eedf6044c6d0221009acfbd88d51d842db87ab990a48bed12b1f816e95502d0198ed080de456a988d014104e0ec988a679936cea80a88e6063d62dc85182e548a535faecd6e569fb565633de5b4e83d5a11fbad8b01908ce71e0374b006d84694b06f10bdc153ca58a53f87",
-      "sequence": 4294967295
+      "txid": "9cb414caf4a633b3446c22d6174be670b3e0e746024cc0c1ef0e15f3c57cc875",
+      "output_index": 0,
+      "script": "483045022100e0d85fece671d367c8d442a96230954cdda4b9cf95e9edc763616d05d93e944302202330d520408d909575c5f6976cc405b3042673b601f4f2140b2e4d447e671c47012103c43afccd37aae7107f5a43f5b7b223d034e7583b77c8cd1084d86895a7341abf",
+      "sequence": 4294967294
     }
   ],
   "outputs": [
     {
-      "amount": 61.92597494,
-      "script_pubkey": "76a914764b8c407b9b05cf35e9346f70985945507fa83a88ac"
+      "amount": 0.01028587,
+      "script_pubkey": "76a9144ef88a0b04e3ad6d1888da4be260d6735e0d308488ac"
     },
     {
-      "amount": 1.27,
-      "script_pubkey": "76a9141d1310fe87b53fec8dbc8911f0ebc112570e34b288ac"
+      "amount": 0.02002,
+      "script_pubkey": "a91476c0c8f2fc403c5edaea365f6a284317b9cdf72587"
     }
   ],
-  "lock_time": 0,
-  "transaction_id": "54dc90aa618ea1c300aac021399c66f5f5152848a57984a757075036e3046147"
+  "lock_time": 0
 }
 ```
 
@@ -249,14 +251,28 @@ We no longer need to reverse the bytes or convert to hex format. That is all han
 
 Run it now and you should get the same result! Much better!
 
-Now that we know the transaction ID of our raw transaction hex, let's look it up on the [blockstream explorer](https://blockstream.info/tx/54dc90aa618ea1c300aac021399c66f5f5152848a57984a757075036e3046147) and verify some of the details. For the inputs, you can check the transaction ids and output indexes (16 and 1). For the outputs, verify the amounts are the same as what is displayed in your terminal. If you click on the "Details +" button, you can also verify the ScriptSigs and the ScriptPubKeys. Nicely done so far! 
+Now that we know the transaction ID of our raw transaction hex, let's look it up on the [blockstream testnet explorer](https://blockstream.info/testnet/tx/3c1804567a336c3944e30b3c2593970bfcbf5b15a40f4fc6b626a360ee0507f2) and verify some of the details. For the inputs, you can check the transaction ids and output indexes (1 and 0). For the outputs, verify the amounts are the same as what is displayed in your terminal. If you click on the "Details +" button, you can also verify the ScriptSigs and the ScriptPubKeys. Nicely done so far! 
 
-Our `main.rs` looks much simpler now and there's a greater separation of concerns making our codebase easier to follow and maintain! Let's start talking about error handling next.
+The one thing we haven't done and probably won't do in this course is parse the `scriptPubKey` and display the [decoded script](https://en.bitcoin.it/wiki/Script). For example, `bitcoin-cli` will return a `scriptPubKey` field that looks like the following:
+```console
+...
 
-### Extra Practice
-* Take a stab at simplifying our `main.rs` file even more. Try separating out the compact size logic into a separate file and as a separate type (*hint: look into the `Enum` type*). Maybe the `hash_transaction` method can actually be a type-associated function on the `Transaction` struct.
+      "scriptPubKey": {
+        "asm": "OP_DUP OP_HASH160 4ef88a0b04e3ad6d1888da4be260d6735e0d3084 OP_EQUALVERIFY OP_CHECKSIG",
+        "desc": "addr(mniWjppVtvB5sp9hCcrtwgMCJE2cngUggc)#wstlfjz6",
+        "hex": "76a9144ef88a0b04e3ad6d1888da4be260d6735e0d308488ac",
+        "address": "mniWjppVtvB5sp9hCcrtwgMCJE2cngUggc",
+        "type": "pubkeyhash"
+      }
 
-----------------------------------------------------------------------------------------------------------------------------------------------------
+...
+```
+
+We'll ignore that for now, but this could be a fun extra practice challenge for you at the end of the course!
+
+Alright so our `main.rs` is looking much simpler now and there's a greater separation of concerns making our codebase easier to follow and maintain! Let's start talking about error handling next.
+
+<hr/>
 
 <div>
     <p align="right"><a href="19_error_handling.md">>>> Next Lesson: Error Handling</a></p>

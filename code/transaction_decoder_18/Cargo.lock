@@ -152,7 +152,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "transaction_decoder_17"
+name = "transaction_decoder_18"
 version = "0.1.0"
 dependencies = [
  "hex",
