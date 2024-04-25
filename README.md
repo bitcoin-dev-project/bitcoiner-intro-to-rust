@@ -40,3 +40,5 @@ By the end of this project, you will have understood the fundamental concepts of
 * [18.0 Decoding a Legacy Transaction](18_decoding_legacy_transaction.md)
 * [19.0 Error Handling](19_error_handling.md)
 * [20.0 Command Line Arguments](20_command_line_arguments.md)
+* [21.0 Refactoring and the Rust-Bitcoin Library](21_refactor_and_rust_bitcoin.md)
+
