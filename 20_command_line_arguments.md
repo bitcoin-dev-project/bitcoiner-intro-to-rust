@@ -126,3 +126,9 @@ Hex decoding error: Odd number of digits
 ```
 
 Pretty cool! You now have a command line program. Take some time to go through the `clap` documentation and the different tutorials to familiarize yourself with all of the functionality available. 
+
+<hr/>
+
+<div>
+    <p align="right"><a href="21_refactoring_and_rust_bitcoin.md">>>> Next Lesson: Refactoring and the Rust-Bitcoin Library</a></p>
+</div>
