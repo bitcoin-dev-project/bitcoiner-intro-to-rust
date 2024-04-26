@@ -19,6 +19,8 @@ It's not as difficult as you might think. It just takes some time to get familia
 ### What You Will Learn
 By the end of this project, you will have understood the fundamental concepts of Rust such as types, data structures, references, stack and the heap, traits, error handling and more. We will also review some basic aspects of the Bitcoin protocol, specifically the components of a transaction. In future courses, we will dive deeper into the Bitcoin protocol and write more complex programs, exploring the full extent of Bitcoin's capabilities. 
 
+*Join the [Discord channel](https://discord.gg/5X84xWm2bQ)*
+
 ### Table of Contents
 * [1.0: Background](01_background.md)
 * [2.0: Setup](02_setup.md)
@@ -42,5 +44,3 @@ By the end of this project, you will have understood the fundamental concepts of
 * [20.0 Command Line Arguments](20_command_line_arguments.md)
 * [21.0 Refactoring and the Rust-Bitcoin Library](21_refactoring_and_rust_bitcoin.md)
 * [22.0 Decoding Segwit](22_decoding_segwit.md)
-
-*Join our Discord channel: https://discord.gg/5X84xWm2bQ*
