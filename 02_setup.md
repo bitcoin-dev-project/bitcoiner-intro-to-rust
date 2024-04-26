@@ -6,13 +6,13 @@ Let's get started with our project. First, you'll need to install Rust. Some use
 
 *Note: this course reflects Rust version 1.75.0. If you notice any discrepancies, check your Rust version to see if it's very different and let me know in the Discord channel for this course. I will update the lessons accordingly.*
 
-After you have installed Rust and Cargo, you can set up a new rust project using `cargo new` followed by the name of the project. Let's call this `bitcoin-transaction-decoder`.
+After you have installed Rust and Cargo, you can set up a new rust project using `cargo new` followed by the name of the project. Let's call this `transaction-decoder`.
 
 ```console
-$ cargo new bitcoin-transaction-decoder
+$ cargo new transaction-decoder
 ```
 
-This will create a new application in the folder `bitcoin-transaction-decoder`:
+This will create a new application in the folder `transaction-decoder`:
 ```console
 $ tree
 .
@@ -27,7 +27,7 @@ The `Cargo.toml` file is one of the two metadata files that Cargo uses to manage
 
 ```toml
 [package]
-name = "bitcoin-transaction-decoder"
+name = "transaction-decoder"
 version = "0.1.0"
 edition = "2021"
 
@@ -47,7 +47,7 @@ fn main() {
 }
 ```
 
-So if we run `$ cargo run` in the terminal (from the root directory of our project), we should see `Hello, world!` printed to the terminal. We will also see in the output that it has compiled the program and run the executable file located in `target/debug/bitcoin-transaction-decoder`.
+So if we run `$ cargo run` in the terminal (from the root directory of our project), we should see `Hello, world!` printed to the terminal. We will also see in the output that it has compiled the program and run the executable file located in `target/debug/transaction-decoder`.
 
 We're all set up! So let's get started writing some Rust code!
 
