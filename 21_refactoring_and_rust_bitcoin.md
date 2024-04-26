@@ -89,7 +89,6 @@ At a high level, it's helpful to see that we're accepting some argument that imp
 So what we are going to do here is remove all of our functions in the `lib.rs` and move all the logic to our `transaction.rs` where we will implement a `Decodable` trait everywhere.
 
 Let's first modify `lib.rs`:
-*lib.rs*
 ```rust
 mod transaction;
 use self::transaction::{Decodable, Transaction,};
@@ -129,7 +128,7 @@ Notice how we add a separate `decode` function. This will allow some other progr
 
 Let's take a look at our `transaction.rs` file now. The first thing we want to do is add our own custom error. This will allow us to add more custom error types based on bitcoin transaction validation logic if we want:
 
-*transaction.rs
+*transaction.rs*
 ```rust
 use serde::{Serialize, Serializer};
 use serde::ser::SerializeStruct;
@@ -439,6 +438,10 @@ Notice a similar pattern? We call `consensus_encode` on the first element of the
 
 In order to finish encoding the transactions `txid`, we'll need to implement `Encodable` for the remaining types: `u8`, `u16`, `u64`, `[u8; 32]`, `String`, `CompactSize`, `Vec<TxIn>`, `Vec<TxOut>`, `Txid`, `TxIn`, `TxOut`, and `Amount`. This seems like an opportunity for some good practice. Why don't you try completing this and then running `cargo test` to ensure the integration test still passes. Feel free to compare your code to what I've written in the `code` directory under `transaction_decoder_21`. 
 
-In the next lesson, we'll finish up by including the logic to decode a Segwit transaction. Get ready to finish up! 
+In the next lesson, we'll finish up by including the logic to decode a Segwit transaction. Get ready to finish up and complete your first command line program written in Rust! 
 
 <hr/>
+
+<div>
+    <p align="right"><a href="22_decoding_segwit.md">>>> Next Lesson: Decoding Segwit</a></p>
+</div>
