@@ -4,7 +4,7 @@ Let's get started with our project. First, you'll need to install Rust. Some use
 * https://doc.rust-lang.org/book/ch01-01-installation.html
 * https://www.rust-lang.org/tools/install
 
-*Note: this course reflects Rust version 1.75.0. If you notice any discrepancies, check your Rust version to see if it's very different and let me know in the Discord channel for this course. I will update the lessons accordingly.*
+*Note: this course reflects Rust version 1.75.0. If you notice any discrepancies, check your Rust version to see if it's very different and let me know in the [Discord channel](https://discord.gg/5X84xWm2bQ) for this course. I will update the lessons accordingly.*
 
 After you have installed Rust and Cargo, you can set up a new rust project using `cargo new` followed by the name of the project. Let's call this `transaction-decoder`.
 
