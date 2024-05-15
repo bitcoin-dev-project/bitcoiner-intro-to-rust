@@ -22,7 +22,7 @@ fn read_compact_size(transaction_bytes: &mut &[u8]) -> u64 {
     transaction_bytes.read(&mut compact_size).unwrap();
 
     if (1..253).contains(&compact_size[0]) {
-        u8::from_le_bytes(compact_size) as u64
+        compact_size[0] as u64
     } else if compact_size[0] == 253 {
         let mut buffer = [0; 2];
         transaction_bytes.read(&mut buffer).unwrap();
@@ -57,7 +57,7 @@ fn read_compact_size(transaction_bytes: &mut &[u8]) -> u64 {
 
     match compact_size[0] {
         1..=252 => {
-            u8::from_le_bytes(compact_size) as u64
+            compact_size[0] as u64
         },
         253 => {
             let mut buffer = [0; 2];
