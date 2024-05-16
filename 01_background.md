@@ -3,8 +3,8 @@
 Let's start by outlining what our program is going to do at a high level. 
 
 ### Project Overview: Decoding Raw Transactions
-If you have already set up Bitcoin Core locally and are familiar with the Bitcoin command line interface, what we are going to build is something very similar to `bitcoin-cli decoderawtransaction [raw transaction hex]`.
-What this does is it takes a raw transaction in hexadecimal format as a command line argument, decodes it and prints it out in a human readable format.
+What we are going to build is something similar to `bitcoin-cli decoderawtransaction [raw transaction hex]`.
+What it does is to take a raw transaction in hexadecimal format as a command line argument, decode and print it out in a human readable json format.
 For example, consider the following terminal command:
 
 `
@@ -57,7 +57,7 @@ This will print the following json response to the terminal:
 }
 ```
 
-Our Rust program will do something very similar.
+Our Rust program will do something similar.
 Instead of running `bitcoin-cli decoderawtransaction [raw transaction hex]`, we will call our program using the Rust package manager, Cargo:
 
 `
@@ -66,10 +66,11 @@ $ cargo run -- 0100000001c997a5e56e104102fa209c6a852dd90660a20b2d9c352423edce258
 
 ### Refresher
 
-As a quick refresher, transactions are one of the primary components of Bitcoin.
-They are a data collection that represent the transfer of money and provide proof to full nodes that a transfer is valid and that the node database and network should be updated to reflect the new ownership.
-Transaction data is relayed to nodes as a collection of bytes.
-Nodes and miners, using Bitcoin software, know how to deconstruct and analyze that byte data according to the consensus protocol specification.
+Transactions are one of the primary components of Bitcoin.
+A transaction is a data structure that represent the transfer of value in the network.
+It provides proof to full nodes that a transfer is valid and that the node database should be updated to reflect the new ownership.
+Transaction data is relayed between nodes as a sequence of bytes (also called a bitstream).
+Nodes and miners, using Bitcoin software, know how to deconstruct and analyze that byte sequence according to the consensus protocol specification.
 Chapter 6 of Mastering Bitcoin goes into detail breaking down a transaction.
 I highly recommend reading this chapter before starting to work on this program.
 It also offers a useful byte map diagram to visualize the different components:
@@ -78,9 +79,9 @@ It also offers a useful byte map diagram to visualize the different components:
 
 ### Other Helpful Resources
 
-* If you have not set up Bitcoin Core and are not familiar with `bitcoin-cli`, I highly recommend taking some time to play around with Bitcoin from the command line.
+* If you have not set up Bitcoin Core and are not familiar with `bitcoin-cli`, please take some time to play around with Bitcoin from the command line.
 A great educational resource can be found [here](https://github.com/BlockchainCommons/Learning-Bitcoin-from-the-Command-Line?tab=readme-ov-file).
-* [learnmeabitcoin.com](https://learnmeabitcoin.com/) also has some great educational content and tutorials explaining complex aspects of the Bitcoin protocol in a very accessible way
+* [learnmeabitcoin.com](https://learnmeabitcoin.com/) also has some great educational content and tutorials explaining complex aspects of the Bitcoin protocol in a very accessible way.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
