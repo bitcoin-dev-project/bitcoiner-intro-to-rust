@@ -1,8 +1,5 @@
-# Background
+# Project Overview: Decoding Raw Transactions
 
-Let's start by outlining what our program is going to do at a high level. 
-
-### Project Overview: Decoding Raw Transactions
 What we are going to build is something similar to `bitcoin-cli decoderawtransaction [raw transaction hex]`.
 What it does is to take a raw transaction in hexadecimal format as a command line argument, decode and print it out in a human readable json format.
 For example, consider the following terminal command:
