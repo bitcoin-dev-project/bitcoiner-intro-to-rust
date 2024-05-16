@@ -30,7 +30,7 @@ mod unit_tests {
 
 Notice how we call `use super::read_compact_size`. We have to bring the function we're testing into scope because we are in a separate `unit_tests` module and need access to private functions. In Rust, unless we add the `pub` keyword to a function, it is private. 
 
-We identify each test function with the `#[test]` annotation. We can have other functions in the test module without that annotation. This means they won't be run as tests, but could useful as helper functions for other tests in the module. 
+We identify each test function with the `#[test]` annotation. We can have other functions in the test module without that annotation. This means they won't be run as tests, but could be useful as helper functions for other tests in the module. 
 
 Now, if you run `cargo test` from the command line instead of `cargo run`, your tests will run and return results to the terminal. You might see something like the following:
 
