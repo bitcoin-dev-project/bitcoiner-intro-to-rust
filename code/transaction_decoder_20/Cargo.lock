@@ -239,7 +239,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "transaction_decoder_19"
+name = "transaction_decoder_20"
 version = "0.1.0"
 dependencies = [
  "clap",

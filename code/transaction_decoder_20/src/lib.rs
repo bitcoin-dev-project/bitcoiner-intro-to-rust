@@ -26,7 +26,7 @@ fn read_compact_size(transaction_bytes: &mut &[u8]) -> Result<u64, IOError> {
 
     match compact_size[0] {
         1..=252 => {
-            Ok(u8::from_le_bytes(compact_size) as u64)
+            Ok(compact_size[0] as u64)
         },
         253 => {
             let mut buffer = [0; 2];
