@@ -1,4 +1,4 @@
-# 06 Solution
+# 6 Solution
 
 ### Quiz
 *How is a `String` implemented in Rust? How is it different from a string slice `&str`?*

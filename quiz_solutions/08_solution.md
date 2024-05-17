@@ -1,4 +1,4 @@
-# 08 Solution
+# 8 Solution
 
 ### Quiz
 *Consider the following block of code in which we create a Vec and then attempt to print it out:*

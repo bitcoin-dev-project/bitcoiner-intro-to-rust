@@ -1,4 +1,4 @@
-# 05 Solution
+# 5 Solution
 
 ### Quiz
 *Notice the last line of this function. What will the compiler complain is wrong with this function? And why?*
