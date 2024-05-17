@@ -14,6 +14,7 @@ Let's call this `transaction-decoder`.
 
 ```console
 $ cargo new transaction-decoder
+$ cd transaction-decoder
 ```
 
 This will create a new application in the folder `transaction-decoder`:
