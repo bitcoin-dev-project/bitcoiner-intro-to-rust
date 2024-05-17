@@ -1,6 +1,11 @@
 # Our First Function
 
-Let's not worry at the moment about how our project is structured. We'll come back to that. Let's not even worry about how to accept and read a command line argument. Let's start with a very simple approach. We'll write another function called `read_version` which will receive the transaction text in hexademical format and return the version. For now, we won't actually implement the code for returning the version, we'll just return `1`.
+Let's not worry at the moment about how our project is structured.
+We'll come back to that.
+Let's not even worry about how to accept and read a command line argument.
+Let's start with a very simple approach.
+We'll write another function called `read_version` which will receive the transaction text in hexademical format and return the version.
+For now, we won't actually implement the code for returning the version, we'll just return `1`.
 
 For the example throughout our course, we're going to look at a randomly selected legacy Testnet transaction, which can be viewed in detail here: https://mempool.space/testnet/tx/3c1804567a336c3944e30b3c2593970bfcbf5b15a40f4fc6b626a360ee0507f2.
 
@@ -17,16 +22,20 @@ fn main() {
 }
 ```
 
-Let's see what happens if we run the command `$ cargo run`. Again remember to run this command from the root directory. The cargo command needs to look for the `Cargo.toml` to be able to compile and execute the program.
+Let's see what happens if we run the command `$ cargo run`.
+Again remember to run this command from the root directory.
+The cargo command needs to look for the `Cargo.toml` to be able to compile and execute the program.
 
-As you will see, the program will fail to compile and we'll get a number of different errors here. The first is that it complains about the `transaction_hex` function argument and offers some suggestions for fixing it.
+As you will see, the program will fail to compile and we'll get a number of different errors here.
+The first is that it complains about the `transaction_hex` function argument and offers some suggestions for fixing it.
 
 ```console
 1 | fn read_version(transactionhex) {
   |                                  ^ expected one of `:`, `@`, or `|`
 ```
 
-It's expecting some more information about the argument. One of the suggestions that's relevant to us is this one:
+It's expecting some more information about the argument.
+One of the suggestions that's relevant to us is this one:
 ```console
 help: if this is a parameter name, give it a type
   |
@@ -34,9 +43,14 @@ help: if this is a parameter name, give it a type
   |                                  ++++++++++
 ```
 
-Remember, Rust is a *statically typed* language. You have to explicitly provide the type of data you expect the function arguments to be. Is it an integer? What kind of integer? Is it a string? An array? A vector? You can read up more on Rust's data types here: https://doc.rust-lang.org/book/ch03-02-data-types.html.
+Remember, Rust is a *statically typed* language.
+You have to explicitly provide the type of data you expect the function arguments to be.
+Is it an integer? What kind of integer? Is it a string? An array? A vector? You can read up more on Rust's data types here: https://doc.rust-lang.org/book/ch03-02-data-types.html.
 
-The argument is obviously a text data type of some sort. In other languages we might call this a `string`, but in Rust the `String` data type means something more nuanced. We won't go into that here just yet. Let's just say that when you enter some text inside quotes, Rust interprets that as the type `&str`.
+The argument is obviously a text data type of some sort.
+In other languages we might call this a `string`, but in Rust the `String` data type means something more nuanced.
+We won't go into that here just yet.
+Let's just say that when you enter some text inside quotes, Rust interprets that as the type `&str`.
 
 So let's specify the function argument by doing the following:
 
@@ -48,7 +62,8 @@ fn read_version(transactionhex: &str) {
 
 And let's see what happens when we call `$ cargo run` again.
 
-Looks like that's no longer an issue. The next error now is fairly straightforward.
+Looks like that's no longer an issue.
+The next error now is fairly straightforward.
 
 ```console
 error[E0425]: cannot find value `version` in this scope
@@ -58,7 +73,11 @@ error[E0425]: cannot find value `version` in this scope
   |     ^^^^^^^
 ```
 
-The compiler is looking for the `version` declaration somewhere. But what we really mean is that we want to declare a new variable. Any time we are declaring a new variable to use, we must use the `let` keyword. This is not needed if we are referring to variable that has already been declared. It should look something like this:
+The compiler is looking for the `version` declaration somewhere.
+But what we really mean is that we want to declare a new variable.
+Any time we are declaring a new variable to use, we must use the `let` keyword.
+This is not needed if we are referring to variable that has already been declared.
+It should look something like this:
 
 ```rust
 let version = read_version("0100000001c997a5e56e104102fa209c6a852dd90660a20b2d9c352423edce25857fcd3704000000004847304402204e45e16932b8af514961a1d3a1a25fdf3f4f7732e9d624c6c61548ab5fb8cd410220181522ec8eca07de4860a4acdd12909d831cc56cbbac4622082221a8768d1d0901ffffffff0200ca9a3b00000000434104ae1a62fe09c5f51b13905f07f06b99a2f7159b2225f374cd378d71302fa28414e7aab37397f554a7df5f142c21c1b7303b8a0626f1baded5c72a704f7e6cd84cac00286bee0000000043410411db93e1dcdb8a016b49840f8c53bc1eb68a382e97b1482ecad7b148a6909a5cb2e0eaddfb84ccf9744464f82e160bfa9b8b64f9d4c03f999b8643f656b412a3ac00000000");
@@ -66,7 +85,8 @@ let version = read_version("0100000001c997a5e56e104102fa209c6a852dd90660a20b2d9c
 
 Ok, `let`'s do that, rerun `$ cargo run` and see what happens.
 
-That should work now. This last error we see is related to mismatched types. 
+That should work now.
+This last error we see is related to mismatched types.
 
 ```console
 error[E0308]: mismatched types
@@ -78,9 +98,12 @@ error[E0308]: mismatched types
   |            ^ expected `()`, found integer
 ```
 
-In keeping with the theme of providing explicit types for everything, we have to do this for function return types as well. The compiler needs to know what the function is expected to return so that it can enforce that. 
+In keeping with the theme of providing explicit types for everything, we have to do this for function return types as well.
+The compiler needs to know what the function is expected to return so that it can enforce that.
 
-With the function we've written, we didn't tell the compiler exactly what type the function should return. When this is not provided, Rust assumes that you mean to return the empty tuple type, `()`. In other words, this function is the equivalent of the following:
+With the function we've written, we didn't tell the compiler exactly what type the function should return.
+When this is not provided, Rust assumes that you mean to return the empty tuple type, `()`.
+In other words, this function is the equivalent of the following:
 
 ```rust
 fn read_version(transactionhex: &str) -> () {
@@ -88,11 +111,19 @@ fn read_version(transactionhex: &str) -> () {
 }
 ```
 
-So the compiler is complaining because we've told it that it should expect an empty tuple as the return type, but we are instead returning an integer type. Let's fix that.
+So the compiler is complaining because we've told it that it should expect an empty tuple as the return type, but we are instead returning an integer type.
+Let's fix that.
 
-For now, let's assume that we're returning an integer, which is an unsigned 32 bit integer. I chose this particular type for a reason. Remember, if we refer back to chapter 6 of Mastering Bitcoin, we know the version is represented as 4 bytes. And each byte is 8 bits. So we know the maximum size of the version is 32 bits. "Unsigned" means the number is always positive. We don't have negative version transactions. 
+For now, let's assume that we're returning an integer, which is an unsigned 32 bit integer.
+I chose this particular type for a reason.
+Remember, if we refer back to chapter 6 of Mastering Bitcoin, we know the version is represented as 4 bytes.
+And each byte is 8 bits.
+So we know the maximum size of the version is 32 bits.
+"Unsigned" means the number is always positive.
+We don't have negative version transactions.
 
-Rust provides the `u32` data type as a primitive type, meaning it's available out-of-the-box and we don't need to use any external libraries. So let's use that and see what happens when we run `$ cargo run` again. 
+Rust provides the `u32` data type as a primitive type, meaning it's available out-of-the-box and we don't need to use any external libraries.
+So let's use that and see what happens when we run `$ cargo run` again.
 
 ```rust
 fn read_version(transactionhex: &str) -> u32 {
@@ -100,9 +131,10 @@ fn read_version(transactionhex: &str) -> u32 {
 }
 ```
 
-Ok! Looks like the program is compiling successfully now and is printing `Hello, world!`! That's great. 
+Ok! Looks like the program is compiling successfully now and is printing `Hello, world!`! That's great.
 
-Let's make one final change. We'll modify the `println!` function to print the version. 
+Let's make one final change.
+We'll modify the `println!` function to print the version.
 
 ```rust
 fn main() {
@@ -112,15 +144,20 @@ fn main() {
 }
 ```
 
-`println!` is actually a `macro` rather than a Rust function. Macros are a form of metaprogramming, where we write code that writes other code. We don't need to go into too much detail with how these work right now, at least not yet! 
+`println!` is actually a `macro` rather than a Rust function.
+Macros are a form of metaprogramming, where we write code that writes other code.
+We don't need to go into too much detail with how these work right now, at least not yet! 
 
-One useful thing about a macro is that it can take a variable number of parameters. In the case of `println!`, we can place many different brackets, `{}`, inside the quotes of the first argument, and it will replace each bracket with an argument from the following comma separated list of arguments. For example:
+One useful thing about a macro is that it can take a variable number of parameters.
+In the case of `println!`, we can place many different brackets, `{}`, inside the quotes of the first argument, and it will replace each bracket with an argument from the following comma separated list of arguments.
+For example:
 
 ```rust
 println!("{}, {}!", "Hello", "world")
 ```
 
-This will print `Hello, world!`. You can read up more on the differences between macros and functions here: https://doc.rust-lang.org/book/ch19-06-macros.html#the-difference-between-macros-and-functions
+This will print `Hello, world!`.
+You can read up more on the differences between macros and functions here: https://doc.rust-lang.org/book/ch19-06-macros.html#the-difference-between-macros-and-functions
 
 Ok, so if we run `$ cargo run` one last time, we can now see that our program prints out the version! 
 
@@ -128,11 +165,20 @@ Ok, so if we run `$ cargo run` one last time, we can now see that our program pr
 Version: 1
 ```
 
-Look at that! You've written some Rust code and are starting to get the hang of the basics. That wasn't so bad was it? 
+Look at that! You've written some Rust code and are starting to get the hang of the basics.
+That wasn't so bad was it? 
 
-You battled with the compiler and won. For now, bask in your victory. You are well on your way to becoming a master of both Bitcoin and Rust. Do not fear the compiler. Fear is the mind-killer. Just remember to stay calm and read the errors carefully. You will figure it all out eventually.
+You battled with the compiler and won.
+For now, bask in your victory.
+You are well on your way to becoming a master of both Bitcoin and Rust.
+Do not fear the compiler.
+Fear is the mind-killer.
+Just remember to stay calm and read the errors carefully.
+You will figure it all out eventually.
 
-Let's move on to the next lesson. We'll go into more detail about hexadecimal format as well as converting to and working with bytes. 
+Let's move on to the next lesson.
+We'll go into more detail about hexadecimal format as well as converting to and working with bytes.
+
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
