@@ -42,11 +42,11 @@ edition = "2021"
 [dependencies]
 ```
 
-There is a `package` section which shows some package configuration options and a `dependencies` which we'll use to manage any external libraries (or `crates`) that we'll want to use in our program.
-Cargo will use this to fetch and build package dependencies and keep track of them in the `Cargo.lock` file. 
+There is a `package` section which shows some package configuration options and a `dependencies` section which we'll use to manage any external libraries (or `crates`) that we'll want to use in our program.
+Cargo uses this information to fetch and build package dependencies and keeps track of them in the `Cargo.lock` file. 
 
 The next folder we'll look at is `src`, which contains the `main.rs` file.
-This is our entry point into our Rust program.
+This is the entry point of our Rust program.
 We will call our program from the terminal using `$ cargo run`.
 This will compile our program, create an executable file and then run it. 
 
@@ -58,7 +58,7 @@ fn main() {
 ```
 
 So if we run `$ cargo run` in the terminal (from the root directory of our project), we should see `Hello, world!` printed to the terminal.
-We will also see in the output that it has compiled the program and run the executable file located in `target/debug/transaction-decoder`.
+We will also see in the output that cargo has compiled the program and run the executable file located in `target/debug/transaction-decoder`.
 
 We're all set up!
 So let's get started writing some Rust code!
