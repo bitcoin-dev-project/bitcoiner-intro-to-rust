@@ -19,7 +19,7 @@ fn main() {
 ```
 
 ### Solution
-We'll get a similar error enforcing the Single Writer or Multiple Readers rule:
+We'll get a familiar error enforcing the Single Writer or Multiple Readers rule:
 ```console
 error[E0502]: cannot borrow `transaction_bytes` as mutable because it is also borrowed as immutable
   --> src/main.rs:17:5
