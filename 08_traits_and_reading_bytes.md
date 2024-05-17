@@ -152,5 +152,5 @@ fn main() {
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
 <div style="text-align: right">
-    <p align="right"><a href="09_references_and_borrowing.md">>>> Next Lesson: References and Borrowing</a></p>
+    <p align="right"><a href="09_00_mutable_references.md">>>> Next Lesson: Mutable References</a></p>
 </div>

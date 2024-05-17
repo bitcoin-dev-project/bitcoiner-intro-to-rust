@@ -1,4 +1,4 @@
-# 07 Solution
+# 7 Solution
 
 ### Quiz
 *Can we easily convert an `array` into a `vec` similar to how we converted a `slice` into an `array` above? If so, how does it work?*

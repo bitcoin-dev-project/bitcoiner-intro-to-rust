@@ -1,4 +1,4 @@
-# 04 Solution
+# 4 Solution
 
 ### Quiz
 *What is the version number indicated by the following 4 bytes little endian in hexadecimal format: `10000000`?*
