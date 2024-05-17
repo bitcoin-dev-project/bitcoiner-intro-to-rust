@@ -17,7 +17,7 @@ fn main() {
     println!("bytes slice memory address before calling read_version: {:p}\n", bytes_slice);
     let version = read_version(&mut bytes_slice); // pass in a mutable reference to the bytes_slice
     println!("bytes slice memory address after calling read_version: {:p}\n", bytes_slice);
-    println!("bytes slice after calling read_version: {:?}", bytes_slice.len());
+    println!("bytes slice after calling read_version: {:?}", bytes_slice);
     println!("Version: {}", version);
 
     let mut input_count = [0; 1];
