@@ -1,4 +1,4 @@
-# 9.1 Mutable References
+# 9.0 Mutable References
 
 So in the previous section, we were able to read the version by `read`ing the first 4 bytes and converting that into a u32 integer. However, we want to keep track of where we are in the transaction so that we can continue to do decode it. In order to do that we'll want to pass in the bytes slice to the `read_version` function and then continue using it in the `main` function.
 
