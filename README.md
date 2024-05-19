@@ -20,7 +20,7 @@ It's not as difficult as you might think. It just takes some time to get familia
 By the end of this project, you will have understood the fundamental concepts of Rust such as types, data structures, references, stack and the heap, traits, error handling and more. We will also review some basic aspects of the Bitcoin protocol, specifically the components of a transaction. In future courses, we will dive deeper into the Bitcoin protocol and write more complex programs, exploring the full extent of Bitcoin's capabilities. 
 
 ### Table of Contents
-* [1.0: Project Overview: Decoding Raw Transactions](01_background.md)
+* [1.0: Project Overview](01_project_overview.md)
 * [2.0: Setup](02_setup.md)
 * [3.0: Our First Function](03_our_first_function.md)
 * [4.0: Hex and Bytes](04_hex_and_bytes.md)
