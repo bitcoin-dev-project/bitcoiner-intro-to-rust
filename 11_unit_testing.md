@@ -192,7 +192,7 @@ fn test_reading_compact_size() {
         // fd is 253
         // transaction has 20,000 empty inputs
         let hex = "fd204e";
-        let decoded = hex::decode(transaction_hex).unwrap();
+        let decoded = hex::decode(hex).unwrap();
         let mut bytes = decoded.as_slice();
         let length = read_compact_size(&mut bytes);
         let expected_length = 20_000_u64;
