@@ -1,14 +1,14 @@
 # Hex and Bytes
 
 Alright, we have some working code and are printing a version number, but this is hardcoded.
-We want to actually extract the version from the given raw transaction and properly implement the `read_version` function.
-But before we do so, we need to review a few key concepts.
+We want to actually extract the version field from the given raw transaction and properly implement the `read_version` function.
+Before we do so, we need to review a few key concepts.
 
 ### Hexadecimal Format
 We mentioned earlier that transactions are represented as a string of hexadecimal characters.
 But what does "hexadecimal" mean exactly?
 Well, it's a number system, but instead of being base 10, with digits 0 through 9, it is base 16 with digits 0-9 and characters a-f.
-The integer 10 in hexadecimal format is `a` (also written as 0xa), the interger 11 is `b`, and so on.
+The integer 10 in hexadecimal format is `a` (also written as 0xa), the integer 11 is `b`, and so on.
 If we wanted to express the integer 71, the math would be `4 * 16^1 + 7 * 16^0`.
 So 71 is represented as `47` in hexadecimal format.
 
@@ -40,7 +40,7 @@ Doing base 16 math as we did before will tell us it would be version 16777216.
 After all, the `01` seems to be in the high value position (the most significant byte).
 
 Currently Bitcoin only supports version 1 and version 2 transactions.
-Wouldn't we expect this to look more like `00000001` so that it is correctly intepreted as a version 1 transaction?
+Wouldn't we expect this to look more like `00000001` so that it is correctly interpreted as a version 1 transaction?
 Well, this gets us into the topic of endianness.
 
 ### Little Endian vs Big Endian
