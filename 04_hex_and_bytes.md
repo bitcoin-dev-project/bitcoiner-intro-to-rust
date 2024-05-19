@@ -6,10 +6,10 @@ But before we do so, we need to review a few key concepts.
 
 ### Hexadecimal Format
 We mentioned earlier that transactions are represented as a string of hexadecimal characters.
-But what does "hexadecimal" mean exactly? Well, it's a number system, but instead of being base 10, with digits 0 through 9, it is base 16 with digits 0-9 and characters a-f.
-So the integer 10 in hexadecimal format is `a` (can also be written as 0xa).
-Mathematically, we can see that `a` converts to 10 using base math: `0 * 16^1 + 10 * 16^0 = 10`.
-If we wanted to express the integer 71, we know the math would be `4 * 16^1 + 7 * 16^0`.
+But what does "hexadecimal" mean exactly?
+Well, it's a number system, but instead of being base 10, with digits 0 through 9, it is base 16 with digits 0-9 and characters a-f.
+The integer 10 in hexadecimal format is `a` (also written as 0xa), the interger 11 is `b`, and so on.
+If we wanted to express the integer 71, the math would be `4 * 16^1 + 7 * 16^0`.
 So 71 is represented as `47` in hexadecimal format.
 
 ### Bytes
