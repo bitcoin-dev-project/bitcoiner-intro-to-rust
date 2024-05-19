@@ -44,22 +44,33 @@ Wouldn't we expect this to look more like `00000001` so that it is correctly int
 Well, this gets us into the topic of endianness.
 
 ### Little Endian vs Big Endian
-Bytes can be stored in two different orders.
-When bytes are stored as little-endian, the least significant byte is stored first (in the lowest memory address).
-Modern CPUs usually store numbers as little endian.
-When bytes are stored as big-endian, the most significant byte is stored first.
-So when we look at a transaction, the version is defined by the protocol as being 4 bytes in *little endian*.
-This means the least significant position appears first.
-What do we mean by *position*? Well let's look at decimal numbers for comparison.
+Bytes can be stored in two different orders: little vs. big endian.
+When bytes are stored as little-endian, the least significant byte is stored in the lowest memory address.
+That's how modern CPUs usually store numbers which make sense from a logical engineering perspective.
+When bytes are stored as big-endian, it's the opposite: the most significant byte is stored in the lowest memory address.
 
-When looking at decimal numbers, we typically read it from left to right with the most sigificant digit first to the least significant digit last.
+In its heart, Bitcoin is a communication protocol.
+For communication protocols, the different endianness are crucial to understand because bytes will be sent in a specific sequence.
+If the receiver expects to see data in a different order from the sender, it will misinterpret data completely.
+Thus, communication protocols specify which order bytes will be sent.
+In the Bitcoin protocol, bytes are transmitted in little-endian order.
+That means that the least significant byte is sent first.
+
+So, the version 1 field will be serialized as hexadecimal `00000001` using the base 16 math as we did before.
+Then, bytes will be transmitted from the least significant to the most significant.
+That is, the receiver will see the byte `01` first, then `00`, then `00`, and finally `00`.
+Since it knows this is little-endian order, this is to be interpreted as `00000001` as the sender intended it to be.
+
+When looking at decimal numbers, humans in the West typically read it from left to right with the most significant digit first to the least significant digit last.
 For example, in the number, `201`, the most significant digit is `2` and the least significant digit is `1`.
-But in the case of this transaction version data, the least significant byte appears first.
-So we'd have to take this into account when doing base math.
-One way to do this is to simply reverse the order of the bytes and then do the base math we're familiar with.
+But in the case of this transaction version data, the least significant byte will appear first as we just saw.
+This is a common cause of confusion when learning the Bitcoin protocol: bytes seem to be written in reverse in many parts of the system.
+
+We have to take this into account when doing base math.
+One way to do this is to simply reverse the order of the bytes when we see raw data and then do the base math we're familiar with.
 For example `01 00 00 00` can be reversed and become `00 00 00 01`.
-Now, we can do our normal base math which is `0* 16^7 + ...
-+ 1 * 16^0`.
+Don't forget that `01`, two hexadecimal digits, represent a single bytes and is to be taken as a unit (there's no little vs. big-endian dichotomy inside single bytes).
+Now, we can do our normal base math which is `0* 16^7 + ... + 1 * 16^0`.
 We don't need to write all of it out since the other values will just be zero.
 Therefore the version number is just `1 * 16^0` which is `1`.
 
