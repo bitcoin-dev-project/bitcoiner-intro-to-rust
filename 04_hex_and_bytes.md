@@ -24,18 +24,24 @@ This will come in handy for our project.
 https://doc.rust-lang.org/std/primitive.u8.html
 
 ### Converting Hexadecimal to Bytes
-Remember, if we want to extract the version from a transaction, we want the first 4 bytes.
+If we want to extract the version from a transaction, we want the first 4 bytes of the bitstream.
 However, our program isn't given the bytes data in decimal format, but in a hexadecimal string format.
 As it turns out, every two hexadecimal characters represents one byte.
-This is because the maximum value for two hexadecimal characters is `ff` - 255 - using base 16 math: `15 * 16^1 + 15 * 16^0`.
+This is because the maximum value for two hexadecimal characters is `ff` which is equivalent to 255.
+Using base 16 math: `15 * 16^1 + 15 * 16^0`.
 So we can just look at our raw transaction and look at the first 8 characters (first 4 pairs of hexadecimal characters) to see what the version is.
 For example, from the previous lesson's transaction we see:
 
 <ins><i>01000000</i></ins>0242d5c1d6f7308bbe95c0f6e1301dd73a8da77d2155b0773bc297ac47f9cd7380010000006a4730440220771361aae55e84496b9e7b06e0a53dd122a1425f85840af7a52b20fa329816070220221dd92132e82ef9c133cb1a106b64893892a11acf2cfa1adb7698dcdc02f01b0121030077be25dc482e7f4abad60115416881fe4ef98af33c924cd8b20ca4e57e8bd5feffffff75c87cc5f3150eefc1c04c0246e7e0b370e64b17d6226c44b333a6f4ca14b49c000000006b483045022100e0d85fece671d367c8d442a96230954cdda4b9cf95e9edc763616d05d93e944302202330d520408d909575c5f6976cc405b3042673b601f4f2140b2e4d447e671c47012103c43afccd37aae7107f5a43f5b7b223d034e7583b77c8cd1084d86895a7341abffeffffff02ebb10f00000000001976a9144ef88a0b04e3ad6d1888da4be260d6735e0d308488ac508c1e000000000017a91476c0c8f2fc403c5edaea365f6a284317b9cdf7258700000000
 
 We can convert `01000000` to an integer using base 16 math.
-But at a quick glance this looks like a much bigger integer than `1` doesn't it? After all, the `01` seems to be in the high position.
-Wouldn't we expect this to look more like `00000001` so that it is correctly intepreted as a version 1 transaction? (*Currently Bitcoin only supports version 1 and version 2 transactions*) Well, this gets us into the topic of endianness.
+But at a quick glance this looks like a much bigger integer than `1` doesn't it?
+Doing base 16 math as we did before will tell us it would be version 16777216.
+After all, the `01` seems to be in the high value position (the most significant byte).
+
+Currently Bitcoin only supports version 1 and version 2 transactions.
+Wouldn't we expect this to look more like `00000001` so that it is correctly intepreted as a version 1 transaction?
+Well, this gets us into the topic of endianness.
 
 ### Little Endian vs Big Endian
 Bytes can be stored in two different orders.
