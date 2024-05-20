@@ -49,27 +49,23 @@ When bytes are stored as little-endian, the least significant byte is stored in 
 That's how modern CPUs usually store numbers which make sense from a logical engineering perspective.
 When bytes are stored as big-endian, it's the opposite: the most significant byte is stored in the lowest memory address.
 
-In its heart, Bitcoin is a communication protocol.
-For communication protocols, the different endianness are crucial to understand because bytes will be sent in a specific sequence.
-If the receiver expects to see data in a different order from the sender, it will misinterpret data completely.
+At its heart, Bitcoin is a communication protocol.
+For communication protocols, endianness is crucial to understand because bytes will be transmitted in a specific sequence.
+If the receiver expects to see data in a different order from the sender, it will misinterpret that data.
 Thus, communication protocols specify which order bytes will be sent.
 In the Bitcoin protocol, bytes are transmitted in little-endian order.
 That means that the least significant byte is sent first.
-
-So, the version 1 field will be serialized as hexadecimal `00000001` using the base 16 math as we did before.
-Then, bytes will be transmitted from the least significant to the most significant.
-That is, the receiver will see the byte `01` first, then `00`, then `00`, and finally `00`.
-Since it knows this is little-endian order, this is to be interpreted as `00000001` as the sender intended it to be.
 
 When looking at decimal numbers, humans in the West typically read it from left to right with the most significant digit first to the least significant digit last.
 For example, in the number, `201`, the most significant digit is `2` and the least significant digit is `1`.
 But in the case of this transaction version data, the least significant byte will appear first as we just saw.
 This is a common cause of confusion when learning the Bitcoin protocol: bytes seem to be written in reverse in many parts of the system.
 
-We have to take this into account when doing base math.
-One way to do this is to simply reverse the order of the bytes when we see raw data and then do the base math we're familiar with.
-For example `01 00 00 00` can be reversed and become `00 00 00 01`.
-Don't forget that `01`, two hexadecimal digits, represent a single bytes and is to be taken as a unit (there's no little vs. big-endian dichotomy inside single bytes).
+So, the version 1 field will be sent in the following order: `01` followed by three `00`s.
+`01` is the least significant byte and is sent first.
+When doing base math to convert these bytes to integers, we can canceptualize it in reverse so that the `01` is in the least significant position.
+In other words, we can think of it as `00 00 00 01` and then do our normal base 16 math to convert this to an integer.
+
 Now, we can do our normal base math which is `0* 16^7 + ... + 1 * 16^0`.
 We don't need to write all of it out since the other values will just be zero.
 Therefore the version number is just `1 * 16^0` which is `1`.
@@ -77,9 +73,7 @@ Therefore the version number is just `1 * 16^0` which is `1`.
 We can also convert each byte to its binary representation and then do some math to convert the binary number to a decimal number.
 For example `01` in hexadecimal is `00000001` in binary (8 bits).
 Remember, binary is just a number with base 2.
-So we can do base 2 math.
-`0 * 2^7 + ...
-+ 1 * 2^0`.
+So we can do base 2 math: `0 * 2^7 + ... + 1 * 2^0`.
 This also equals 1.
 
 ### Quiz
