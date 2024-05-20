@@ -1,7 +1,9 @@
 # 8 Solution
 
 ### Quiz
-*Consider the following block of code in which we create a Vec and then attempt to print it out:*
+1. *Take another look at the `Read` trait and the implementation of the `Read` trait for a slice in the documentation. What are the required and provided methods for the trait? What provided methods are being overwritten by the slice?*
+
+2. *Consider the following block of code in which we create a Vec and then attempt to print it out:*
 ```rust
 fn main() {
     let vec: Vec::<u8> = vec![0, 0, 0, 0, 0];
@@ -14,7 +16,9 @@ fn main() {
 *3. Try and implement the correct trait for Vec so that it can be printed for standard display purposes.*
 
 ### Solution
-If we run this and look at the compiler error, we'll get a better sense of what's going on here.
+1. According to the [`Read` trait documentation](https://doc.rust-lang.org/std/io/trait.Read.html), `read` is the only required method. The rest, `read_vectored`, `is_read_vectored`, `read_to_end`, `read_to_string`, `read_exact`, `read_buf`, `read_buf_exact`, `by_ref`, `bytes`, `chain`, and `take` are all provided methods with default implementations. The provided methods that the [slice](https://doc.rust-lang.org/src/std/io/impls.rs.html#233-323) overwrites are `read_vectored`, `is_read_vectored`, `read_to_end`, `read_to_string`, `read_exact` and `read_buf`. 
+
+2. If we run this and look at the compiler error, we'll get a better sense of what's going on here.
 ```console
    Compiling playground v0.0.1 (/playground)
 error[E0277]: `Vec<{integer}>` doesn't implement `std::fmt::Display`
@@ -38,7 +42,7 @@ pub trait Display {
 
 For now, if we wanted to print a `vec` we would have to use `{:?}` inside the println! string slice argument. This will print the `Debug` output and a `vec` does implement `Debug`. 
 
-Let's attempt to implement the `Display` trait for a `vec`:
+Let's attempt to implement the `Display` trait for a `vec` by implementing the required method `fmt`:
 ```rust
 use std::fmt;
 
@@ -58,4 +62,6 @@ fn main() {
 }
 ```
 
-The basic idea is that we leverage the `write!` macro which takes the `Formatter` instance and writes some information to it. If any step fails, an error will be returned. Otherwise, if we iterate through the vector and are able to write all values successfully we can simply return the `Ok(())` result. This might still be a bit confusing at this stage, so consider coming back to revisit this solution after you've gone through the course. 
+The basic idea is that we leverage the `write!` macro which takes the `Formatter` instance and writes some information to it. If any step fails, an error will be returned (we'll talk more about error handling and the `?` operator in chapter 19). If we iterate through the vector and are able to write all values successfully we can simply return the `Ok(())` result, which matches the the expected result type `fmt::Result`. 
+
+This might still be a bit confusing at this stage, so consider coming back to revisit this solution after you've gone through the course.
