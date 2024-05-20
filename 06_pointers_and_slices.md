@@ -2,8 +2,8 @@
 
 When we call `[]` on a vector to reference some set of elements, we are actually returning a slice and not another vector. A slice is just a region of contiguous data in memory. However, in Rust, we don't typically store that region of data directly into a variable. Instead we always *refer* to that region of data with the use of a pointer. In the case of a slice, we use what's called a **fat pointer**, which is a two-word value comprising a pointer to the slice's first element and the number of elements in the slice. Take a look at the diagram below.
 
-<img src="https://www.lurklurk.org/effective-rust/images/vecslice.svg" width=500/>
-<p><i>source: <a href="https://doc.rust-lang.org/book/ch15-00-smart-pointers.html">https://doc.rust-lang.org/book/ch15-00-smart-pointers.html</a></i></p>
+<img src="images/vecslice-white.png" width=500/>
+<p><i>source: <a href="https://www.lurklurk.org/effective-rust/references.html">https://www.lurklurk.org/effective-rust/references.html</a></i></p>
 
 ### Stack and Heap
 If you don't work in systems programming, you probably don't spend much time thinking about the stack and the heap, so let's provide a quick overview / refresher here. The stack represents the local variables in our program execution. Those variables in turn can refer to or *point to* data on the heap which is a less structured area of memory available to our program. When we need to store large amounts of data, we typically *allocate* that data on the heap. This is useful because the heap has no memory restrictions, whereas the stack is limited. The heap also allows data to be accessed from anywhere in the program, which is useful for data shared across different functions or modules. However, allocating to the heap comes with a cost. It takes more time for the program to find the space in memory to allocate the data and do some bookkeeping to return a pointer and prepare for the next allocation. When the data needs to be accessed or updated, there is additional overhead to find the the data in memory and to also reallocate memory as needed. 
@@ -53,7 +53,7 @@ Great! Let's keep moving and calculate the version number from the byte collecti
 
 ### Additional Reading
 * Stack and the Heap: https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html#the-stack-and-the-heap
-* Vectors vs Slices: https://stackoverflow.com/questions/32571441/what-is-the-difference-between-storing-a-vec-vs-a-slice
+* References and Pointers: https://www.lurklurk.org/effective-rust/references.html
 * Slices: https://doc.rust-lang.org/book/ch04-03-slices.html
 * Smart Pointers: https://doc.rust-lang.org/book/ch15-00-smart-pointers.html
 
