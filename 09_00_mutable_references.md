@@ -18,7 +18,7 @@ fn main() {
 
 Notice how we first decode the hex string to get a `vec` of bytes. We then convert that into a slice and then pass that into the `read_version` function.
 
-We'll now have to modify the `read_version` function in order to accept the correct argument. What do you think is the correct type for the the argument? Take a moment and then check back here.
+We'll now have to modify the `read_version` function to accept the correct argument. What do you think is the correct type for the the argument? Take a moment and then check back here.
 
 <hr/>
 
