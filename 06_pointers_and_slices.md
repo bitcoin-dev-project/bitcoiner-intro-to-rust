@@ -11,25 +11,24 @@ Take a look at the diagram below.
 <p><i>source: <a href="https://doc.rust-lang.org/book/ch15-00-smart-pointers.html">https://doc.rust-lang.org/book/ch15-00-smart-pointers.html</a></i></p>
 
 ### Stack and Heap
-If you don't work in systems programming, you probably don't spend much time thinking about the stack and the heap, so let's provide a quick overview / refresher here.
-The stack represents the local variables in our program execution.
-Those variables in turn can refer to or *point to* data on the heap which is a less structured area of memory available to our program.
-When we need to store large amounts of data, we typically *allocate* that data on the heap.
-This is useful because the heap has no memory restrictions, whereas the stack is limited.
+If you don't work in systems programming, you probably don't spend much time thinking about the stack and the heap, so let's provide a quick refresher here.
+The stack is a region in memory that holds local variables during our program execution.
+Those variables in turn can refer to, or *point to*, data on the heap which is a less structured area of memory available to our program.
+When we need to store large amounts of data or a data type whose size can change during the runtime of our program, we typically allocate that data on the heap.
+The heap is more flexible and less memory-constrained than the stack.
 The heap also allows data to be accessed from anywhere in the program, which is useful for data shared across different functions or modules.
 However, allocating to the heap comes with a cost.
-It takes more time for the program to find the space in memory to allocate the data and do some bookkeeping to return a pointer and prepare for the next allocation.
+It takes more time for the program to find the space in memory to allocate data and do some bookkeeping to return a pointer and prepare for the next allocation.
 When the data needs to be accessed or updated, there is additional overhead to find the the data in memory and to also reallocate memory as needed.
 
-In Rust, if a data type is *dynamically sized*, meaning it can expand or shrink and its size is not known at compile time, it *must be* allocated on the heap.
-If the data is a known, fixed-size and doesn't change, it can be allocated on the stack.
-This is for more memory safety purposes.
-Remember, the stack memory is limited so the compiler doesn't want there to be any surprises when the program actually runs which could lead to dangerous memory errors.
-Since the pointers themselves are known and fixed in size they can be safely allocated to our program's stack.
-The underlying data they point to is allocated on the heap.
+Rust enforces that any type that is dynamically sized, meaning it can expand or shrink and its size is not known at compile time, must be allocated to the heap.
+If the data size is known and fixed at compile time, and doesn't change during execution, it can be allocated on the stack.
+This is for both memory safety and memory efficiency purposes.
+Since pointers themselves are known and fixed in size they can be safely placed on our program's stack.
+The underlying data they point to are allocated on the heap.
 
 Notice in the diagram above how the vector is also a pointer type to data stored on the heap.
-In Rust, the vector is actually just a *smart pointer*, unlike the slice, which is instead of a *fat pointer*.
+In Rust, the vector is actually just a *smart pointer*, unlike the slice, which is instead a *fat pointer*.
 A smart pointer contains additional metadata and capabilities.
 It also *owns* the data instead of just borrowing a reference to it.
 We'll explore the concepts of borrowing and references in more detail later on.
@@ -54,9 +53,9 @@ So let's return to the error we're getting.
 
 In Rust, we cannot store dynamically sized data directly into a variable.
 The program doesn't know until runtime how that data will grow or change and so Rust demands that we instead allocate that data on the heap instead of the stack.
-Calling `[]` on a vec will return a region of dynamically-sized data, so we must always store a pointer reference to that data in a local variable.
+Calling `[]` on a vector will return a region of dynamically-sized data, so we must always store a pointer reference to that data in a local variable.
 We can do this by adding the `&` in front as the compiler suggested.
-The `&transaction_bytes[0..4]` is now a pointer and not the actual slice data on the heap.
+`&transaction_bytes[0..4]` is now a pointer and not the actual slice data on the heap.
 
 See below for our modified program.
 We've also added a `println!` in there to see what the version bytes looks like.
@@ -75,7 +74,7 @@ fn main() {
 }
 ```
 
-*Note: for `println!` we can insert additional characters in the brackets to modify the how the output is displayed.
+*Note: for `println!` we can insert additional characters in the brackets to modify how the output is displayed.
 `{:?}` will give us the debug output.
 As long as the variable's type implements the `Debug` trait, we can see the debugging printout for that variable.
 Not sure what a trait is?
