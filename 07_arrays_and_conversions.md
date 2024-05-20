@@ -18,14 +18,14 @@ We'll get a compiler error:
 expected `[u8; 4]`, found `&[u8]`
 ```
 
-If we look at the `from_le_bytes` method in the documentation and look at the function signature, we'll see that the parameter expected is of the type `[u8; 4]`.
+If we look at the `from_le_bytes` method in the documentation and check the function signature, we'll see that the parameter expected is of the type `[u8; 4]`.
 However, we're passing in a slice `&[u8]`.
 What is the difference between these two?
 
 Well, in Rust, the data type `[T; N]` where `T` is any type and `N` is the number of elements, is called an *array*.
 Now we have to be careful because this is not the same as an array in other languages, such as Javascript and it's not the same as a list in Python.
 An array here is a fixed size collection that is stored on the stack as opposed to the heap.
-This means the data is available directly at runtime and no memory lookup is required to retrieve the data.
+This means the data is available more efficiently at runtime as there is no need to lookup that data on the heap with the use of a pointer.
 An array's size is constant, cannot be changed and must be known and defined at compile time.
 
 So the method `from_le_bytes` only works with arrays, which makes sense.
