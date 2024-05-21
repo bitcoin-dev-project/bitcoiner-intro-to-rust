@@ -1,8 +1,10 @@
 # Mutable References
 
-So in the previous section, we were able to read the version by `read`ing the first 4 bytes and converting that into a u32 integer. However, we want to keep track of where we are in the transaction so that we can continue to do decode it. In order to do that we'll want to pass in the bytes slice to the `read_version` function and then continue using it in the `main` function.
+So in the previous section, we were able to read the version by calling the `read` method to retrieve the first 4 bytes and then convert that into a `u32` integer. 
+However, we want to keep track of where we are in the transaction so that we can continue to do decode it. 
+In order to do that we'll want to pass in the bytes slice to the `read_version` function and then continue using it in the `main` function.
 
-Let's experiment doing this similar to how we might coming from another language such as Python or Javascript.
+Let's experiment doing this similar to how we might coming from another programming language such as Python or Javascript.
 
 We'll start by modifying the `main` function before updating our `read_version` function:
 ```rust
@@ -46,7 +48,7 @@ help: consider changing this to be mutable
   |                    +++
 ```
 
-Remember, if we're going to modify a variable, we have to declare that it is a mutable variable using the `mut` keyword. The compiler is suggesting that we add `mut` to the beginning of the `transaction_bytes` argument. Let's try that and see what happens.
+Remember, if we're going to modify a variable, we have to declare that it is mutable using the `mut` keyword. The compiler is suggesting that we add `mut` to the beginning of the `transaction_bytes` argument. Let's try that and see what happens.
 
 ```rust
 fn read_version(mut transaction_bytes: &[u8]) -> u32 {
@@ -66,7 +68,7 @@ If we eyeball the transaction hex, we should be able to see what the correct inp
 *01000000* *02* 42d5c1d6f7308bbe95c0f6e1301dd73a8da77d2155b0773bc297ac47f9cd7380010000006a4730440220771361aae55e84496b9e7b06e0a53dd122a1425f85840af7a52b20fa329816070220221dd92132e82ef9c133cb1a106b64893892a11acf2cfa1adb7698dcdc02f01b0121030077be25dc482e7f4abad60115416881fe4ef98af33c924cd8b20ca4e57e8bd5feffffff75c87cc5f3150eefc1c04c0246e7e0b370e64b17d6226c44b333a6f4ca14b49c000000006b483045022100e0d85fece671d367c8d442a96230954cdda4b9cf95e9edc763616d05d93e944302202330d520408d909575c5f6976cc405b3042673b601f4f2140b2e4d447e671c47012103c43afccd37aae7107f5a43f5b7b223d034e7583b77c8cd1084d86895a7341abffeffffff02ebb10f00000000001976a9144ef88a0b04e3ad6d1888da4be260d6735e0d308488ac508c1e000000000017a91476c0c8f2fc403c5edaea365f6a284317b9cdf7258700000000
 ```
 
-The first 8 hex characters, which represent the first 4 bytes, clearly show a version 1 transaction. The next byte is 02 as you can see. So if we continue reading the transaction in the main function, we should get an input count of 2. Let's see if that's what happens.
+The first 8 hex characters, which represent the first 4 bytes, clearly show a version 1 transaction. The next byte is `02` as you can see. So if we continue reading the transaction in the main function, we should get an input count of 2. Let's see if that's what happens.
 
 We'll print out the next byte, which should be `2_u8`. We can actually leverage the `assert!` macro to confirm this. This line will ensure that the next byte is actually the u8 value of 2 or panic, stop the program and print an error. 
 
@@ -94,7 +96,9 @@ assertion `left == right` failed
  right: [2]
 ```
 
-Why might that be? Let's print out the debug output of `bytes_slice` and see what it looks like. Since we read the first 4 bytes, those should no longer be there, and the slice should start with 2. Let's see.
+Why might that be? 
+
+Let's print out the debug output of `bytes_slice` and see what it looks like. Since we read the first 4 bytes, those should no longer be there, and the slice should start with 2.
 
 ```rust
 fn main() {
@@ -112,7 +116,7 @@ fn main() {
 }
 ```
 
-When we print the `bytes_slice`, we see the `[1,0,0,0]` is still there at the beginning. But this should have been `read` and the pointer should have moved so that this portion is no longer returned by the slice. What's happening here exactly? 
+When we print the `bytes_slice`, we see the `[1,0,0,0]` is still there at the beginning. But this should have been `read` and the pointer should have moved so that this portion is no longer returned by the slice. So what's happening here exactly? 
 
 As it turns out, the slice in the `read_version` is not modifying the same slice in the `main` function. It's just a *copy* of it. So when we modify it in the `read_version` function, we are not modifying the same one in the `main` version. If we want to modify the same one, we need a *mutable reference* to it. The *reference* will link our variable in `read_version` to the slice in the `main` function.
 
@@ -125,8 +129,10 @@ use std::io::Read;
 
 fn read_version(mut transaction_bytes: &[u8]) -> u32 {
     println!("transaction_bytes memory address before reading {:p}", transaction_bytes);
+
     let mut buffer = [0; 4];
     transaction_bytes.read(&mut buffer).unwrap();
+    
     println!("transaction bytes memory address after reading {:p}\n", transaction_bytes);
     println!("transaction bytes: {:?}\n", transaction_bytes);
 
@@ -137,8 +143,11 @@ fn main() {
     let transaction_hex = "010000000242d5c1d6f7308bbe95c0f6e1301dd73a8da77d2155b0773bc297ac47f9cd7380010000006a4730440220771361aae55e84496b9e7b06e0a53dd122a1425f85840af7a52b20fa329816070220221dd92132e82ef9c133cb1a106b64893892a11acf2cfa1adb7698dcdc02f01b0121030077be25dc482e7f4abad60115416881fe4ef98af33c924cd8b20ca4e57e8bd5feffffff75c87cc5f3150eefc1c04c0246e7e0b370e64b17d6226c44b333a6f4ca14b49c000000006b483045022100e0d85fece671d367c8d442a96230954cdda4b9cf95e9edc763616d05d93e944302202330d520408d909575c5f6976cc405b3042673b601f4f2140b2e4d447e671c47012103c43afccd37aae7107f5a43f5b7b223d034e7583b77c8cd1084d86895a7341abffeffffff02ebb10f00000000001976a9144ef88a0b04e3ad6d1888da4be260d6735e0d308488ac508c1e000000000017a91476c0c8f2fc403c5edaea365f6a284317b9cdf7258700000000";
     let transaction_bytes = hex::decode(transaction_hex).unwrap();
     let mut bytes_slice = transaction_bytes.as_slice();
+    
     println!("bytes slice memory address before calling read_version: {:p}\n", bytes_slice);
+    
     let version = read_version(bytes_slice);
+    
     println!("bytes slice memory address after calling read_version: {:p}\n", bytes_slice);
     println!("bytes slice after calling read_version: {:?}", bytes_slice);
     println!("Version: {}", version);
@@ -167,9 +176,11 @@ Notice how `transaction_bytes` starts with the same memory address as our slice 
 
 The slice in the `main` function is no longer the same as the one in the `read_version` function. What's happening here is that in the `read_version` function the local variable is being changed without modifying the slice in `main`. The `transaction_bytes` variable is being treated as a mutable *copy* and not a mutable *reference*. That's not what we want. We want to change the original slice in `main` as well. 
 
-What we really want to do is pass around a reference so that the same object in memory is being updated. We can indicate that something is a mutable reference by prepending the `&mut` keyword. 
+What we really want to do is pass around a reference so that there is a link between the variable in `read_version` and the one in `main`. We can indicate that something is a mutable reference by prepending the `&mut` keyword. 
 
-Instead of the argument type being `mut transaction_bytes: &[u8]`, we want the the `transaction_bytes` variable to be of the type `&mut &[u8]`. These are the two different function signatures now:
+Instead of the argument type being `mut transaction_bytes: &[u8]`, we want the the `transaction_bytes` variable to be of the type `&mut &[u8]`. 
+
+These are the two different function signatures:
 ```rust
 fn read_version(mut transaction_bytes: &[u8]) -> u32
 fn read_version(transaction_bytes: &mut &[u8]) -> u32
@@ -178,8 +189,6 @@ Notice how the `mut` keyword appears before the argument name in the first one a
 
 The first function can be read as: "this function expects to receive a variable with the specific type being an *immutable* slice, but will make a *mutable* copy of it locally just for this function".
 The second one on the other hand can be read as follows: "this function expects to receive a variable with the specific type being a *mutable* reference to a slice".
-
-The first one says the value passed in from another function is still immutable. The second function signature indicates that we're receiving a value from another function that is mutable. So the first one won't actually be able to modify the slice that exists in the `main` function. We can only do that if we pass in a *mutable reference* as the argument type.
 
 Let's update our functions with this understanding, passing a *mutable reference* instead.
 
@@ -190,6 +199,7 @@ fn read_version(transaction_bytes: &mut &[u8]) -> u32 { // the argument type is 
     println!("transaction_bytes memory address before reading {:p}", *transaction_bytes); // make sure to dereference the transaction_bytes variable to see the memory address of the object it is referring to
     let mut buffer = [0; 4];
     transaction_bytes.read(&mut buffer).unwrap();
+
     println!("transaction bytes memory address after reading {:p}\n", *transaction_bytes);
     println!("transaction bytes: {:?}\n", transaction_bytes);
 
@@ -200,8 +210,11 @@ fn main() {
     let transaction_hex = "010000000242d5c1d6f7308bbe95c0f6e1301dd73a8da77d2155b0773bc297ac47f9cd7380010000006a4730440220771361aae55e84496b9e7b06e0a53dd122a1425f85840af7a52b20fa329816070220221dd92132e82ef9c133cb1a106b64893892a11acf2cfa1adb7698dcdc02f01b0121030077be25dc482e7f4abad60115416881fe4ef98af33c924cd8b20ca4e57e8bd5feffffff75c87cc5f3150eefc1c04c0246e7e0b370e64b17d6226c44b333a6f4ca14b49c000000006b483045022100e0d85fece671d367c8d442a96230954cdda4b9cf95e9edc763616d05d93e944302202330d520408d909575c5f6976cc405b3042673b601f4f2140b2e4d447e671c47012103c43afccd37aae7107f5a43f5b7b223d034e7583b77c8cd1084d86895a7341abffeffffff02ebb10f00000000001976a9144ef88a0b04e3ad6d1888da4be260d6735e0d308488ac508c1e000000000017a91476c0c8f2fc403c5edaea365f6a284317b9cdf7258700000000";
     let transaction_bytes = hex::decode(transaction_hex).unwrap();
     let mut bytes_slice = transaction_bytes.as_slice();
+    
     println!("bytes slice memory address before calling read_version: {:p}\n", bytes_slice);
+    
     let version = read_version(&mut bytes_slice); // pass in a mutable reference to the bytes_slice
+    
     println!("bytes slice memory address after calling read_version: {:p}\n", bytes_slice);
     println!("bytes slice after calling read_version: {:?}", bytes_slice);
     println!("Version: {}", version);
@@ -238,16 +251,18 @@ bytes slice after calling read_version: [2, 66, 213, 193, 214, 247, 48, 139, 190
 Version: 1
 ```
 
-When `transaction_bytes.read` is run, Rust is automatically dereferencing the reference pointer and making its modifications to the underlying data which is the slice pointer from the `main` function. The referenced slice pointer then gets updated and `transaction_bytes` refers to the new modified pointer. Here is a diagram to help visualize what is happening in our `read_version` function:
+When `transaction_bytes.read` is run, Rust is automatically dereferencing the reference pointer. It follows the reference from `transaction_bytes`, finds the `bytes_slice` from `main` and then calls the `read` method on that. `bytes_slice` gets updated and then `transaction_bytes` is updated to refer to the newly modified slice. Here is a diagram to help visualize what is happening in our `read_version` function:
 
 ![Memory Diagram](images/memory-diagram.png)
+
+Dereferencing is something Rust does automatically anytime there is a method call. It checks to see if the variable can be dereferenced into something else. This is the equivalent of manually prepending the variable with the `*` operator. In fact, the `*` operator is shorthand for calling the `deref` method of the [`Deref` trait implementation](https://doc.rust-lang.org/std/ops/trait.Deref.html). So types can implement the `Deref` trait and be dereferenced into other types whenever method calls are made. 
 
 Great work so far. It may not seem like much code, but you've learned a ton of Rust fundamentals. And this is one of the hardest concepts to grasp in Rust!
 
 Let's explore this concept some more in the next section 9.1 and review the differences between shared and mutable references as well as borrowing vs ownership. See you there!
 
 ### Quiz
-*You will find that certain methods for manipulating the elements of a vector such as sorting are available only on the slice type and not the vector. However, if you call `.sort` on a vector, it will still work. Why is that? Hint: when method calls are made in Rust, it not only accesses the method on the specific data type, but any methods on the data type that it dereferences to as indicated by the DeRef trait implementation. So what does a vector dereference to? Can you find the relevant trait implementation?* <br/>
+*You will find that certain methods for manipulating the elements of a vector such as sorting are available only on the slice type and not the vector. However, if you call `.sort` on a vector, it will still work. Why is that?* <br/>
 https://doc.rust-lang.org/std/vec/struct.Vec.html <br/>
 https://doc.rust-lang.org/std/primitive.slice.html#method.sort <br/>
 
