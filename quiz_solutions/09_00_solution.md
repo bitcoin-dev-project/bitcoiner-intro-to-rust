@@ -32,7 +32,7 @@ fn main() {
 
 And remember, the `*` operator is shorthand for calling the `deref` method of the `Deref` or `Deref Mut` traits.
 
-Now the interesting thing is that the vector itself dereferences to a slice. This is because it implements the [`Deref Mut` trait](https://doc.rust-lang.org/std/ops/trait.DerefMut.html). Here is the [trait implementation](https://doc.rust-lang.org/src/alloc/vec/mod.rs.html#2711): 
+Now the interesting thing is that the vector itself dereferences to a slice. This is because it implements the [`Deref Mut` trait](https://doc.rust-lang.org/std/ops/trait.DerefMut.html). Here is the [trait implementation](https://doc.rust-lang.org/src/alloc/vec/mod.rs.html#2769): 
 ```rust
 #[stable(feature = "rust1", since = "1.0.0")]
 impl<T, A: Allocator> ops::DerefMut for Vec<T, A> {
@@ -43,7 +43,7 @@ impl<T, A: Allocator> ops::DerefMut for Vec<T, A> {
 }
 ```
 
-So when we call `v.sort()`, this is equivalent of calling `*v.sort()` since Rust automatically follows references on method calls. `*v` will dereference to a slice and then Rust will call the `.sort` method on the slice.
+So when we call `v.sort()`, this is similar to calling `*v.sort()` since Rust automatically follows references on method calls. `*v` will dereference to a slice and then Rust will call the `.sort` method on the slice.
 ```rust
 fn main() {
     let v = vec![1, 2, 3, 4];
