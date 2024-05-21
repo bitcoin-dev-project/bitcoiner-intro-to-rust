@@ -92,7 +92,7 @@ Well, under the hood, Rust is making an implicit conversion. It does this in a f
 
 There is also something known as a **Deref Coercion**, which we can take advantage of here and which is something we alluded to in chapter 9. Basically, if a type implements the `Deref` trait, Rust will implicitly call the `deref` method on it until it gets the type that matches the argument's required type.
 
-So going back to reading our script, what we want is a dynamically-sized buffer to read into. A vector would work just fine. But can we use it? Can we pass it into the `read` method as an argument? It turns out we can! In Rust, a Vec [implements the `DerefMut`](https://doc.rust-lang.org/src/alloc/vec/mod.rs.html#2711) trait which dereferences to a slice. So we can initialize a `Vec` filled with 0s of the size of the script and then pass that into the `read` method as a mutable reference (`&mut Vec<u8>`). It will then be dereferenced to a slice and match the correct argument type, which is `&mut [u8]`.
+So going back to reading our script, what we want is a dynamically-sized buffer to read into. A vector would work just fine. But can we use it? Can we pass it into the `read` method as an argument? It turns out we can! In Rust, a Vec [implements the `DerefMut`](https://doc.rust-lang.org/src/alloc/vec/mod.rs.html#2769) trait which dereferences to a slice. So we can initialize a `Vec` filled with 0s of the size of the script and then pass that into the `read` method as a mutable reference (`&mut Vec<u8>`). It will then be dereferenced to a slice and match the correct argument type, which is `&mut [u8]`.
 
 We'll create a new function called `read_script` which will return a `Vec<u8>`:
 
@@ -123,7 +123,6 @@ Alright, now that we have each of the components of an input, what should we do 
 ### Additional Reading
 * Implicit Deref Coercions: https://doc.rust-lang.org/book/ch15-02-deref.html#implicit-deref-coercions-with-functions-and-methods
 * Unsized Coercions: https://doc.rust-lang.org/reference/type-coercions.html#unsized-coercions
-* Vec `DerefMut` implementation: https://doc.rust-lang.org/src/alloc/vec/mod.rs.html#2711
 * Sequence: https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch06_transactions.adoc#sequence
 
 <hr/>
