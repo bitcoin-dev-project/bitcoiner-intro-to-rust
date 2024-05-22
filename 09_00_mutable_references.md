@@ -207,14 +207,26 @@ We can see that the slice in the `read_version` function no longer returns the f
 
 The slice in the `main` function is no longer the same as the one in the `read_version` function.
 What's happening here is that in the `read_version` function the local variable is being changed without modifying the slice in `main`.
-The `transaction_bytes` variable is being treated as a mutable *copy* and not a mutable *reference*.
+The `transaction_bytes` variable is being treated as a mutable *copy* of the pointer to the underlying data.
+
+Let me be more verbose since this can be pretty confusing for newcomers.
+In the `main` function, the call to `hex::decode` will allocate data in the heap to create a `Vec<u8>`.
+Then, we call `as_slice()` on the vector to get the slice `bytes_slice`, which is a structure containing a pointer to the data and a length.
+Since it is declared `mut`, we can change both the pointer and the length info stored in the slice.
+Then we call `read_version` passing `bytes_slice`.
+This effectively creates a new local variable `transaction_bytes` by copying the data from `bytes_slice`.
+Since `transaction_bytes` is also declared `mut`, we can change the pointer and the length stored in the local slice as we indeed do by calling `transaction_bytes.read`.
+Note that the underlying data is constant, we are just updating the pointer in the local slice.
+When we return from the local scope of `read_version`, the slice `transaction_bytes` will be automatically deallocated.
+We rest with our original `bytes_slice` which internal pointer still points to the first element of the underlying vector data.
+
 That's not what we want.
-We want to change the original slice in `main` as well.
+What we really want to do is pass around a reference as it is, instead of making a copy of it, so that there is a link between the variable in `read_version` and the one in `main`.
+That way we can change the original slice in `main` while being in the scope of the `read_version` function.
 
-What we really want to do is pass around a reference so that there is a link between the variable in `read_version` and the one in `main`.
-We can indicate that something is a mutable reference by prepending the `&mut` keyword.
-
-Instead of the argument type being `mut transaction_bytes: &[u8]`, we want the the `transaction_bytes` variable to be of the type `&mut &[u8]`.
+We indicate that something is a mutable reference by prepending the `&mut` keyword.
+The original argument type being `mut transaction_bytes: &[u8]` means "this function expects to receive a variable with the specific type being an *immutable* slice, but will make a *mutable* copy of it locally just for this function".
+Instead, we want the `transaction_bytes` variable to be of the type `&mut &[u8]` which mean "this function expects to receive a variable with the specific type being a *mutable* reference to a slice".
 
 These are the two different function signatures:
 ```rust
@@ -223,10 +235,7 @@ fn read_version(transaction_bytes: &mut &[u8]) -> u32
 ```
 Notice how the `mut` keyword appears before the argument name in the first one and as part of the type specification in the second.
 This might be a bit confusing, but one is modifying the argument for the specific function whereas the other is specifying what the argument type is.
-One is an internal specification, whereas the argument type indicates what the function should receive from the outside.
-
-The first function can be read as: "this function expects to receive a variable with the specific type being an *immutable* slice, but will make a *mutable* copy of it locally just for this function".
-The second one on the other hand can be read as follows: "this function expects to receive a variable with the specific type being a *mutable* reference to a slice".
+The first is an internal specification, whereas in the second the argument type indicates what the function should receive from the outside.
 
 Let's update our functions with this understanding, passing a *mutable reference* instead.
 
