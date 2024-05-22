@@ -20,12 +20,12 @@ Since vec[0..4] notation is not inclusive to the end of the index, we are skippi
 
 Transactions are presented in hex format for a reason.
 They are designed to be serialized as byte streams that can be transmitted over the network and read one byte at a time in order.
-A better solution would be to automatically manage the indices and have a function with which we can just ask for the next bytes we require.
+A better solution would be to use a function that keeps track of the indices and allows us to request the number of bytes we require.
 Rust's standard library's [`Read`](https://doc.rust-lang.org/std/io/trait.Read.html) trait allows for exactly this.
 The slice data type in Rust implements the `Read` trait.
 What does this mean? It gives us a method, `read`, which will read some bytes from the slice and return that data in an array.
 When we call `read` again, it will start from where it left off.
-In other words, the `read` trait includes the machinery to keep track of the current position we are reading in the stream and to manage the pointer as it proceed.
+In other words, the `read` trait includes the machinery to keep track of the current position we are reading in the stream and to manage the pointer as it proceeds.
 This means we don't need to keep track of any indexes ourselves.
 
 Let's walk through how this works at a high level with a quick example and then dive deeper into what traits are and how they work.
