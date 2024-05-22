@@ -11,16 +11,22 @@ let number_of_inputs = u32::from_le_bytes(&transaction_bytes[5..6]);
 
 Notice how we're grabbing different ranges of `transaction_bytes`.
 We have to repeatedly reference `transaction_bytes` and we have to keep track of the start and end indexes for each component.
-This is not ideal.
+This is not ideal because we can easily make mistakes.
+
+*Note: there's an indexing mistake in the code above, can you see what it is?*
+<!--
+Since vec[0..4] notation is not inclusive to the end of the index, we are skipping one byte: the element at index 4.
+-->
+
 Transactions are presented in hex format for a reason.
 They are designed to be serialized as byte streams that can be transmitted over the network and read one byte at a time in order.
-
-One way to read a byte stream is to leverage Rust's standard library's [`Read`](https://doc.rust-lang.org/std/io/trait.Read.html) trait.
+A better solution would be to automatically manage the indices and have a function with which we can just ask for the next bytes we require.
+Rust's standard library's [`Read`](https://doc.rust-lang.org/std/io/trait.Read.html) trait allows for exactly this.
 The slice data type in Rust implements the `Read` trait.
-What does this mean? Well, as we will see, it gives us a method, `read`, which will read some bytes from the slice and then store that data into a array.
+What does this mean? It gives us a method, `read`, which will read some bytes from the slice and return that data in an array.
 When we call `read` again, it will start from where it left off.
-In other words, it keeps track of where we are in the stream and modifies the pointer as it reads.
-This means we don't need to keep track of any indexes.
+In other words, the `read` trait includes the machinery to keep track of the current position we are reading in the stream and to manage the pointer as it proceed.
+This means we don't need to keep track of any indexes ourselves.
 
 Let's walk through how this works at a high level with a quick example and then dive deeper into what traits are and how they work.
 
@@ -44,7 +50,7 @@ fn main() {
 ```
 
 The `mut` keyword before `bytes_slice` tells Rust the variable is mutable.
-If we don't provide that keyword in a variable declaration, then the compiler will complain that we're attempting to change an immutable variable, which is not allowed. 
+If we don't provide that keyword in a variable declaration, then the compiler will complain that we're attempting to change the value of an immutable variable, which is not allowed.
 
 You might also notice the `&mut` keyword in the argument to the `read` method.
 This indicates that we're passing in `buffer` as a *mutable reference*.
@@ -56,7 +62,8 @@ Version: 1
 Bytes slice: [2]
 ```
 
-And this is what we'd expect. The Version is `1`. And the `bytes_slice` variable has been updated and no longer contains the first 4 bytes. 
+And this is what we'd expect.
+The Version is `1` and the `bytes_slice` variable has been updated and no longer contains the first 4 bytes. 
 
 You may notice that the way this works is that you have to first create an array with a fixed size.
 Calling `read` will then extract the number of bytes equal to the size of the array, store that into a buffer and then update our slice.
