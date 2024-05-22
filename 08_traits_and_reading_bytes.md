@@ -46,6 +46,7 @@ fn main() {
     let version = u32::from_le_bytes(buffer);
 
     println!("Version: {}", version);
+    println!("Bytes slice: {:?}", bytes_slice);
 }
 ```
 
