@@ -69,16 +69,15 @@ The Version is `1` and the `bytes_slice` variable has been updated and no longer
 You may notice that the way this works is that you have to first create an array with a fixed size.
 Calling `read` will then extract the number of bytes equal to the size of the array, store that into a buffer and then update our slice.
 
-## Traits Explanation
+## What are traits?
 
-So what are traits exactly?
 Traits are a way to define shared behavior.
 You can think of them as a template for a particular set of behaviors.
 For example, the `Read` trait provides a template for types that want to "read data".
-It lays out what to expect and what types of functions are available.
+It lays out an *abstract interface* for a type: what kind of behavior is expected from the type and which functions are available to exercise that behavior.
 
-Let's take a closer look at the `Read` trait [from the documentation](https://doc.rust-lang.org/std/io/trait.Read.html).
-It has a required method, `read`, which has the following function signature: `fn read(&mut self, buf: &mut [u8]) -> Result<usize>;`. 
+Let's take a closer look at [the documentation for the `Read` trait](https://doc.rust-lang.org/std/io/trait.Read.html).
+It defines a required method, `read`, which has the following function signature: `fn read(&mut self, buf: &mut [u8]) -> Result<usize>;`. 
 
 ```rust
 ...
@@ -90,18 +89,19 @@ pub trait Read {
 ...
 ```
 
-The `read` method itself is not actually implemented with any logic.
 You'll notice there's no function body, just the signature.
-The types that "implement" this trait are expected to provide the function logic for any *required* method, or trait methods that have no implementation.
+It means the `read` method itself is not actually implemented with any logic in the trait declaration.
+We expect the types that "implement" this trait to aactually provide the function logic for any *required* method, or trait methods, that have no implementation.
 
 A trait can also provide other methods that a type can get access to once it has implemented the trait.
 These are known as *provided* methods and are considered *default* implementations since they can also be overwritten.
-You'll notice for example that there is a [`read_exact` method](https://doc.rust-lang.org/std/io/trait.Read.html#method.read_exact) which is implemented with a call to the [`default_read_exact`](https://doc.rust-lang.org/src/std/io/mod.rs.html#558) method.
+You'll notice, for example, that there is a [`read_exact` method](https://doc.rust-lang.org/std/io/trait.Read.html#method.read_exact) which is implemented with a call to the [`default_read_exact`](https://doc.rust-lang.org/src/std/io/mod.rs.html#558) method.
+`default_read_exact` by itself is implemented with a call the the `read` method.
 
 As long as a type implements the `Read` trait by providing a `read` method, it will have access to these other *provided* methods.
-A type can also choose to override some or all of these *provided* methods as well and have its own implementations.
+A type can also choose to override some or all of these *provided* methods as well and have its own custom implementations (e.g. for performance reasons).
 
-Now if we look at the `slice` type from the documentation, we can see that it [*implements* the `Read` trait](https://doc.rust-lang.org/std/primitive.slice.html#impl-Read-for-%26%5Bu8%5D) and provides the function logic for the `read` method.
+Now if we look at the `slice` type documentation, we can see that it [*implements* the `Read` trait](https://doc.rust-lang.org/std/primitive.slice.html#impl-Read-for-%26%5Bu8%5D) and provides the function logic for the `read` method.
 Let's take a look at [the source code](https://doc.rust-lang.org/src/std/io/impls.rs.html#235-250):
 
 ```rust
@@ -135,7 +135,7 @@ Simply notice how we *implement* a trait with the `impl` keyword.
 So `impl Read for &[u8]` is the code block that provides the function logic for the trait.
 The other thing to notice is how the function signature for `read` matches the trait's function signature.
 
-The idea here is that different types, not just the `&[u8]` type can implement the `Read` trait by providing the function logic for any required method and then be expected to have similar behavior and get access to the trait's provided methods. 
+The idea here is that different types, not just the `&[u8]` type can implement the `Read` trait by providing the function logic for any required method and then be expected to have similar behavior and get access to the trait's provided methods.
 The function logic itself for each type might differ, but given the template they are expected to take in the same arguments, return the same type and generally do the same thing, which in this case is to read some data and modify `self` and the buffer.
 
 Again, you might notice some patterns in the code above that you are not yet familiar with, such as the `&mut` keyword and asterisk `*` before `self` at the bottom of the function.
@@ -152,7 +152,7 @@ fn read_version(transaction_hex: &str) -> u32 {
     let transaction_bytes = hex::decode(transaction_hex).unwrap();
     let mut bytes_slice = transaction_bytes.as_slice();
 
-    // Read contents of bytes_slice into a buffer.
+    // Read contents of bytes_slice into a buffer
     let mut buffer = [0; 4];
     bytes_slice.read(&mut buffer).unwrap();
 
@@ -165,7 +165,8 @@ fn main() {
 }
 ```
 
-And voila, this will print `Version: 1` as expected! Great job so far! 
+And voila, this will print `Version: 1` as expected!
+Great job so far! 
 
 How do we grab the modified `bytes_slice` and continue decoding the transaction?
 What we probably want to do is pass in the `bytes_slice` into this function as an argument and continue using it in the `main` function.
@@ -173,7 +174,8 @@ We'll talk more about that and associated Rust concepts of references and borrow
 
 ### Quiz
 1. *Take another look at the `Read` trait and the implementation of the `Read` trait for a slice in the documentation.
-What are the required and provided methods for the trait? What provided methods are being overwritten by the slice?*
+What are the required and provided methods for the trait?
+What provided methods are being overwritten by the slice?*
 2. *Consider the following block of code in which we create a Vec and then attempt to print it out:*
 ```rust
 fn main() {
