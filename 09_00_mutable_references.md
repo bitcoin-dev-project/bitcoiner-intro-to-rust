@@ -1,6 +1,6 @@
 # Mutable References
 
-So in the previous section, we were able to read the version by calling the `read` method to retrieve the first 4 bytes and then convert that into a `u32` integer.
+In the previous section, we were able to read the version by calling the `read` method to retrieve the first 4 bytes of the raw transaction string and then convert that into a `u32` integer.
 However, we want to keep track of where we are in the transaction so that we can continue to do decode it.
 In order to do that we'll want to pass in the bytes slice to the `read_version` function and then continue using it in the `main` function.
 
@@ -50,7 +50,7 @@ We should get an error that looks like the following:
 help: consider changing this to be mutable
   |
 4 | fn read_version(mut transaction_bytes: &[u8]) -> u32 {
-  |                    +++
+  |                 +++
 ```
 
 Remember, if we're going to modify a variable, we have to declare that it is mutable using the `mut` keyword.
@@ -66,7 +66,7 @@ fn read_version(mut transaction_bytes: &[u8]) -> u32 {
 }
 ```
 
-Ok that successfully compiles now! Great.
+Ok, that successfully compiles now! Great.
 
 But is this what we actually want?
 Let's see what happens if we continue to call the `read` method in `main` function.
@@ -103,7 +103,7 @@ fn main() {
 ```
 
 If we run this, we'll get an assertion error.
-And it will show that the input count is 1 instead of 2.
+And it will show that the input count is `1` instead of `2`.
 
 ```console
 Version: 1
@@ -150,7 +150,7 @@ This will let us know whether the slice in the `read_version` function ends up b
 If it is, it should have the same address location in memory.
 
 We're going to add four `println!` statements to show us how the memory address of our slice is changing in both functions.
-We'll also print out our slices in both functions to see what they look like.
+We'll also print out the slices in both functions to see what they look like.
 
 ```rust
 use std::io::Read;
@@ -200,6 +200,7 @@ bytes slice memory address after calling read_version: 0x50
 bytes slice: [1, 0, 0, 0, 2, 66, 213, 193, 214, 247, 48, 139, 190, 149, 192, 246, 225, 48, 29, 215, 58, 141, 167, 125, 33, 85, 176, 119, 59, 194, 151, 172, 71, 249, 205, 115, 128, 1, 0, 0, 0, 106, 71, 48, 68, 2, 32, 119, 19, 97, 170, 229, 94, 132, 73, 107, 158, 123, 6, 224, 165, 61, 209, 34, 161, 66, 95, 133, 132, 10, 247, 165, 43, 32, 250, 50, 152, 22, 7, 2, 32, 34, 29, 217, 33, 50, 232, 46, 249, 193, 51, 203, 26, 16, 107, 100, 137, 56, 146, 161, 26, 207, 44, 250, 26, 219, 118, 152, 220, 220, 2, 240, 27, 1, 33, 3, 0, 119, 190, 37, 220, 72, 46, 127, 74, 186, 214, 1, 21, 65, 104, 129, 254, 78, 249, 138, 243, 60, 146, 76, 216, 178, 12, 164, 229, 126, 139, 213, 254, 255, 255, 255, 117, 200, 124, 197, 243, 21, 14, 239, 193, 192, 76, 2, 70, 231, 224, 179, 112, 230, 75, 23, 214, 34, 108, 68, 179, 51, 166, 244, 202, 20, 180, 156, 0, 0, 0, 0, 107, 72, 48, 69, 2, 33, 0, 224, 216, 95, 236, 230, 113, 211, 103, 200, 212, 66, 169, 98, 48, 149, 76, 221, 164, 185, 207, 149, 233, 237, 199, 99, 97, 109, 5, 217, 62, 148, 67, 2, 32, 35, 48, 213, 32, 64, 141, 144, 149, 117, 197, 246, 151, 108, 196, 5, 179, 4, 38, 115, 182, 1, 244, 242, 20, 11, 46, 77, 68, 126, 103, 28, 71, 1, 33, 3, 196, 58, 252, 205, 55, 170, 231, 16, 127, 90, 67, 245, 183, 178, 35, 208, 52, 231, 88, 59, 119, 200, 205, 16, 132, 216, 104, 149, 167, 52, 26, 191, 254, 255, 255, 255, 2, 235, 177, 15, 0, 0, 0, 0, 0, 25, 118, 169, 20, 78, 248, 138, 11, 4, 227, 173, 109, 24, 136, 218, 75, 226, 96, 214, 115, 94, 13, 48, 132, 136, 172, 80, 140, 30, 0, 0, 0, 0, 0, 23, 169, 20, 118, 192, 200, 242, 252, 64, 60, 94, 218, 234, 54, 95, 106, 40, 67, 23, 185, 205, 247, 37, 135, 0, 0, 0, 0]
 ```
 
+The specific addresses you get will probably be different from the snippet above.
 Notice how `transaction_bytes` starts with the same memory address as our slice in the `main` function and after being modified has a new memory address.
 Our `bytes_slice` in the `main` function should also have changed, but it does not and remains the same.
 We can see that the slice in the `read_version` function no longer returns the first 4 bytes, `[1, 0, 0, 0]` after being read, whereas the one in the `main` function still does.
@@ -278,7 +279,7 @@ In order to dereference a reference and access the underlying object, we can add
 3. We need to pass in a mutable reference to the `read_version` function call in main.
 `let version = read_version(&mut bytes_slice);`
 
-So what happens if we run this now? Run it and see.
+So what happens if we run this now?
 
 You should now get exactly what you expect.
 The memory address of the two objects end up being identical and the slice in the `main` function has been updated.
