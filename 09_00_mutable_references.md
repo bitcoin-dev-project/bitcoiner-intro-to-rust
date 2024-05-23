@@ -275,7 +275,7 @@ fn main() {
 A few things to note here:
 
 1. It might be a bit odd to see the two `&`s together for the argument type in the `read_version` function signature, `&mut &[u8]`.
-As a reminder, the `&[u8]` indicates a slice type, which is simply a *pointer* to some heap-allocated data.
+As a reminder, the &[u8] indicates a slice type, which is a type of pointer (known as a "fat pointer") to some heap-allocated data.
 The `&mut` indicates that we are passing a mutable reference to this slice (which is also a kind of pointer).
 So what this really represents is a mutable *reference* to a fat pointer.
 The slice *pointer* is what's being modified, rather than the data in heap memory that it points to.
