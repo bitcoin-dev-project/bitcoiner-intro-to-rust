@@ -120,7 +120,7 @@ When we print the `bytes_slice`, we see the `[1,0,0,0]` is still there at the be
 
 As it turns out, the slice in the `read_version` is not modifying the same slice in the `main` function. It's just a *copy* of it. So when we modify it in the `read_version` function, we are not modifying the same one in the `main` version. If we want to modify the same one, we need a *mutable reference* to it. The *reference* will link our variable in `read_version` to the slice in the `main` function.
 
-Let's add some print statements to see this more clearly. We're going to use a new format specifier, `{:p}` which instead of printing the debug output as we normally do, will print the address in memory for the given slice. This will let us know whether the slice in the `read_version` function ends up being the same as the one in the `main` function. If it is, it should have the same address location in memory.
+Let's add some print statements to see this more clearly. We're going to use a new format specifier, `{:p}` which instead of printing the debug output as we normally do, will print the address in memory of the heap data that the slices point to. This will let us know whether the slice in the `read_version` function ends up pointing to the same heap data as the one in `main` function. If it is, it should print the same address location in memory.
 
 We're going to add four `println!` statements to show us how the memory address of our slice is changing in both functions. We'll also print out our slices in both functions to see what they look like. 
 
@@ -172,9 +172,12 @@ bytes slice memory address after calling read_version: 0x50
 bytes slice: [1, 0, 0, 0, 2, 66, 213, 193, 214, 247, 48, 139, 190, 149, 192, 246, 225, 48, 29, 215, 58, 141, 167, 125, 33, 85, 176, 119, 59, 194, 151, 172, 71, 249, 205, 115, 128, 1, 0, 0, 0, 106, 71, 48, 68, 2, 32, 119, 19, 97, 170, 229, 94, 132, 73, 107, 158, 123, 6, 224, 165, 61, 209, 34, 161, 66, 95, 133, 132, 10, 247, 165, 43, 32, 250, 50, 152, 22, 7, 2, 32, 34, 29, 217, 33, 50, 232, 46, 249, 193, 51, 203, 26, 16, 107, 100, 137, 56, 146, 161, 26, 207, 44, 250, 26, 219, 118, 152, 220, 220, 2, 240, 27, 1, 33, 3, 0, 119, 190, 37, 220, 72, 46, 127, 74, 186, 214, 1, 21, 65, 104, 129, 254, 78, 249, 138, 243, 60, 146, 76, 216, 178, 12, 164, 229, 126, 139, 213, 254, 255, 255, 255, 117, 200, 124, 197, 243, 21, 14, 239, 193, 192, 76, 2, 70, 231, 224, 179, 112, 230, 75, 23, 214, 34, 108, 68, 179, 51, 166, 244, 202, 20, 180, 156, 0, 0, 0, 0, 107, 72, 48, 69, 2, 33, 0, 224, 216, 95, 236, 230, 113, 211, 103, 200, 212, 66, 169, 98, 48, 149, 76, 221, 164, 185, 207, 149, 233, 237, 199, 99, 97, 109, 5, 217, 62, 148, 67, 2, 32, 35, 48, 213, 32, 64, 141, 144, 149, 117, 197, 246, 151, 108, 196, 5, 179, 4, 38, 115, 182, 1, 244, 242, 20, 11, 46, 77, 68, 126, 103, 28, 71, 1, 33, 3, 196, 58, 252, 205, 55, 170, 231, 16, 127, 90, 67, 245, 183, 178, 35, 208, 52, 231, 88, 59, 119, 200, 205, 16, 132, 216, 104, 149, 167, 52, 26, 191, 254, 255, 255, 255, 2, 235, 177, 15, 0, 0, 0, 0, 0, 25, 118, 169, 20, 78, 248, 138, 11, 4, 227, 173, 109, 24, 136, 218, 75, 226, 96, 214, 115, 94, 13, 48, 132, 136, 172, 80, 140, 30, 0, 0, 0, 0, 0, 23, 169, 20, 118, 192, 200, 242, 252, 64, 60, 94, 218, 234, 54, 95, 106, 40, 67, 23, 185, 205, 247, 37, 135, 0, 0, 0, 0]
 ```
 
-Notice how `transaction_bytes` starts with the same memory address as our slice in the `main` function and after being modified has a new memory address. Our `bytes_slice` in the `main` function should also have changed, but it does not and remains the same. We can see that the slice in the `read_version` function no longer returns the first 4 bytes, `[1, 0, 0, 0]` after being read, whereas the one in the `main` function still does.
+Notice how `transaction_bytes` points to the same memory address as our slice in the `main` function and after being modified points to a new memory address. Our `bytes_slice` in the `main` function should also have changed, but it does not and remains the same. We can see that the slice in the `read_version` function no longer returns the first 4 bytes, `[1, 0, 0, 0]` after being read, whereas the one in the `main` function still does.
 
 The slice in the `main` function is no longer the same as the one in the `read_version` function. What's happening here is that in the `read_version` function the local variable is being changed without modifying the slice in `main`. The `transaction_bytes` variable is being treated as a mutable *copy* and not a mutable *reference*. That's not what we want. We want to change the original slice in `main` as well. 
+
+Here is a diagram that helps to visualize what's happening above:
+![Memory Diagram of Mutable Copy](images/mutable-copy-memory-diagram-updated.png)
 
 What we really want to do is pass around a reference so that there is a link between the variable in `read_version` and the one in `main`. We can indicate that something is a mutable reference by prepending the `&mut` keyword. 
 
@@ -231,11 +234,11 @@ A few things to note here:
 
 2. The second thing to note is that when we print the memory address of the `transaction_bytes` in the `read_version` function, we need to first *dereference* it. If we don't do that, we'll still get a different memory address. This makes sense as the reference and the object it refers to are two separate things. In order to dereference a reference and access the underlying object, we can add a `*` in front, which you'll notice in the `println!` statement above as `*transaction_bytes`.
 
-3. We need to pass in a mutable reference to the `read_version` function call in main. `let version = read_version(&mut bytes_slice);`
+3. We need to pass in a mutable reference to the `read_version` function call in `main`. `let version = read_version(&mut bytes_slice);`
 
 So what happens if we run this now? Run it and see.
 
-You should now get exactly what you expect. The memory address of the two objects end up being identical and the slice in the `main` function has been updated. It no longer returns the first 4 bytes and the first item is the integer, `2`. 
+You should now get exactly what you expect. The memory address ends up being the same and the slice in the `main` function has been updated. It no longer returns the first 4 bytes and the first item is the integer, `2`. 
 
 ```console
 bytes slice memory address before calling read_version: 0x50
@@ -251,9 +254,9 @@ bytes slice after calling read_version: [2, 66, 213, 193, 214, 247, 48, 139, 190
 Version: 1
 ```
 
-When `transaction_bytes.read` is run, Rust is automatically dereferencing the reference pointer. It follows the reference from `transaction_bytes`, finds the `bytes_slice` from `main` and then calls the `read` method on that. `bytes_slice` gets updated and then `transaction_bytes` is updated to refer to the newly modified slice. Here is a diagram to help visualize what is happening in our `read_version` function:
+When `transaction_bytes.read` is run, Rust is automatically dereferencing the reference pointer. It follows the reference from `transaction_bytes`, finds the `bytes_slice` from `main` and then calls the `read` method on that. `bytes_slice` gets updated and then `transaction_bytes` continues to refer to the newly modified slice. Here is a diagram to help visualize what is happening in our `read_version` function:
 
-![Memory Diagram](images/memory-diagram.png)
+![Mutable Reference Memory Diagram](images/mutable-reference-memory-diagram-updated.png)
 
 Dereferencing is something Rust does automatically anytime there is a method call. It checks to see if the variable can be dereferenced into something else. This is the equivalent of manually prepending the variable with the `*` operator. In fact, the `*` operator is shorthand for calling the `deref` method of the [`Deref` trait implementation](https://doc.rust-lang.org/std/ops/trait.Deref.html). So types can implement the `Deref` trait and be dereferenced into other types whenever method calls are made. 
 
