@@ -52,7 +52,9 @@ Well this has to do with how Rust handles memory management internally.
 This way, it's always clear which variable "owns" data so that when that variable goes out of scope, the memory associated with it can be automatically freed.
 This is different from how other languages handle memory with garbage collection or reference counting to know when memory should be freed.
 
-So if we want to keep referring to the string after it has been passed to the `calculate_length` function, we need to use a *reference*.
+Since `s1` was moved to the scope of `calculate_length`, the `String` data will be deallocated when the function returns.
+That's why we can't print it when we are back in `main`, the data would not exist anymore.
+If we want to keep referring to the string after it has been passed to the `calculate_length` function, we need to pass a *reference* as argument instead.
 The reference will "borrow" the value and won't actually "own" the underlying data.
 This means that when the reference goes out of scope and is no longer in use, the heap data and its owner will still remain.
 
