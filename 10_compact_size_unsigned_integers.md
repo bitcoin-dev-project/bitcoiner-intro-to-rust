@@ -10,7 +10,12 @@ For example, if the length is less than 253, then the next byte is simply interp
 If the length is greater than 252 and less than 2^16, then we would expect to see the byte `fd` (or the integer 253) followed by two additional bytes interpreted as a `u16` integer, etc.
 This is the table we can use as reference:
 
-![Compact Size Unsigned Integer Type](images/compactSize.png)
+| Value                                       | Bytes Used | Format                                      |
+|---------------------------------------------|------------|---------------------------------------------|
+| >= 0 && <= 252 (`0xfc`)                     | 1          | `uint8_t`                                   |
+| >= 253 && <= `0xffff`                       | 3          | `0xfd` followed by the number as `uint16_t` |
+| >= `0x10000` && <= `0xffffffff`             | 5          | `0xfe` followed by the number as `uint32_t` |
+| >= `0x100000000` && <= `0xffffffffffffffff` | 9          | `0xff` followed by the number as `uint64_t` |
 
 So let's write a function to read a compactSize unsigned integer.
 Let's think about this a bit.
