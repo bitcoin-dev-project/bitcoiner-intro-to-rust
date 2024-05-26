@@ -5,7 +5,7 @@ A mutable reference can modify the underlying data where as the shared reference
 We already saw an example of a shared reference in chapter 6 where we created a slice reference to data on the heap by prepending `[u8]` with the `&` symbol.
 
 A reference is a kind of pointer.
-It points to some data elsewhere and "borrows" it instead of "owns" it.
+It points to some data elsewhere and "borrows" it instead of "owning" it.
 What does this mean?
 Well let's see with an [example](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html#references-and-borrowing):
 
@@ -46,6 +46,7 @@ It also mentions that the type, `String` does not implement the `Copy` trait.
 By default, any type that does not implement the `Copy` trait will get "moved" when passed as an argument.
 This means the variable that contains it will no longer be available within the scope of original function.
 It's "ownership" is now passed to the function being called, which in this case is `calculate_length`.
+
 Why does Rust do this?
 Well this has to do with how Rust handles memory management internally.
 This way, it's always clear which variable "owns" data so that when that variable goes out of scope, the memory associated with it can be automatically freed.
@@ -55,7 +56,7 @@ So if we want to keep referring to the string after it has been passed to the `c
 The reference will "borrow" the value and won't actually "own" the underlying data.
 This means that when the reference goes out of scope and is no longer in use, the heap data and its owner will still remain.
 
-We can create a reference by placing the `&` symbol in front and modifying the function argument type:
+We can create a reference by placing the `&` symbol in front of an identifier and modifying the function argument type:
 
 ```rust
 fn main() {
