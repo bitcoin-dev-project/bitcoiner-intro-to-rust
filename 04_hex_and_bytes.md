@@ -79,9 +79,11 @@ This also equals 1.
 ### Quiz
 *What is the version number indicated by the following 4 bytes little endian in hexadecimal format: `10000000`?*
 
-### Additional Resources
-* Hexadecimal overview: https://learnmeabitcoin.com/technical/hexadecimal.
-* Little endian overview: https://learnmeabitcoin.com/technical/little-endian
+### Additional Reading
+* Bits, bytes and the dreaded little-endian: https://edil.com.br/blog/bits-bytes-and-the-dreaded-little-endian
+* learnmeabitcoin.com:
+    - hexadecimal overview: https://learnmeabitcoin.com/technical/hexadecimal
+    - little endian overview: https://learnmeabitcoin.com/technical/little-endian
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
