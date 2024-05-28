@@ -22,9 +22,7 @@ fn read_compact_size(transaction_bytes: &mut &[u8]) -> u64 {
     transaction_bytes.read(&mut compact_size).unwrap();
 
     match compact_size[0] {
-        1..=252 => {
-            compact_size[0] as u64
-        },
+        0..=252 => compact_size[0] as u64,
         253 => {
             let mut buffer = [0; 2];
             transaction_bytes.read(&mut buffer).unwrap();
@@ -39,9 +37,6 @@ fn read_compact_size(transaction_bytes: &mut &[u8]) -> u64 {
             let mut buffer = [0; 8];
             transaction_bytes.read(&mut buffer).unwrap();
             u64::from_le_bytes(buffer)
-        },
-        _ => {
-            panic!("invalid compact size");
         }
     }
 }
@@ -164,11 +159,5 @@ mod unit_tests {
         let length = read_compact_size(&mut bytes);
         let expected_length = 20_000_u64;
         assert_eq!(length, expected_length);
-
-        let result = std::panic::catch_unwind(|| {
-            let mut bytes = [0_u8].as_slice();
-            read_compact_size(&mut bytes);
-        });
-        assert!(result.is_err());
     }
 }
