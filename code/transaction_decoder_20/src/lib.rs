@@ -3,7 +3,7 @@ mod transaction;
 use self::transaction::{Amount, Input, Output, Transaction, Txid};
 use sha2::{Digest, Sha256};
 use std::error::Error;
-use std::io::{Error as IOError, ErrorKind};
+use std::io::{Error as IOError};
 use clap::{arg, value_parser, Command};
 
 fn read_u32(transaction_bytes: &mut &[u8]) -> Result<u32, IOError> {
@@ -25,9 +25,7 @@ fn read_compact_size(transaction_bytes: &mut &[u8]) -> Result<u64, IOError> {
     transaction_bytes.read(&mut compact_size)?;
 
     match compact_size[0] {
-        1..=252 => {
-            Ok(compact_size[0] as u64)
-        },
+        0..=252 => Ok(compact_size[0] as u64),
         253 => {
             let mut buffer = [0; 2];
             transaction_bytes.read(&mut buffer)?;
@@ -42,9 +40,6 @@ fn read_compact_size(transaction_bytes: &mut &[u8]) -> Result<u64, IOError> {
             let mut buffer = [0; 8];
             transaction_bytes.read(&mut buffer)?;
             Ok(u64::from_le_bytes(buffer))
-        },
-        _ => {
-            Err(IOError::new(ErrorKind::InvalidInput, "Compact size error: invalid compact size"))
         }
     }
 }
@@ -188,9 +183,5 @@ mod unit_tests {
         let expected_length = 20_000_u64;
         assert!(result.is_ok());
         assert_eq!(result.unwrap(), expected_length);
-
-        let mut bytes = [0_u8].as_slice();
-        let result = read_compact_size(&mut bytes);
-        assert!(result.is_err());
     }
 }

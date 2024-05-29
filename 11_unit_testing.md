@@ -200,27 +200,12 @@ fn test_reading_compact_size() {
     }
 ```
 
-That checks out! Neat. Let's add another test to account for the scenario in which the program `panic!`s. Since a `panic!` will cause the program to crash, we need a way of catching that when it happens and then checking the result. 
-
-One way we can do this is with `std::panic::catch_unwind` which will take the code we want to run as a `closure` and return an `Err` `Result` if a `panic!` is reached. We'll talk more about the `Result` enum later on. For now just know that there's a method, `is_err`, that will check if the `Result` is the `Err` type. And if you're not familiar with closures, you can read more about them [here](https://doc.rust-lang.org/book/ch13-01-closures.html). These are essentially anonymous functions that we can pass into another function as an argument. 
-
-```rust
-let result = std::panic::catch_unwind(|| {
-    let mut bytes = [0_u8].as_slice();
-    read_compact_size(&mut bytes);
-});
-assert!(result.is_err());
-```
-
-This is the only scenario in which the code will panic. We won't be able to pass in a number greater than 255 because we've ensured that the input type is a `u8` and the maximum number for a `u8` is 255. So the only value that will actually cause the program to crash is 0.
-
 Run this with `cargo test` and all the tests should pass!
 
 Great! We've learned about unit testing. We'll keep this in mind as we write more functions with complex logic. Let's keep it moving and keep reading the transaction.
 
 ### Additional Reading
 * Test Organization: https://doc.rust-lang.org/book/ch11-03-test-organization.html
-* Closures: https://doc.rust-lang.org/book/ch13-01-closures.html
 
 <hr/>
 

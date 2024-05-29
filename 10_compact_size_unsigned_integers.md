@@ -21,7 +21,7 @@ fn read_compact_size(transaction_bytes: &mut &[u8]) -> u64 {
     let mut compact_size = [0; 1];
     transaction_bytes.read(&mut compact_size).unwrap();
 
-    if (1..253).contains(&compact_size[0]) {
+    if (0..253).contains(&compact_size[0]) {
         compact_size[0] as u64
     } else if compact_size[0] == 253 {
         let mut buffer = [0; 2];
@@ -31,22 +31,19 @@ fn read_compact_size(transaction_bytes: &mut &[u8]) -> u64 {
         let mut buffer = [0; 4];
         transaction_bytes.read(&mut buffer).unwrap();
         u32::from_le_bytes(buffer) as u64
-    } else if compact_size[0] == 255 {
+    } else { // only other possible value for a u8 here is 255
         let mut buffer = [0; 8];
         transaction_bytes.read(&mut buffer).unwrap();
         u64::from_le_bytes(buffer)
-    } else {
-        panic!("invalid compact size");
     }
 }
 ```
 
 A few things to point out here:
-1. `1..253` syntax is a [range type](https://doc.rust-lang.org/std/ops/struct.Range.html#), which has a method called `contains` to check if a value is in the given range.
+1. `0..253` syntax is a [range type](https://doc.rust-lang.org/std/ops/struct.Range.html#), which has a method called `contains` to check if a value is in the given range.
 2. The number of bytes read match the integer type. For example, 2 bytes give us a `u16` type. 4 bytes give us a `u32` type. 
 3. We **cast** each type into a `u64`. We can convert between primitive types in Rust using the [`as` keyword](https://doc.rust-lang.org/std/keyword.as.html).
 4. Notice how there are are no semicolons for each ending line, such as `u32::from_le_bytes(buffer) as u64`. This is the equivalent of returning that value from the function. We could also write it as `return u32::from_le_bytes(buffer) as u64;` but implicit return without semicolon is more idiomatic.
-5. We will call `panic!` and crash our program if the compact size number does not match the specification. This is exactly what happens when `unwrap` is called on a failed result. Technically, the only way this code will be reached is if the size is `0`. All other `u8` values are captured and anything that is not a valid `u8` will not enter this function. 
 
 We're going to make one more change. While standard if/else statements work fine, Rust provides pattern matching via the `match` keyword and this is a good opportunity to use it as it is commonly used in Rust codebases. https://doc.rust-lang.org/book/ch06-02-match.html
 
@@ -56,9 +53,7 @@ fn read_compact_size(transaction_bytes: &mut &[u8]) -> u64 {
     transaction_bytes.read(&mut compact_size).unwrap();
 
     match compact_size[0] {
-        1..=252 => {
-            compact_size[0] as u64
-        },
+        0..=252 => compact_size[0] as u64,
         253 => {
             let mut buffer = [0; 2];
             transaction_bytes.read(&mut buffer).unwrap();
@@ -73,15 +68,14 @@ fn read_compact_size(transaction_bytes: &mut &[u8]) -> u64 {
             let mut buffer = [0; 8];
             transaction_bytes.read(&mut buffer).unwrap();
             u64::from_le_bytes(buffer)
-        },
-        _ => {
-            panic!("invalid compact size");          
         }
     }
 }
 ```
 
-What do you think? The `match` looks nicer doesn't it? Take a moment to get familiar with the syntax. Each of the `arm`'s has a pattern to match followed by `=>` and then some code to return for that given pattern. The `_` at the end is a catchall for any pattern not specified above. It's also nice that we don't have to repeat calling `compact_size[0]` for each scenario.
+What do you think? The `match` looks nicer doesn't it? Take a moment to get familiar with the syntax. Each of the `arm`'s has a pattern to match followed by `=>` and then some code to return for that given pattern. 
+
+We sometimes see an arm with the underscore symbol (`_` ) as the pattern to match. This represents a catchall pattern that will capture any value not already covered by the previous arms. However, in our case, this is not needed since the previous arms are exhaustive and capture all the possible scenarios. Remember a `u8` can only have a value between `0` and `255`.
 
 Now all we have to do is update our `main` function to call this and return the number of inputs. 
 
@@ -105,7 +99,7 @@ Version: 1
 Input Length: 2
 ```
 
-Pretty neat! We're making good progress. But even though our code compiles, how can we be sure we've written it correctly and that this function will return the appropriate number of inputs for different transactions? We want to test it with different inputs and ensure it is returning the appropriate outputs. We can do this with unit testing. So let's look into setting up our first unit test in the next section.
+Pretty neat! We're making good progress. But even though our code compiles, how can we be sure we've written it correctly and that this function will return the appropriate number of inputs for different transactions? We want to test it with different arguments and ensure it is returning the correct compactSize. We can do this with unit testing. So let's look into setting up our first unit test in the next section.
 
 ### Quiz
 *How do nodes know whether the transaction is a legacy or a segwit transaction as they read it? How do they know whether to view the next field after the version as an input length encoded as compactSize or as the marker and flag for a Segwit transaction?*
