@@ -43,3 +43,4 @@ By the end of this project, you will have understood the fundamental concepts of
 * [20.0 Command Line Arguments](20_command_line_arguments.md)
 * [21.0 Refactoring and the Rust-Bitcoin Library](21_refactoring_and_rust_bitcoin.md)
 * [22.0 Decoding Segwit](22_decoding_segwit.md)
+* [Quiz Solutions](quiz_solutions/)

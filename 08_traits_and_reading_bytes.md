@@ -91,7 +91,7 @@ pub trait Read {
 
 You'll notice there's no function body, just the signature.
 It means the `read` method itself is not actually implemented with any logic in the trait declaration.
-We expect the types that "implement" this trait to aactually provide the function logic for any *required* method, or trait methods, that have no implementation.
+We expect the types that "implement" this trait to actually provide the function logic for any *required* method, or trait methods, that have no implementation.
 
 A trait can also provide other methods that a type can get access to once it has implemented the trait.
 These are known as *provided* methods and are considered *default* implementations since they can also be overwritten.

@@ -44,12 +44,14 @@ For now, if we wanted to print a `vec` we would have to use `{:?}` inside the pr
 
 Let's attempt to implement the `Display` trait for a `vec` by implementing the required method `fmt`:
 ```rust
-use std::fmt;
+use std::fmt::{self, Display, Formatter};
 
-impl Display for Vec<u8> {
+struct CustomVec<T>(Vec<T>);
+
+impl Display for CustomVec<u8> {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         write!(f, "Values:\n")?;
-        for v in &self {
+        for v in &self.0 {
             write!(f, "\t{}", v)?;
         }
         Ok(())
@@ -57,11 +59,11 @@ impl Display for Vec<u8> {
 }
 
 fn main() {
-    let vec: Vec::<u8> = vec![0, 0, 0, 0, 0];
+    let vec: CustomVec<u8> = CustomVec(vec![0, 0, 0, 0, 0]);
     println!("Vec: {}", vec);
 }
 ```
 
-The basic idea is that we leverage the `write!` macro which takes the `Formatter` instance and writes some information to it. If any step fails, an error will be returned (we'll talk more about error handling and the `?` operator in chapter 19). If we iterate through the vector and are able to write all values successfully we can simply return the `Ok(())` result, which matches the the expected result type `fmt::Result`. 
+The basic idea is that we leverage the `write!` macro which takes the `Formatter` instance and writes some information to it. If any step fails, an error will be returned (we'll talk more about error handling and the `?` operator in chapter 19). If we iterate through the vector and are able to write all values successfully we can simply return the `Ok(())` result, which matches the the expected result type `fmt::Result`. We need to create a `CustomVec<T>` using the [Newtype Pattern](https://doc.rust-lang.org/book/ch19-03-advanced-traits.html#using-the-newtype-pattern-to-implement-external-traits-on-external-types) to implement external traits on external types.
 
 This might still be a bit confusing at this stage, so consider coming back to revisit this solution after you've gone through the course.
