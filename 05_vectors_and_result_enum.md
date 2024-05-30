@@ -102,7 +102,7 @@ Crashing your program is probably not the best way to handle an error, unless yo
 For now we'll use the `unwrap` method.
 We'll explore different ways of handling a `Result` and doing proper error handling later on in this course.
 
-For now, let's our function so that we are actually working with the underlying vector of bytes and not the wrapped `Result` type:
+For now, let's update our function so that we are actually working with the underlying vector of bytes and not the wrapped `Result` type:
 
 ```rust
 fn read_version(transaction_hex: &str) -> u32 {
