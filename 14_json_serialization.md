@@ -65,7 +65,7 @@ This will print the following:
 
 This is the [JSON](https://www.json.org/json-en.html) format, a human-readable data-interchange format that transmits data objects consisting of key-value pairs and arrays.
 
-In Rust, there is a popular crate available for taking some data and converting it into or "**serializing**" it in the JSON format.
+In Rust, there is a popular crate available for taking some data and converting it (or "**serializing**" it) into the JSON format.
 We can use the [`serde_json`](https://docs.rs/serde_json/latest/serde_json/) crate for this.
 
 Let's add this to our Cargo.toml file.
@@ -94,7 +94,7 @@ This will work as long as all of the primitive types it contains can be serializ
 Finally, we'll call `to_string()` method on `serde_json` to convert inputs into a JSON formatted string.
 Let's try that and see what happens.
 
-*Reminder: We don't need to import top-level modules such as `serde_json` as those will already be included by default in our `main.rs` file.*
+*Note: We don't need to import top-level modules such as `serde_json` as those will already be included by default in our `main.rs` file.*
 
 ```rust
 use std::io::Read;
@@ -107,7 +107,6 @@ struct Input {
     script: Vec<u8>,
     sequence: u32,
 }
-...
 ...
 fn main() {
     let transaction_hex = "010000000242d5c1d6f7308bbe95c0f6e1301dd73a8da77d2155b0773bc297ac47f9cd7380010000006a4730440220771361aae55e84496b9e7b06e0a53dd122a1425f85840af7a52b20fa329816070220221dd92132e82ef9c133cb1a106b64893892a11acf2cfa1adb7698dcdc02f01b0121030077be25dc482e7f4abad60115416881fe4ef98af33c924cd8b20ca4e57e8bd5feffffff75c87cc5f3150eefc1c04c0246e7e0b370e64b17d6226c44b333a6f4ca14b49c000000006b483045022100e0d85fece671d367c8d442a96230954cdda4b9cf95e9edc763616d05d93e944302202330d520408d909575c5f6976cc405b3042673b601f4f2140b2e4d447e671c47012103c43afccd37aae7107f5a43f5b7b223d034e7583b77c8cd1084d86895a7341abffeffffff02ebb10f00000000001976a9144ef88a0b04e3ad6d1888da4be260d6735e0d308488ac508c1e000000000017a91476c0c8f2fc403c5edaea365f6a284317b9cdf7258700000000";
@@ -214,9 +213,8 @@ Inputs: [
 
 Ok, that's way better! Starting to look much more similar to the output from `bitcoin-cli`.
 
-Let's make one more modification to place all the different pieces of a transaction, such as the version, inputs and outputs all into one `Transaction` struct.
-
-We'll add the `Transaction` struct:
+Let's make one more modification to place all the different pieces of a transaction, such as the version, inputs and outputs all into a `Transaction` struct.
+First, declare the `Transaction` struct:
 ```rust
 #[derive(Debug, Serialize)]
 struct Transaction {
@@ -258,7 +256,7 @@ fn main() {
 }
 ```
 
-And now we should see an output with everything neatly printed out under one `Transaction` JSON object! 
+Now we should see an output with everything neatly printed out under one `Transaction` JSON object! 
 
 ```console
 Transaction: {
