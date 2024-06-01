@@ -1,18 +1,17 @@
 # Reading Inputs and Type Coercion
 
 Each input in a transaction contains the following information: 
-* previous output txid (32 bytes length)
-* previous output index (4 bytes length, represented as a u32 integer)
-* ScriptSig (variable length preceded by compact size integer)
-* sequence (4 bytes length, represented as a u32 integer)
+* the previous output txid (32 bytes length)
+* the previous output index (4 bytes length, represented as a u32 integer)
+* a ScriptSig (variable length preceded by compact size integer)
+* a sequence number (4 bytes length, represented as a u32 integer).
 
-The ScriptSig can be a variable length and so is preceded by a compact size integer which indicates the length of the field in bytes.
-Prior to Segwit, the ScriptSig was where the signature would be provided for unlocking the funds of the referenced output (as indicated by the previous output txid and previous output index).
+The ScriptSig can be have variable length and so is preceded by a compact size integer which indicates the length of the field in bytes.
+Prior to Segwit, the ScriptSig was where a digital signature would be provided for unlocking the funds of the referenced output (as indicated by the previous output txid and previous output index).
 Now, for Segwit transactions, this field is empty with a compact size length of 0x00 as the signature is no longer contained in the input data, but is instead "*segregated*" from the rest of the transaction in a separate witness field.
 For more information on SegWit, see [this section](https://github.com/bitcoinbook/bitcoinbook/blob/6d1c26e1640ae32b28389d5ae4caf1214c2be7db/ch06_transactions.adoc#segregated-witness) from Mastering Bitcoin, Chapter 6.
 
-So let's update our code.
-We have the input length now so we know how many times to read the input information.
+We already have the input length so we know how many times to read the input information.
 We'll start by using a for loop and iterate over a range.
 Since we don't need the range index number, we can just replace the unused variable with an underscore, `_`.
 More details on loops in Rust can be [found here](https://doc.rust-lang.org/book/ch03-05-control-flow.html#looping-through-a-collection-with-for).
@@ -117,7 +116,8 @@ https://doc.rust-lang.org/std/io/trait.Read.html#tymethod.read
 
 This is interesting.
 Technically, it only accepts a mutable reference to a slice.
-But we've actually been passing in a mutable reference to an array! Remember an array is a fixed size of type `[u8; n]` and not a slice of type `[u8]`.
+But we've actually been passing in a mutable reference to an array!
+Remember an array is a fixed size of type `[u8; n]` and not a slice of type `[u8]`.
 So how has this been working at all?
 I thought we had to be explicit with types in Rust?
 
@@ -148,7 +148,7 @@ fn read_script(transaction_bytes: &mut &[u8]) -> Vec<u8> {
 }
 ```
 
-Lastly, we need to read the sequence, which are the last 4 bytes.
+Lastly, we need to read the the last 4 bytes for the sequence number.
 A description of what the sequence number represents can be found in Mastering Bitcoin, Chapter 6.
 
 ```rust
@@ -162,7 +162,8 @@ A description of what the sequence number represents can be found in Mastering B
 ...
 ```
 
-Alright, now that we have each of the components of an input, what should we do with it? It makes sense to collect all this data together into one unified structure rather than just separate variables.
+Alright, now that we have each of the components of an input, what should we do with it?
+It makes sense to collect all this data together into one unified structure rather than just separate variables.
 The right type for this is Rust's `Struct` type, which we'll explore in the next lesson.
 Onwards!
 
