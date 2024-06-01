@@ -205,32 +205,32 @@ Let's confirm this in our test.
 
 ```rust
 fn test_reading_compact_size() {
-        let mut bytes = [1_u8].as_slice();
-        let length = read_compact_size(&mut bytes);
-        assert_eq!(length, 1_u64);
+    let mut bytes = [1_u8].as_slice();
+    let length = read_compact_size(&mut bytes);
+    assert_eq!(length, 1_u64);
 
-        let mut bytes = [253_u8, 0, 1].as_slice();
-        let length = read_compact_size(&mut bytes);
-        assert_eq!(length, 256_u64);
+    let mut bytes = [253_u8, 0, 1].as_slice();
+    let length = read_compact_size(&mut bytes);
+    assert_eq!(length, 256_u64);
 
-        let mut bytes = [254_u8, 0, 0, 0, 1].as_slice();
-        let length = read_compact_size(&mut bytes);
-        assert_eq!(length, 256_u64.pow(3));
+    let mut bytes = [254_u8, 0, 0, 0, 1].as_slice();
+    let length = read_compact_size(&mut bytes);
+    assert_eq!(length, 256_u64.pow(3));
 
-        let mut bytes = [255_u8, 0, 0, 0, 0, 0, 0, 0, 1].as_slice();
-        let length = read_compact_size(&mut bytes);
-        assert_eq!(length, 256_u64.pow(7));
+    let mut bytes = [255_u8, 0, 0, 0, 0, 0, 0, 0, 1].as_slice();
+    let length = read_compact_size(&mut bytes);
+    assert_eq!(length, 256_u64.pow(7));
 
-        // https://mempool.space/tx/52539a56b1eb890504b775171923430f0355eb836a57134ba598170a2f8980c1
-        // fd is 253
-        // transaction has 20,000 empty inputs
-        let hex = "fd204e";
-        let decoded = hex::decode(hex).unwrap();
-        let mut bytes = decoded.as_slice();
-        let length = read_compact_size(&mut bytes);
-        let expected_length = 20_000_u64;
-        assert_eq!(length, expected_length);
-    }
+    // https://mempool.space/tx/52539a56b1eb890504b775171923430f0355eb836a57134ba598170a2f8980c1
+    // fd is 253
+    // transaction has 20,000 empty inputs
+    let hex = "fd204e";
+    let decoded = hex::decode(hex).unwrap();
+    let mut bytes = decoded.as_slice();
+    let length = read_compact_size(&mut bytes);
+    let expected_length = 20_000_u64;
+    assert_eq!(length, expected_length);
+}
 ```
 
 Run this with `cargo test` and all the tests should pass!
