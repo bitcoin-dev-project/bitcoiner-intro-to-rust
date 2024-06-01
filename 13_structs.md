@@ -4,7 +4,7 @@ A struct is a fairly straightforward type.
 It's similar to classes in OOP languages, but there's no concept of inheritance or polymorphism here.
 It simply allows you to group together related pieces of data - which can all be of different types - into a single name.
 At a high level, we first define the struct by providing it's name, the names of the different fields and their associated types.
-We then create an instance of the struct by specifying the the values for each field.
+We then create an instance of the struct by specifying the values for each field.
 We can also add methods to a struct by defining functions within an `impl` block.
 
 Let's create an input struct to group together our related input fields.
@@ -41,7 +41,8 @@ And all we have to do is create an instance of it in our `main` function:
 ...
 ```
 
-Pretty simple right? One neat modification we can make here is remove the key/value pair and just put a comma separated list of field names.
+Pretty simple right?
+One neat modification we can make here is remove the key/value pair and just put a comma separated list of field names.
 We can do this anytime the field names match the variable names:
 
 ```rust
