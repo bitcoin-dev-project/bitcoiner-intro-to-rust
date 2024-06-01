@@ -68,7 +68,7 @@ Remember, we have to declare it as *mutable*! We can declare a new vec in two wa
 
 ```rust
 ...
-    let inputs = vec![];
+    let mut inputs = vec![];
 
     for _ in 0..input_length {
         let txid = read_txid(&mut bytes_slice);
