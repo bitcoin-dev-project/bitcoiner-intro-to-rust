@@ -16,7 +16,7 @@ mod tests {
 
 The `#[cfg(test)]` annotation on the tests module tells Rust to compile and run the test code only when you run `cargo test`, not when you run `cargo build`.
 
-So let's start setting up our tests:
+So let's start setting up our tests by adding the following after the `main` function:
 ```rust
 #[cfg(test)]
 mod unit_tests {
@@ -45,8 +45,7 @@ You might see something like the following:
      Running unittests src/main.rs (target/debug/deps/transaction_decoder_11-283cd8d491efdffc)
 
 running 1 test
-test unit_tests::test_reading_compact_size ...
-ok
+test unit_tests::test_reading_compact_size ... ok
 
 test result: ok.
 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
@@ -82,8 +81,7 @@ If you run `cargo test`, you should see the test failures:
      Running unittests src/main.rs (target/debug/deps/transaction_decoder_11-283cd8d491efdffc)
 
 running 1 test
-test unit_tests::test_reading_compact_size ...
-FAILED
+test unit_tests::test_reading_compact_size ... FAILED
 
 failures:
 
@@ -124,8 +122,7 @@ mod unit_tests {
 }
 ```
 
-Now if you run `cargo test` again, you will see that all tests pass with the output line at the end, `test result: ok.
-1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s`
+Now if you run `cargo test` again, you will see that all tests pass with the output line at the end, `test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s`
 
 So far so good.
 Let's add another testing scenario.
@@ -151,15 +148,15 @@ mod unit_tests {
 We added another scenario for when the first byte is `0xfd` or the integer `253`.
 In this case, we want to read the next two bytes to determine the input length.
 So if we pass this slice in, we should get the correct length.
-What is the length represented by the bytes `0` and `1`? Well we can use base math to confirm.
-Remember, bytes are in little endian, so the `0` is in the 0th position and the `1` is in the first position.
-We can ignore the 0 and the other value is `1*256_u64.pow(1)` or just `256_u64`.
+What is the length represented by the bytes `0` and `1`?
+Well we can use base math to confirm.
+Remember, bytes are in little endian, so the `0` is in the least significant position and the `1` is in the most significant position: `1*256_u64.pow(1) + 0*256_u64.pow(0)` or just `256_u64`.
 
 You also might have noticed that we declared the same variables, `bytes` and `length`.
 This is called [*shadowing*](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html#shadowing) in Rust as the second declaration will "*overshadow*" the first.
 It's easier to write it this way sometimes, rather than come up with new variable names for each scenario.
 
-Let's add a few more scenarios testing the other arms of the match statement:
+Let's add a few more scenarios to test the other arms of the match statement:
 
 ```rust
 #[cfg(test)]
@@ -190,14 +187,13 @@ mod unit_tests {
 Let's add another scenario from a real world example.
 We're going to use an example that was mentioned in the [Learn Me A Bitcoin](https://learnmeabitcoin.com/explorer/tx/52539a56b1eb890504b775171923430f0355eb836a57134ba598170a2f8980c1) tutorial site.
 It's a [transaction](https://mempool.space/tx/52539a56b1eb890504b775171923430f0355eb836a57134ba598170a2f8980c1) with 20,000 inputs which was confirmed in 2015.
-840,000 vbytes large and paid 0 fees! It was all 0 inputs and 0 output as well so no amount of Bitcoin was transferred.
+It is 840,000 vbytes large and paid 0 fees!
+It was all 0 inputs and 0 output as well so no amount of Bitcoin was transferred.
 Interesting.
 
 Here is the raw transaction hex: https://mempool.space/api/tx/52539a56b1eb890504b775171923430f0355eb836a57134ba598170a2f8980c1/hex
 
-If we look at the first few bytes, we can see the version followed by `fd`.
-
-`01000000fd204e`
+If we look at the first few bytes, we can see the version followed by `fd`: `01000000fd204e`
 
 `fd` indicates that the input length comes from the next two bytes.
 So the bytes, `0x20` and `0x4e` should evaluate to 20,000.
