@@ -63,7 +63,7 @@ This is a common cause of confusion when learning the Bitcoin protocol: bytes se
 
 So, the version 1 field will be sent in the following order: `01` followed by three `00`s.
 `01` is the least significant byte and is sent first.
-When doing base math to convert these bytes to integers, we can canceptualize it in reverse so that the `01` is in the least significant position.
+When doing base math to convert these bytes to integers, we can conceptualize it in reverse so that the `01` is in the least significant position.
 In other words, we can think of it as `00 00 00 01` and then do our normal base 16 math to convert this to an integer.
 
 Now, we can do our normal base math which is `0* 16^7 + ... + 1 * 16^0`.
