@@ -163,6 +163,7 @@ As long as all the fields of the struct implement the `Debug` trait, this will w
 Let's remove the `impl` block and the `use std::fmt` statement and just add this attribute to our struct:
 
 ```rust
+#[allow(dead_code)]
 #[derive(Debug)]
 struct Input {
     txid: [u8; 32],
@@ -172,7 +173,8 @@ struct Input {
 }
 ```
 
-And voila! That works now and is much cleaner isn't it? 
+And voila! That works now and is much cleaner isn't it?
+The attribute `#[allow(dead_code)]` is a hint to the compiler that we know we are not using the struct fields right now, but we will in the next section.
 
 Now that we understand a bit more about structs and trait implementations, let's work on displaying this information in a more readable way.
 Rather than print out the debugging output, we'll instead **serialize** the data according to a standard JSON format and display that.
