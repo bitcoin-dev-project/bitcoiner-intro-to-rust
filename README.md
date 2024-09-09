@@ -1,6 +1,12 @@
 # The Bitcoiner's Introduction to Rust
 *Learn Rust the ~~Hard~~ Bitcoin Way*
 
+---
+
+*This course is now available in video format with recorded coding sessions, more visual diagrams, quizzes and extra practice problems! And still free! Check it out at http://btcdemy.thinkific.com*
+
+---
+
 ### Goal
 Learn Rust and review Bitcoin fundamentals by building a command-line program.
 
