@@ -146,7 +146,7 @@ The amounts are missing the decimal values because we're doing math on unsigned 
 
 However, let's use this as an opportunity to look at some open source code and see how a popular library, such as [Rust-Bitcoin](https://github.com/rust-bitcoin/rust-bitcoin) deals with the amount field. 
 
-From the source code, it appears they create an `Amount` tuple struct to represent the Satoshi / Bitcoin value. https://docs.rs/bitcoin/latest/src/bitcoin/amount.rs.html#498
+From the source code, it appears they create an `Amount` tuple struct to represent the Satoshi / Bitcoin value. https://docs.rs/bitcoin-units/latest/src/bitcoin_units/amount.rs.html#865
 
 ```rust
 pub struct Amount(u64);
